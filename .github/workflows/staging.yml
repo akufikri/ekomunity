@@ -1,7 +1,7 @@
 on:
  push:
    branches:
-   - staging
+   - dev
 name: 🚀 Deploy website on push
 jobs:
   web-deploy:
@@ -33,8 +33,8 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
-        server: ${{ secrets.FTP_STAGING_SERVER }}
+        server: ${{ secrets.FTP_DEV_SERVER }}
         server-dir: /
-        username: ${{ secrets.FTP_STAGING_USERNAME }}
-        password: ${{ secrets.FTP_STAGING_PASSWORD }}
-        port: ${{ secrets.FTP_STAGING_PORT }}
+        username: ${{ secrets.FTP_DEV_USERNAME }}
+        password: ${{ secrets.FTP_DEV_PASSWORD }}
+        port: ${{ secrets.FTP_DEV_PORT }}
