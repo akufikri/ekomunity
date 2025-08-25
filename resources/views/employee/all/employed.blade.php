@@ -1,0 +1,191 @@
+@extends('home')
+@section('title-dashboard', 'Manpower')
+@section('title','List Of Manpower All Employed')
+
+@section('breadcrumb')
+
+<li class="breadcrumb-item active">List Of Manpower All Employed</li>
+
+@endsection
+
+@section('content')
+
+<style>
+    .title {
+        font-size: 1.25rem; 
+        font-weight: bold;
+    }
+    .select2-container--default .select2-selection--single {
+    border: 1px solid #ced4da;
+    height: calc(2.875rem + 2px) !important;
+    padding: 1.2rem 1rem 2.5rem 1rem;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    border-radius: .3rem;
+    }
+    .form-control-lg2 {
+    border: 1px solid #ced4da;
+    height: calc(2.875rem + 2px) !important;
+    padding: 1.2rem 1rem 2.5rem 1rem;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    border-radius: .3rem;
+    }
+    .form-control-lg{
+        height: calc(2.875rem + 2px);
+        padding: 2rem 1.2rem;
+        font-size: 1.25rem;
+        line-height: 1.5;
+        border-radius: .3rem;
+    }
+    .form-control-lgku{
+        height: calc(2.875rem + 2px);
+        padding: 2rem 1.2rem;
+        font-size: 1.25rem;
+        line-height: 1.5;
+        border-radius: .3rem;
+    }
+    .filldata {
+    font-weight: normal !important;
+    }
+    #label_form {
+        padding-bottom: 8px; font-size: 15px;
+    }
+    .label_form_judul {
+        font-size: 13px !important;
+        margin-bottom: 0px;
+    }
+    .my-button {
+        font-size: 15px;
+    }
+    .my-header {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 0px;
+    }
+    .my-table {
+        font-size: 14px;
+        margin-bottom: 0px;
+    }
+    
+    input[type="text"]
+    {
+        font-size:14px;
+    }
+    
+    input[type="number"]
+    {
+        font-size:14px;
+    }
+    
+    input[type="file"]
+    {
+        font-size:14px;
+    }
+    
+    input[type="button"]
+    {
+        font-size:14px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-primary card-outline" style="border-top: 3px solid dark">
+            <div class="card-header">
+                <h3 class="card-title text-primary my-header">List Of Manpower All Employed</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="container mt-2 my-table">
+                        @if ($message = Session::get('success'))
+                            <div class="alert alert-success">
+                                    {{ $message }}
+                                    <a class="close" aria-hidden="true" data-dismiss="alert">x</a>
+                            </div>
+                        @endif
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm nowrap" id="datatable-crud">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">No</th>
+                                        <th>IC Number</th>
+                                        <th>Full Name</th>
+                                        <th>Gender</th>
+                                        <th>Martial Status</th>
+                                        <th>Native Status</th>
+                                        <th>Postcode</th>
+                                        <th>City</th>
+                                        <th>State</th>
+                                        <th>Current Work Status</th>
+                                        <th>Created At</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="//code.jquery.com/jquery-2.0.0.js"></script>
+<script src="/js/jquery.validate.min.js"></script>
+<script type="text/javascript">
+$(document).ready( function () {
+    $.ajaxSetup({
+        headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $('#datatable-crud').DataTable({
+        processing: true,
+        serverSide: true,
+        scrollX: true,
+        ajax: {
+                url: "{{ route('employee.all.employed') }}",
+                type: 'GET'
+            },
+        columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+            { data: 'ic_number', name: 'ic_number' , id: 'ic_number'},
+            { data: 'first_name', name: 'first_name' },
+            { data: 'gender', name: 'gender' },
+            { data: 'martial_status', name: 'martial_status' },
+            { data: 'native_status', name: 'native_status' },
+            { data: 'postcode', name: 'postcode' },
+            { data: 'city', name: 'city' },
+            { data: 'state', name: 'state' },
+            { data: 'current_work_status', name: 'current_work_status' },
+            { data: 'create_date', name: 'create_date' },
+        ],
+        columnDefs: [
+                {
+                    "targets" : 11,
+                    "visible" : true,
+                    "data": "",
+                    "render" : function (data, type, row) {//class="btn btn-primary btn-sm"
+                        var btn = //'<a href="/learn/detail/'+row.id_company_project+'" data-toggle="modal" data-target="#addProject" class="btn btn-primary btn-sm"><i class="fa fa-info-circle nav-icon"></i></a>'+
+                        '<a href="/homeManPowerDetail/'+row.id_user+'" class="btn btn-primary btn-sm" style="font-family:arial; font-size:14px;"><i class="fa fa-info-circle nav-icon"></i>&nbsp;&nbsp;DETAIL</a>'
+                        
+                        return btn; //settings_position/'+row.id_position+'/edit
+                    }
+                },
+            ],
+        order: [[0, 'asc']]
+    });
+});
+
+$('#nric').ready(function(){
+
+	var formatter = new StringMask("(000) 000-0000", { reverse: true });
+var result = formatter.apply('123456789');
+	return result;
+});
+</script>
+
+@endsection('content')
