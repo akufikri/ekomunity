@@ -48,9 +48,13 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SenaraiAhliController;
 use App\Http\Controllers\CollaborationAgencyController;
 use App\Http\Controllers\DirektoriController;
+use App\Http\Controllers\EmailSettingController;
 use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\PackageSettingController;
 use App\Http\Controllers\PembayaranCawanganController;
 use App\Http\Controllers\PembayaranKetuaBahagianController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingBrandingController;
 use App\Http\Controllers\StatistikController;
 use App\Http\Controllers\StatusApprovalController;
@@ -73,7 +77,13 @@ use App\Models\ManpowerPosition;
 require_once 'toyyibPay.php';
 require_once('globalFunction.php');
 
-Route::get('/', [LandingPageController::class, 'home']);
+// Route::get('/landing-v2', function(){
+//     return view('landingpage.pages.design-v2');
+// });
+
+Route::get('/', function(){
+    return view('landingpage.pages.design-v2');
+});
 Route::get('/direktori', [LandingPageController::class, 'direktori']);
 Route::get('/buletin', [LandingPageController::class, 'blogPost']);
 Route::get('/buletin/{slug}', [LandingPageController::class, 'detailPost']);
@@ -118,17 +128,11 @@ Route::get('/summernoteb4', function () {
     return view('summernoteb4');
 });
 
+
 Route::get('convertPersatuan', function () {
-
     $manpower = DetailManpower::select('id_detail_manpower', 'id_detail_company')->where('id_detail_company', '!=', null)->get();
-    // $manpower = DetailManpower::select('id_detail_manpower', 'id_detail_company')->where('id_detail_manpower', '28')->get();
-
-    // return $manpower;
-
     foreach ($manpower as $d) {
-
         $d->id_detail_company = json_decode($d->id_detail_company);
-
 
         if (is_string($d->id_detail_company) || is_int($d->id_detail_company)) {
 
@@ -765,7 +769,7 @@ Route::get('/employee/edit', function () {
 });
 
 
-Route::post('/register_company', [RegisCompanyController::class, 'store']);
+// Route::post('/register_company', [RegisCompanyController::class, 'store']);
 
 Route::prefix('/register_ahli')->group(function () {
     Route::get('/create', [RegisManpowerController::class, 'create'])->name('employee.create');
@@ -774,6 +778,7 @@ Route::prefix('/register_ahli')->group(function () {
     Route::get('/get_bahagian_with_ketua/{id}', [UserController::class, 'getBahagianWithKetuaBahagian']);
 
 Route::prefix('/register_company')->group(function () {
+    Route::get('/select_package', [RegisCompanyController::class, 'getSelectPackage']);
     Route::get('/create', [RegisCompanyController::class, 'create'])->name('company.create');
 });
 
@@ -805,10 +810,14 @@ Route::any('/getCity', [ApiController::class, 'getCity']);
 Route::any('/getParliament', [ApiController::class, 'getParliament']);
 Route::any('/getDun', [ApiController::class, 'getDun']);
 
-
+Route::prefix('role/management')->group(function(){
+    Route::get('/', [RoleController::class, 'getView']);
+    Route::get('/getData', [RoleController::class, 'index']);
+    Route::post('/store', [RoleController::class, 'store']);
+    Route::post('/update/{id}', [RoleController::class, 'update']);
+});
 
 Route::any('/invoice', function () {
-
     $user = Auth::user();
     $detail = \App\Models\DetailManpower::where('id_user', $user->id)->first();
     $setting_subscribe = \App\Models\SettingSubscribe::where('subscribe_for', 'REGISTER AHLI')->where('is_active', 'ENABLE')->first();
@@ -819,6 +828,8 @@ Route::any('/invoice', function () {
 
     return view('email.invoice');
 });
+
+Route::get('/locale/{locale}', [LocaleController::class, 'set'])->name('locale.set');
 
 Route::group(['middleware' => ['auth'],], function () {
 
@@ -936,15 +947,31 @@ Route::prefix('v1')->group(function(){
     Route::get('/direktori', [DirektoriController::class, 'getData']);
 });
 
+Route::prefix('emailSetting')->group(function(){
+    Route::get('/', [EmailSettingController::class, 'index']);
+    Route::get('/getData', [EmailSettingController::class, 'getData']);
+    Route::get('/show/{id}', [EmailSettingController::class, 'show']);
+    Route::post('/updateOrStore', [EmailSettingController::class, 'updateOrStore']);
+});
+
 Route::prefix('setting-brand')->group(function(){
     Route::get('/', [SettingBrandingController::class, 'getView']);
+    Route::get('/detail', [SettingBrandingController::class, 'detail']);
     Route::get('/getData', [SettingBrandingController::class, 'index']);
     Route::delete('/delete/{id}', [SettingBrandingController::class, 'delete']);
     Route::post('/updateOrStore', [SettingBrandingController::class, 'updateOrStore']);
 });
 
-Route::group(['middleware' => ['auth', 'registrationCompleted'],], function () {
+Route::prefix('packages')->group(function(){
+    Route::get('/', [PackageSettingController::class, 'index']);
+    Route::get('/getData', [PackageSettingController::class, 'getListPackage']);
+    Route::post('/store', [PackageSettingController::class, 'store']);
+    Route::get('/{id}', [PackageSettingController::class, 'edit']);
+    Route::post('/update/{id}', [PackageSettingController::class, 'update']);
+    Route::delete('/destroy/{id}', [PackageSettingController::class, 'destroy']);
+});
 
+Route::group(['middleware' => ['auth', 'registrationCompleted'],], function () {
     Route::get('/admin', function () {
         return view('admin');
     });

@@ -12,6 +12,8 @@ class SettingBranding extends Model
         'name_brand',
         'logo',
         'logo_url',
-        'description'
+        'description',
+        'brand_color',
+        'cta'
     ];
 }

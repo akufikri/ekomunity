@@ -68,6 +68,9 @@ class DetailCompany extends Model
         'valid_time',
         'watermark_image',
         'tnc',
+        'price_subscribe',
+        'year_expired_subscribe',
+        'valid_subscribe'
     ];
 
     static $stepRegistration = 2;

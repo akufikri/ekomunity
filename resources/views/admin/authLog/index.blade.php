@@ -1,10 +1,12 @@
 @extends('home')
-@section('title-dashboard', 'Log Login')
+
+@section('title-dashboard', __('menu.user_activities'))
 @section('title', 'Log Login')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item active"><a>Log Login</a></li>
+    <li class="breadcrumb-item active"><a>{{ __('menu.user_activities') }}</a></li>
 @endsection
+
 
 @section('content')
     <div class="card card-outline card-danger">

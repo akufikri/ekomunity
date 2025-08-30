@@ -179,12 +179,12 @@
     <section class="section my-5">
         <div class="container" data-aos="fade-up" data-aos-delay="100">
             <div class="card shadow-lg border-0 text-center"
-                style="background: linear-gradient(90deg, #e4c47e, #d4a63f); color: #fff;">
+                style="background: {{ $global_brand ? $global_brand->brand_color : "" }}">
                 <div class="card-body py-5">
-                    <h2 class="fw-bold mb-3 text-white">Mari Mendaftar Menjadi Ahli Usia Sekarang!</h2>
-                    <p class="mb-4" style="font-size: 1.1rem;">
+                    <h2 class="fw-bold mb-3 text-white">{{ $global_brand ? $global_brand->cta : "" }}</h2>
+                    {{-- <p class="mb-4" style="font-size: 1.1rem;">
                         Bergabunglah bersama kami dan dapatkan manfaat eksklusif untuk anggota.
-                    </p>
+                    </p> --}}
                     <a href="/register_ahli/create" class="btn btn-light btn-lg fw-bold px-4 py-2 text-success">
                         Daftar Sekarang
                     </a>

@@ -10,7 +10,13 @@
     </ul>
 
     <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav ml-auto" style="gap: 5px">
+        <li class="nav-item">
+            <select id="lang-switcher" class="form-control" style="height: 40px; border:0px">
+                <option value="my" {{ app()->getLocale() === 'my' ? 'selected' : '' }}>🇲🇾 MY</option>
+                <option value="en" {{ app()->getLocale() === 'en' ? 'selected' : '' }}>🇺🇸 ENG</option>
+            </select>
+        </li>
         @guest
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -32,7 +38,7 @@
                                 @if ($level == 1)
                                     <p class="text-sm">ADMIN</p>
                                 @elseif($level == 2)
-                                    <p class="text-sm">CAWANGAN</p>
+                                    <p class="text-sm">PERSATUAN</p>
                                 @elseif($level == 3)
                                     <p class="text-sm">AHLI</p>
                                 @elseif($level == 4)
@@ -47,12 +53,12 @@
                     <a class="dropdown-item dropdown-footer text-dark text-right changePassword" data-toggle="modal"
                         data-id="{{ Auth::user()->id }}" data-target="#changePasswordModal" id="btn_change_password"
                         href="#" style="color: black !important;">
-                        <i class="nav-icon fa fa-key"></i> Change Password
+                        <i class="nav-icon fa fa-key"></i> {{ __('menu.change_password') }}
                     </a>
                     <a class="dropdown-item dropdown-footer text-dark text-right" id="btn_logout"
                         href="{{ route('logout') }}" style="color: black !important;"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="nav-icon fa fa-sign-out-alt"></i> Logout
+                        <i class="nav-icon fa fa-sign-out-alt"></i> {{ __('menu.logout') }}
                     </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
                 </div>
@@ -131,6 +137,10 @@
 <!--END UPDATE Password-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
+    document.getElementById('lang-switcher').addEventListener('change', function() {
+        const lang = this.value;
+        window.location.href = `/locale/${lang}`;
+    });
     $(function() {
 
         $.ajaxSetup({

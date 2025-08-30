@@ -30,7 +30,7 @@ class SettingBrandingController extends Controller
             $data = $query->latest();
 
             return DataTables::of($data)
-                ->addIndexColumn() // ✅ DT_RowIndex otomatis
+                ->addIndexColumn()
                 ->editColumn('created_at', function ($row) {
                     return $row->created_at ? $row->created_at->format('d M Y H:i') : '-';
                 })
@@ -58,7 +58,9 @@ class SettingBrandingController extends Controller
                 'name_brand'   => 'required|string|max:255',
                 'logo'         => 'nullable|image|mimes:jpg,jpeg,png,svg,gif|max:2048',
                 'id'           => 'nullable|integer|exists:tb_setting_branding,id',
-                'description'  => 'nullable|string'
+                'description'  => 'nullable|string',
+                'brand_color'  => 'nullable|string',
+                'cta'          => 'nullable|string'
             ]);
 
             if ($validator->fails()) {
@@ -67,22 +69,24 @@ class SettingBrandingController extends Controller
 
             $data = [
                 'name_brand'   => $request->name_brand,
-                'description'  => $request->description, // ✅ ikut simpan description
+                'description'  => $request->description, 
+                'brand_color'  => $request->brand_color, 
+                'cta'  => $request->cta, 
             ];
 
             if ($request->hasFile('logo')) {
-                // upload file logo ke storage/app/public/logos
+                
                 $path = $request->file('logo')->store('logos', 'public');
 
                 $data['logo']     = $path;
-                $data['logo_url'] = Storage::url($path); // ✅ simpan langsung url-nya
+                $data['logo_url'] = Storage::url($path); 
             }
 
             if ($request->id) {
-                // update
+                
                 $brand = SettingBranding::find($request->id);
 
-                // kalau ada logo baru, hapus yang lama
+                
                 if ($request->hasFile('logo') && $brand->logo && Storage::disk('public')->exists($brand->logo)) {
                     Storage::disk('public')->delete($brand->logo);
                 }
@@ -91,7 +95,7 @@ class SettingBrandingController extends Controller
 
                 return $this->success($brand, "Brand updated successfully", 200);
             } else {
-                // create
+                
                 $brand = SettingBranding::create($data);
 
                 return $this->success($brand, "Brand created successfully", 201);
@@ -112,7 +116,7 @@ class SettingBrandingController extends Controller
                 return $this->error("Brand not found", 404);
             }
 
-            // hapus logo juga kalau ada
+            
             if ($brand->logo && Storage::disk('public')->exists($brand->logo)) {
                 Storage::disk('public')->delete($brand->logo);
             }
@@ -128,5 +132,10 @@ class SettingBrandingController extends Controller
     public function getView()
     {
         return view('admin.settingBrand.index');
+    }
+
+    public function detail()
+    {
+        return view('admin.settingBrand.detail');
     }
 }

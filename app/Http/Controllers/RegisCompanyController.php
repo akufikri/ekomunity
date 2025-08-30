@@ -348,6 +348,11 @@ class RegisCompanyController extends Controller
         return view('company.register.registercompany');
     }
 
+    public function getSelectPackage()
+    {
+        return view('company.register.priceRegisterCompany');
+    }
+
     public function waitingApproval() {
         return view('company.register.waitingApproval');
     }
@@ -493,11 +498,14 @@ class RegisCompanyController extends Controller
                 }
             }
 
+            $company->price_subscribe = $request->price_subscribe;
+            $company->year_expired_subscribe = Carbon::now()->addYear();
+            $company->valid_subscribe = 1;
+
             $company->save();
         }
 
         $this->sendEmailVerification($user->id);
-
 
         return Redirect::to('/success_register')->withInput($request->all());
     }

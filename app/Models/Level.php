@@ -10,5 +10,11 @@ class Level extends Model
     protected $primaryKey = 'id_level'; 
     
     protected $table = "tb_level";
+
+    protected $fillable = [
+        'level',
+        'description',
+        'is_active'
+    ];
     
 }

@@ -38,13 +38,10 @@
     34 => 'SimpleSoftwareIO\\QrCode\\QrCodeServiceProvider',
     35 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
     36 => 'Yajra\\DataTables\\DataTablesServiceProvider',
-    37 => 'Laravel\\Socialite\\SocialiteServiceProvider',
-    38 => 'App\\Providers\\AppServiceProvider',
-    39 => 'App\\Providers\\AuthServiceProvider',
-    40 => 'App\\Providers\\EventServiceProvider',
-    41 => 'App\\Providers\\RouteServiceProvider',
-    42 => 'Yajra\\DataTables\\DataTablesServiceProvider',
-    43 => 'Kutia\\Larafirebase\\Providers\\LarafirebaseServiceProvider',
+    37 => 'App\\Providers\\AppServiceProvider',
+    38 => 'App\\Providers\\AuthServiceProvider',
+    39 => 'App\\Providers\\EventServiceProvider',
+    40 => 'App\\Providers\\RouteServiceProvider',
   ),
   'eager' => 
   array (
@@ -74,8 +71,6 @@
     23 => 'App\\Providers\\AuthServiceProvider',
     24 => 'App\\Providers\\EventServiceProvider',
     25 => 'App\\Providers\\RouteServiceProvider',
-    26 => 'Yajra\\DataTables\\DataTablesServiceProvider',
-    27 => 'Kutia\\Larafirebase\\Providers\\LarafirebaseServiceProvider',
   ),
   'deferred' => 
   array (

@@ -1,20 +1,4 @@
 /node_modules
-# /public/hot
-# /public/storage
-# public/template/
-# /public/product
-# /public/halalCertificate
-# /public/gmpCertificate
-# /public/kkmCertificate
-# /public/Profil
-# /public/images
-# /public/BusinessImage
-# /public/BusinessProductImage
-# /public/CertificateOfWork
-# /public/ImagePaymentProof
-# /public/landingpage
-# /public/CompanySsmTradingLicense
-# /public/CompanySsmCompanyInformation
 /storage/*.key
 /vendor
 /routes/billPlz.php

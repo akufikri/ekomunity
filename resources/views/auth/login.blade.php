@@ -144,17 +144,19 @@
                         <div class="tab-content nav">
                             <form method="POST" action="" class="form-login tab-pane active col-12 p-a0">
                                 @csrf
-                                <h4 class="font-weight-700 labelku">Log Masuk</h4>
+                                <h4 class="font-weight-700 labelku">{{ __('menu.log_in') }}</h4>
                                 <p class="font-weight-700 labelku">Belum mendaftar?
                                     <br> Klik <a href="{{ url('register_ahli/create?is_foreign=false') }}" style="color: #383444;"><b> Ahli</b></a>
-                                    warga negara
+                                    untuk Individu
                                     <br>
-                                    Klik <a href="{{ url('register_ahli/create?is_foreign=true') }}" style="color: #383444;"><b> Ahli</b></a>
-                                    bukan warga negara
+                                    Klik <a href="{{ url('register_company/select_package') }}" style="color: #383444;"><b> Persatuan</b></a> jika Pengerusi / Setiausaha Persatuan
+                                    <br>
+                                    {{-- Klik <a href="{{ url('register_ahli/create?is_foreign=true') }}" style="color: #383444;"><b> Komuniti</b></a>
+                                    bukan warga negara --}}
                                 </p>
 
                                 <div class="form-group">
-                                    <label class="font-weight-700 labelku">Emel <span style="color: #383444;">*</span>
+                                    <label class="font-weight-700 labelku">{{ __('menu.email') }} <span style="color: #383444;">*</span>
                                     </label>
                                     <input id="email" type="email"
                                         class="form-control-lg form-control @error('email') is-invalid @enderror"
@@ -168,7 +170,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label class="font-weight-700 labelku">Kata Laluan <span
+                                    <label class="font-weight-700 labelku">{{ __('menu.password') }} <span
                                             style="color: #383444;">*</span> </label>
                                     <input id="password" type="password"
                                         class="form-control-lg form-control @error('password') is-invalid @enderror"
@@ -181,7 +183,7 @@
                                     @enderror
                                 </div>
                                 <div class="text-left">
-                                    <input type="submit" class="btn btn-md site-button m-r5 button-md" value="Masuk"
+                                    <input type="submit" class="btn btn-md site-button m-r5 button-md" value="{{ __('menu.log_in') }}"
                                         style="background-color: #383444;"></input>
                                     <a href="#" data-target="#forgotModal" data-toggle="modal" class="m-l5"
                                         style="color: #383444;"><i class="fa fa-unlock-alt" style="color: #383444;"></i>
