@@ -185,6 +185,7 @@ class UserController extends Controller
                 $detailComp->number_certificate = 'P' . date("dmy") . '-' . $next_number;
                 $detailComp->step_registration = 2;
                 $detailComp->key_reference = Str::random(6);
+                $detailComp->tanggal_lantikan = $request->tanggal_lantikan;
                 $detailComp->save();
             }
         }
@@ -214,7 +215,7 @@ class UserController extends Controller
 
     public function edit($id, Request $r)
     {
-        $data = User::with('level')->findOrFail($id);
+        $data = User::with(['level', 'company.city', 'company.state'])->findOrFail($id);
 
         // $data = Position::where('id_position', $id)->first();
 
@@ -252,6 +253,7 @@ class UserController extends Controller
             $cawangan = DetailCompany::where('id_user', $user->id)->first();
             $cawangan->id_city = $request->id_city;
             $cawangan->id_bahagian = $strBahagian['data'];
+            $cawangan->tanggal_lantikan = $request->tanggal_lantikan;
             $cawangan->save();
         }
         $user->save();
@@ -342,6 +344,44 @@ class UserController extends Controller
                 'message' => 'Failed fetch bahagian with ketua bahagian',
                 'data' => null,
                 'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            
+            // Check if the current user has permission to delete (must be id_level 2 or admin)
+            $authUser = Auth::user();
+            if ($authUser->id_level != 2 && $authUser->id_level != 1) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'You do not have permission to delete users.'
+                ], 403);
+            }
+
+            // Delete related DetailCompany record if exists
+            if ($user->id_level == 2) {
+                $detailCompany = DetailCompany::where('id_user', $user->id)->first();
+                if ($detailCompany) {
+                    $detailCompany->delete();
+                }
+            }
+
+            // Delete the user
+            $user->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User deleted successfully.'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete user: ' . $e->getMessage()
             ], 500);
         }
     }

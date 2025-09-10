@@ -111,7 +111,7 @@
                                             <button class="btn btnku mt-3 btn-choose-package"
                                                 data-id="${pkg.id}"
                                                 data-price="${pkg.price}"
-                                                data-expired="${pkg.expired}">
+                                                data-expired="${pkg.valid_until}">
                                                 ${pkg.is_premium ? 'Upgrade Sekarang' : 'Gabung Sekarang'}
                                             </button>
                                         </div>
@@ -127,7 +127,7 @@
                             let id = $(this).data("id");
                             let price = parseInt($(this).data("price"), 10); // pastikan integer
                             let expired = parseInt($(this).data("expired"),
-                            10); // kalau expired juga angka
+                                10); // kalau expired juga angka
 
                             window.location.href =
                                 `/register_company/create?id=${id}&price=${price}&expired=${expired}`;

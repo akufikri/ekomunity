@@ -82,7 +82,12 @@
                                 <h4 class="font-weight-700 titleku">MAKLUMAT PERIBADI</h4>
                                 <p class="font-weight-600">Sudah mempunyai akaun? <a href="{{ route('login') }}"><b
                                             style="color: #383444;"> Log Masuk Sekarang</b></a></p>
-
+                                <div>
+                                    <input hidden type="number" value="{{ Request::input('price') }}"
+                                        name="price_subscribe" id="">
+                                    <input hidden type="number" value="{{ Request::input('expired') }}"
+                                        name="year_subscribe" id="">
+                                </div>
                                 <div class="form-group">
                                     <label class="font-weight-700 labelku">Nama Wakil <span style="color: #383444;">*</span>
                                     </label>
@@ -99,7 +104,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="font-weight-700 labelku">Nama Cawangan <span
+                                    <label class="font-weight-700 labelku">Nama Komuniti <span
                                             style="color: #383444;">*</span> </label>
                                     <input id="nama_pertubuhan" type="text"
                                         class="form-control-lg form-control @error('nama_pertubuhan') is-invalid @enderror"

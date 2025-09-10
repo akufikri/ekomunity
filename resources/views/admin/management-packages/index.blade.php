@@ -25,6 +25,7 @@
                                         <th>Benefit</th>
                                         <th>Price</th>
                                         <th>Premium</th>
+                                        <th>Valid Until</th>
                                         <th>Status</th>
                                         <th width="10%">Action</th>
                                     </tr>
@@ -80,6 +81,11 @@
                                 <option value="1">Yes</option>
                                 <option value="0">No</option>
                             </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Valid Until</label>
+                            <input type="date" id="valid_until" name="valid_until" class="form-control" required>
                         </div>
 
                         <div class="form-group">
@@ -145,6 +151,14 @@
                         render: d => d ? 'Yes' : 'No'
                     },
                     {
+                        data: 'valid_until',
+                        name: 'valid_until',
+                        render: function(data) {
+                            if (!data) return '';
+                            return new Date(data).toLocaleDateString('en-GB');
+                        }
+                    },
+                    {
                         data: 'status',
                         name: 'status'
                     },
@@ -199,6 +213,7 @@
                     $('#title').val(data.data.title);
                     $('#price').val(data.data.price);
                     $('#is_premium').val(data.data.is_premium ? 1 : 0);
+                    $('#valid_until').val(data.data.valid_until);
                     $('#status').val(data.data.status);
 
                     $('#benefitWrapper').html('');
@@ -243,6 +258,7 @@
                     title: $('#title').val(),
                     price: $('#price').val(),
                     is_premium: $('#is_premium').val(),
+                    valid_until: $('#valid_until').val(),
                     status: $('#status').val(),
                     benefit: benefits
                 };

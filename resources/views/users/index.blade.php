@@ -4,7 +4,7 @@
 
 @section('breadcrumb')
 
-    <li class="breadcrumb-item active"><a>Ketua bahagian</a></li>
+    <li class="breadcrumb-item active"><a>Komuniti</a></li>
 @endsection
 
 @section('content')
@@ -105,7 +105,7 @@
                     @elseif($id_level == '4')
                         <h3 class="card-title text-danger my-header">Ketua bahagian</h3>
                     @elseif ($id_level == '2')
-                        <h3 class="card-title text-danger my-header">Cawangan</h3>
+                        <h3 class="card-title text-danger my-header">Komuniti</h3>
                     @endif
 
                     @if (Auth::user()->id_level == '1' || Auth::user()->id_level == '6' || Auth::user()->id_level == '4')
@@ -149,6 +149,7 @@
                                                 <th>No. ros</th>
                                                 <th>Kod. cawangan</th>
                                                 <th>Status ros</th>
+                                                <th>Tanggal Lantikan</th>
                                             @endif
                                             <th>Created At</th>
                                             <th>Action</th>
@@ -280,6 +281,11 @@
                                         <option value="penaja">Penaja</option>
                                     </select>
                                 </div>
+                                <div class="form-group">
+                                    <label class="font-weight-700 labelku">Tanggal Lantikan</label>
+                                    <input type="date" name="tanggal_lantikan" id="tanggal_lantikan"
+                                        class="form-control" placeholder="Pilih tanggal lantikan">
+                                </div>
                             @endif
                         @endif
 
@@ -386,6 +392,11 @@
                                     <option value="belum_berdaftar">Belum Daftar ROS</option>
                                     <option value="penaja">Penaja</option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-700 labelku">Tanggal Lantikan</label>
+                                <input type="date" name="tanggal_lantikan" id="tanggal_lantikan" class="form-control"
+                                    placeholder="Pilih tanggal lantikan">
                             </div>
                         @elseif($id_level == '4')
                             <div class="form-group">
@@ -509,6 +520,11 @@
                             <input type="text" class="form-control" id="level" name="level"
                                 placeholder="Level" readonly>
                         </div>
+                        <div class="form-group" id="detail-tanggal-lantikan" style="display: none;">
+                            <label for="#">Tanggal Lantikan</label>
+                            <input type="text" class="form-control" id="tanggal_lantikan" name="tanggal_lantikan"
+                                placeholder="Tanggal Lantikan" readonly>
+                        </div>
                         {{-- <div class="form-group">
                         <label for="exampleInputEmail1">Status</label>
                         <select class="form-control form-control-sm" id="status" name="status" disabled>
@@ -535,7 +551,7 @@
         $(document).ready(function() {
             $.ajaxSetup({
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
 
@@ -546,6 +562,7 @@
             handleDetailData();
             handleUpdateFormSubmit();
             handlePasswordFormSubmit();
+            handleDeleteData();
         });
 
         function loadData() {
@@ -620,6 +637,18 @@
                         return data.replace(/_/g, " ").toUpperCase();
                     }
                 });
+                // Tambahkan kolom tanggal lantikan
+                columns.push({
+                    data: 'company.tanggal_lantikan',
+                    defaultContent: "-",
+                    render: function(data, type, row) {
+                        if (!data) return "-";
+                        // Format tanggal dari YYYY-MM-DD ke DD-MM-YYYY
+                        const date = new Date(data);
+                        if (isNaN(date.getTime())) return "-";
+                        return date.toLocaleDateString('id-ID');
+                    }
+                });
             }
 
             columns.push({
@@ -635,11 +664,19 @@
                 data: "",
                 visible: isLevel6 ? !(auth == '5') : !(auth == '5'),
                 render: function(data, type, row) {
-                    return `
-                <a href="#" data-id="${row.id}" data-toggle="modal" data-target="#detailModal" class="btn btn-primary btn-sm detailData"><i class="fa fa-info-circle nav-icon"></i></a>
-                <a href="#" data-id="${row.id}" data-toggle="modal" data-target="#updateModal" class="btn btn-warning btn-sm editData"><i class="fa fa-edit nav-icon"></i></a>
-                <a href="#" data-id="${row.id}" data-toggle="modal" data-target="#updatePasswordModal" class="btn btn-danger btn-sm updatePassword"><i class="fa fa-key nav-icon"></i></a>
-            `;
+                    let buttons = `
+                        <a href="#" data-id="${row.id}" data-toggle="modal" data-target="#detailModal" class="btn btn-primary btn-sm detailData"><i class="fa fa-info-circle nav-icon"></i></a>
+                        <a href="#" data-id="${row.id}" data-toggle="modal" data-target="#updateModal" class="btn btn-warning btn-sm editData"><i class="fa fa-edit nav-icon"></i></a>
+                        <a href="#" data-id="${row.id}" data-toggle="modal" data-target="#updatePasswordModal" class="btn btn-danger btn-sm updatePassword"><i class="fa fa-key nav-icon"></i></a>
+                    `;
+                    
+                    // Add delete button only for users with id_level 2 and if current user has permission
+                    const authLevel = $('input[name=auth]').val();
+                    if ((authLevel == '2' || authLevel == '1') && row.id_level == 2) {
+                        buttons += `<a href="#" data-id="${row.id}" class="btn btn-secondary btn-sm deleteData"><i class="fa fa-trash nav-icon"></i></a>`;
+                    }
+                    
+                    return buttons;
                 }
             }];
 
@@ -699,6 +736,12 @@
                             form.find("input[name=kod_bahagian]").val(data.kod_bahagian);
 
                             form.find("input[name=kod_cawangan]").val(data.kod_cawangan);
+
+                            // Set tanggal_lantikan jika ada
+                            if (data.company && data.company.tanggal_lantikan) {
+                                form.find("input[name=tanggal_lantikan]").val(data.company
+                                    .tanggal_lantikan);
+                            }
 
                             $('#updateModal').modal('show');
                         }
@@ -789,6 +832,20 @@
                                 form.find('input[name=ketua_bahagian]').val(data.nama_ketua_bahagian);
                             }
 
+                            // Tampilkan tanggal lantikan untuk level 2 (cawangan)
+                            if (data.id_level == 2) {
+                                $('#detail-tanggal-lantikan').show();
+                                if (data.company && data.company.tanggal_lantikan) {
+                                    const date = new Date(data.company.tanggal_lantikan);
+                                    const formattedDate = date.toLocaleDateString('id-ID');
+                                    form.find('input[name=tanggal_lantikan]').val(formattedDate);
+                                } else {
+                                    form.find('input[name=tanggal_lantikan]').val('-');
+                                }
+                            } else {
+                                $('#detail-tanggal-lantikan').hide();
+                            }
+
                             $('#detailModal').modal('show');
                         }
                     },
@@ -853,6 +910,47 @@
                     error: function(xhr, status, error) {
                         console.error('Error updating password:', error);
                         alert('Failed to update password.');
+                    }
+                });
+            });
+        }
+
+        function handleDeleteData() {
+            $("body").on("click", ".deleteData", function(e) {
+                e.preventDefault();
+                const id = $(this).data("id");
+                
+                if (!confirm("Apakah Anda yakin ingin menghapus data ini? Data yang dihapus tidak dapat dikembalikan.")) {
+                    return false;
+                }
+                
+                $.ajax({
+                    url: `/users/${id}`,
+                    type: 'DELETE',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    beforeSend: function() {
+                        $('.deleteData').prop('disabled', true);
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            alert(response.message);
+                            loadData(); // Refresh the table
+                        } else {
+                            alert('Failed to delete user: ' + response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error deleting user:', error);
+                        let errorMessage = 'Failed to delete user.';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+                        alert(errorMessage);
+                    },
+                    complete: function() {
+                        $('.deleteData').prop('disabled', false);
                     }
                 });
             });

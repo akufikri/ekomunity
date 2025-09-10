@@ -31,7 +31,7 @@
     $sub_company = \Auth::user()->sub_company;
     $status_approval = \Auth::user()->status_approval;
     ?>
-    <nav class="mt-2">
+    <nav >
         <!--SUPER ADMIN-->
         @if ($level == 1 || $level == 7)
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">

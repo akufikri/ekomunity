@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tb_detail_company', function (Blueprint $table) {
-            $table->decimal('price_subscribe', 10, 0)->after('tnc')->default(0);
-            $table->integer('year_expired_subscribe')->after('price_subscribe')->default(0);
-            $table->integer('valid_subscribe')->after('year_expired_subscribe')->default(0);
+            $table->date('tanggal_lantikan')->nullable();
         });
     }
 
@@ -24,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('tb_detail_company', function (Blueprint $table) {
-            //
+            $table->dropColumn('tanggal_lantikan');
         });
     }
 };

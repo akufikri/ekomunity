@@ -8,12 +8,108 @@
 @endsection
 
 @section('content')
+<style>
+    .select2-container--default .select2-selection--multiple {
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        padding: 4px;
+        min-height: 38px;
+        /* sesuaikan dengan tinggi input lainnya */
+        box-sizing: border-box;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-search__field {
+        width: auto !important;
+        min-width: 100px;
+        box-sizing: border-box;
+    }
+
+    .select2-container .select2-selection--multiple {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .select2-container--default .select2-selection--single {
+        border: 1px solid #ced4da;
+        height: calc(2.875rem + 2px) !important;
+        padding: .8rem .6rem 2.1rem .6rem;
+        font-size: 13px;
+        line-height: 1.5;
+        border-radius: .3rem;
+    }
+
+    .form-control-lg2 {
+        border: 1px solid #ced4da;
+        height: calc(2.875rem + 2px) !important;
+        padding: .8rem .6rem 2.1rem .6rem;
+        font-size: 13px;
+        line-height: 1.5;
+        border-radius: .3rem;
+    }
+
+    .form-control-lg {
+        height: calc(2.875rem + 2px);
+        padding: 1rem .8rem;
+        font-size: 13px;
+        line-height: 1.5;
+        border-radius: .3rem;
+    }
+
+    .form-control-lgku {
+        height: calc(2.875rem + 2px);
+        padding: 2rem 1.2rem;
+        font-size: 13px;
+        line-height: 1.5;
+        border-radius: .3rem;
+    }
+
+    .filldata {
+        font-weight: normal !important;
+    }
+
+    #label_form {
+        padding-bottom: 8px;
+        font-size: 15px;
+    }
+
+    .label_form_judul {
+        font-size: 13px !important;
+        margin-bottom: 0px;
+    }
+
+    .my-button {
+        font-size: 15px;
+    }
+
+    .my-header {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 0px;
+    }
+
+    .my-table {
+        font-size: 14px;
+        margin-bottom: 0px;
+    }
+
+    input[type="text"] {
+        font-size: 14px;
+    }
+
+    input[type="number"] {
+        font-size: 14px;
+    }
+</style>
+
     <div class="card card-outline card-danger">
         <div class="card-header">
             <button class="btn btn-info btn-sm text-white float-right" onclick="createData()">CREATE</button>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
+           <div class="row">
+            <div class="container mt-2 my-table">
+                 <div class="table-responsive">
                 <table class="table table-bordered table-sm nowrap" id="datatable-crud">
                     <thead>
                         <tr>
@@ -28,6 +124,8 @@
                     </thead>
                 </table>
             </div>
+            </div>
+           </div>
         </div>
     </div>
 

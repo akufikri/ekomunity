@@ -81,8 +81,9 @@ require_once('globalFunction.php');
 //     return view('landingpage.pages.design-v2');
 // });
 
-Route::get('/', function(){
-    return view('landingpage.pages.design-v2');
+Route::get('/', function () {
+    // return view('landingpage.pages.design-v2');
+    return redirect('/login');
 });
 Route::get('/direktori', [LandingPageController::class, 'direktori']);
 Route::get('/buletin', [LandingPageController::class, 'blogPost']);
@@ -774,8 +775,8 @@ Route::get('/employee/edit', function () {
 Route::prefix('/register_ahli')->group(function () {
     Route::get('/create', [RegisManpowerController::class, 'create'])->name('employee.create');
 });
-    // Get bahagian with ketua
-    Route::get('/get_bahagian_with_ketua/{id}', [UserController::class, 'getBahagianWithKetuaBahagian']);
+// Get bahagian with ketua
+Route::get('/get_bahagian_with_ketua/{id}', [UserController::class, 'getBahagianWithKetuaBahagian']);
 
 Route::prefix('/register_company')->group(function () {
     Route::get('/select_package', [RegisCompanyController::class, 'getSelectPackage']);
@@ -810,7 +811,7 @@ Route::any('/getCity', [ApiController::class, 'getCity']);
 Route::any('/getParliament', [ApiController::class, 'getParliament']);
 Route::any('/getDun', [ApiController::class, 'getDun']);
 
-Route::prefix('role/management')->group(function(){
+Route::prefix('role/management')->group(function () {
     Route::get('/', [RoleController::class, 'getView']);
     Route::get('/getData', [RoleController::class, 'index']);
     Route::post('/store', [RoleController::class, 'store']);
@@ -908,6 +909,9 @@ Route::group(['middleware' => ['auth'],], function () {
         Route::get('/step_two', [RegisCompanyController::class, 'registerStepTwo']);
         Route::post('/step_two_update', [RegisCompanyController::class, 'registerStepTwoUpdate']);
         Route::get('/waiting_approval', [RegisCompanyController::class, 'waitingApproval']);
+        Route::get('/payment_success', function () {
+            return redirect('/home')->with('success', 'Pembayaran berjaya! Pendaftaran anda telah selesai.');
+        });
     });
 
     Route::resource('/users', UserController::class);
@@ -915,10 +919,11 @@ Route::group(['middleware' => ['auth'],], function () {
     Route::post('/users', [UserController::class, 'store']);
     Route::any('/users/update/{id}', [UserController::class, 'update']);
     Route::any('/users/update_password/{id}', [UserController::class, 'update_password']);
+    Route::delete('/users/{id}', [UserController::class, 'destroy']);
 });
 
 Route::prefix('admin')->group(function () {
-    Route::prefix('blog-post')->group(function(){
+    Route::prefix('blog-post')->group(function () {
         Route::get('/', [BlogpostController::class, 'index']);
         Route::get('/get', [BlogpostController::class, 'getData']);
         Route::delete('/delete/{id}', [BlogpostController::class, 'deletePost']);
@@ -928,7 +933,7 @@ Route::prefix('admin')->group(function () {
     // Route::resource('direktori', DirektoriController::class);
     // Route::get('/direktori', [DirektoriController::class, 'getView']);
 
-    Route::prefix('direktori')->group(function(){
+    Route::prefix('direktori')->group(function () {
         Route::get('/', [DirektoriController::class, 'getView']);
         Route::get('/get', [DirektoriController::class, 'index']);
         Route::post('/store', [DirektoriController::class, 'store']);
@@ -936,25 +941,25 @@ Route::prefix('admin')->group(function () {
         Route::post('/update/{id}', [DirektoriController::class, 'update']);
     });
 
-    Route::get('/user/activities',[AuthLogController::class, 'getView']);
-    Route::get('/user/activities/get',[AuthLogController::class, 'index']);
-    Route::get('/user/activities/get/{id}',[AuthLogController::class, 'show']);
+    Route::get('/user/activities', [AuthLogController::class, 'getView']);
+    Route::get('/user/activities/get', [AuthLogController::class, 'index']);
+    Route::get('/user/activities/get/{id}', [AuthLogController::class, 'show']);
 });
 
 Route::get('/get-cawangan/{id_city}', [RegisManpowerController::class, 'getCawanganByBahagian']);
-Route::prefix('v1')->group(function(){
+Route::prefix('v1')->group(function () {
     Route::get('/buletin', [BlogpostController::class, 'getDataPublic']);
     Route::get('/direktori', [DirektoriController::class, 'getData']);
 });
 
-Route::prefix('emailSetting')->group(function(){
+Route::prefix('emailSetting')->group(function () {
     Route::get('/', [EmailSettingController::class, 'index']);
     Route::get('/getData', [EmailSettingController::class, 'getData']);
     Route::get('/show/{id}', [EmailSettingController::class, 'show']);
     Route::post('/updateOrStore', [EmailSettingController::class, 'updateOrStore']);
 });
 
-Route::prefix('setting-brand')->group(function(){
+Route::prefix('setting-brand')->group(function () {
     Route::get('/', [SettingBrandingController::class, 'getView']);
     Route::get('/detail', [SettingBrandingController::class, 'detail']);
     Route::get('/getData', [SettingBrandingController::class, 'index']);
@@ -962,7 +967,7 @@ Route::prefix('setting-brand')->group(function(){
     Route::post('/updateOrStore', [SettingBrandingController::class, 'updateOrStore']);
 });
 
-Route::prefix('packages')->group(function(){
+Route::prefix('packages')->group(function () {
     Route::get('/', [PackageSettingController::class, 'index']);
     Route::get('/getData', [PackageSettingController::class, 'getListPackage']);
     Route::post('/store', [PackageSettingController::class, 'store']);
@@ -1337,13 +1342,13 @@ Route::middleware(['auth', 'adminAndCompany',])->group(function () {
 });
 
 
-    Route::prefix('category/post')->group(function() {
-        Route::get('/', [CategoryPostController::class, 'getView']);
-        Route::get('/getData', [CategoryPostController::class, 'index']);
-        Route::post('/store', [CategoryPostController::class, 'store']);
-        Route::post('/update/{id}', [CategoryPostController::class, 'update']);
-        Route::delete('/delete/{id}', [CategoryPostController::class, 'delete']);
-    });
+Route::prefix('category/post')->group(function () {
+    Route::get('/', [CategoryPostController::class, 'getView']);
+    Route::get('/getData', [CategoryPostController::class, 'index']);
+    Route::post('/store', [CategoryPostController::class, 'store']);
+    Route::post('/update/{id}', [CategoryPostController::class, 'update']);
+    Route::delete('/delete/{id}', [CategoryPostController::class, 'delete']);
+});
 
 Route::middleware(['auth', 'admin',])->group(function () {
 
@@ -1461,7 +1466,7 @@ Route::middleware(['auth', 'admin',])->group(function () {
     Route::get('/list_setting_data_bahagian', [SettingsCityController::class, 'index']);
     Route::any('/create_city', [SettingsCityController::class, 'create']);
     Route::any('/update_city/{id}', [SettingsCityController::class, 'update']);
-    
+
 
     //School type
     Route::resource('/list_setting_schoolType', SettingsSchoolTypeController::class);

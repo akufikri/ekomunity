@@ -36,7 +36,7 @@ class PackageSettingController extends Controller
     public function getListPackage()
     {
         try {
-            
+
             $data = Package::get();
             return $this->success($data, "Successfully get data", 200);
         } catch (\Exception $e) {
@@ -55,6 +55,7 @@ class PackageSettingController extends Controller
                 'is_premium' => 'required|boolean',
                 'price'      => 'required|numeric',
                 'status'     => 'required|in:ENABLE,DISABLE',
+                'valid_until' => 'required|date',
             ]);
 
             $package = Package::create([
@@ -63,6 +64,7 @@ class PackageSettingController extends Controller
                 'is_premium' => $validated['is_premium'],
                 'price'      => $validated['price'],
                 'status'     => $validated['status'],
+                'valid_until' => $validated['valid_until'],
             ]);
 
             return $this->success($package, 'Package created successfully', 200);
@@ -91,6 +93,7 @@ class PackageSettingController extends Controller
                 'is_premium' => 'required|boolean',
                 'price'      => 'required|numeric',
                 'status'     => 'required|in:ENABLE,DISABLE',
+                'valid_until' => 'required|date',
             ]);
 
             $package = Package::findOrFail($id);
@@ -100,6 +103,7 @@ class PackageSettingController extends Controller
                 'is_premium' => $validated['is_premium'],
                 'price'      => $validated['price'],
                 'status'     => $validated['status'],
+                'valid_until' => $validated['valid_until'],
             ]);
 
             return $this->success($package, 'Package updated successfully', 200);
