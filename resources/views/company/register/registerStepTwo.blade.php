@@ -247,8 +247,13 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="tempoh_lantik">Tempoh Lantikan</label>
-                                    <select name="tanggal_lantikan" id="tanggal_lantikan"
+                                    <label for="tanggal_lantikan" class="font-weight-700 labelku">Tarikh lantikan</label>
+                                    <input class="form-control-lg form-control" type="date" name="tanggal_lantikan"
+                                        id="tanggal_lantikan">
+                                </div>
+                                <div class="form-group">
+                                    <label for="tempoh_lantik" class="font-weight-700 labelku">Tempoh Lantikan</label>
+                                    <select name="tempoh_lantikan" id="tempoh_lantikan"
                                         class="form-control form-control-lg form-control4">
                                         <option value="1">1 tahun</option>
                                         <option value="2">2 tahun</option>

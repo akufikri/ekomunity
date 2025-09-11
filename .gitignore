@@ -4,6 +4,7 @@
 /routes/billPlz.php
 .env
 .env.backup
+/public/*
 .phpunit.result.cache
 docker-compose.override.yml
 Homestead.json

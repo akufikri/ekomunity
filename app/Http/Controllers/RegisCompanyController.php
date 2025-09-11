@@ -374,7 +374,7 @@ class RegisCompanyController extends Controller
 
     public function registerStepTwoUpdate(Request $request)
     {
-
+        // dd($request->all());
         $user = Auth::user();
         $email = $request->email_company;
         $company_registration = $request->company_registration;
@@ -417,19 +417,6 @@ class RegisCompanyController extends Controller
             $license_picture = 'default.png';
         }
 
-        $tanggal_lantikan = null;
-        if ($request->tanggal_lantikan == 1) {
-            $tanggal_lantikan = (now()->year + 1) . now()->format('-m-d');
-        } elseif ($request->tanggal_lantikan == 2) {
-            $tanggal_lantikan = (now()->year + 2) . now()->format('-m-d');
-        } elseif ($request->tanggal_lantikan == 3) {
-            $tanggal_lantikan = (now()->year + 3) . now()->format('-m-d');
-        } elseif ($request->tanggal_lantikan == 4) {
-            $tanggal_lantikan = (now()->year + 4) . now()->format('-m-d');
-        } else {
-            $tanggal_lantikan = (now()->year + 5) . now()->format('-m-d');
-        }
-
         $detail = DetailCompany::where('id_user', $user->id)->first();
         $detail->id_pegawai_daerah = $request->pegawai_daerah;
         $detail->company_registration = $request->company_registration ?? null;
@@ -454,6 +441,8 @@ class RegisCompanyController extends Controller
         $detail->license_picture = $license_picture;
         $detail->step_registration = '2';
         $detail->status_approval = 'APPROVED';
+        $detail->tanggal_lantikan = $request->tanggal_lantikan;
+        $detail->tempoh_lantikan = $request->tempoh_lantikan;
 
         $log_certificate = new LogCertificate();
         $log_certificate->id_user = $detail->id_user;
@@ -461,7 +450,6 @@ class RegisCompanyController extends Controller
         $log_certificate->id_level = $user->id_level;
         $log_certificate->status = "WAITING";
         $log_certificate->note = "Your registration is under verification process. An email will be sent to you once approved or rejected.";
-        $detail->tanggal_lantikan = $tanggal_lantikan;
         $detail->save();
         $log_certificate->save();
         // dd($detail->price_subscribe);

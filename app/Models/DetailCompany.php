@@ -10,7 +10,7 @@ class DetailCompany extends Model
 {
     use SoftDeletes;
 
-    protected $primaryKey = 'id_detail_company'; 
+    protected $primaryKey = 'id_detail_company';
     protected $table = "tb_detail_company";
 
     protected $fillable = [
@@ -70,33 +70,39 @@ class DetailCompany extends Model
         'tnc',
         'price_subscribe',
         'year_expired_subscribe',
-        'valid_subscribe'
+        'valid_subscribe',
+        'tempoh_lantikan'
     ];
 
     static $stepRegistration = 2;
-    
-    public function user(){
-        return $this->belongsTo('App\Models\User','id_user','id');
-    }
-    
-    public function country(){
-        return $this->belongsTo('App\Models\Country','id_country','id_country');
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'id_user', 'id');
     }
 
-    public function state(){
-        return $this->belongsTo('App\Models\State','id_state','id_state');
-    }
-    
-    public function city(){
-        return $this->belongsTo('App\Models\City','id_city','id_city');
-    }
-    
-    public function company_type(){
-        return $this->belongsTo('App\Models\CompanyType','id_company_type','id_company_type');
+    public function country()
+    {
+        return $this->belongsTo('App\Models\Country', 'id_country', 'id_country');
     }
 
-    public function status_native(){
-        return $this->belongsTo('App\Models\StatusNative','native_status','id_status_native');
+    public function state()
+    {
+        return $this->belongsTo('App\Models\State', 'id_state', 'id_state');
+    }
+
+    public function city()
+    {
+        return $this->belongsTo('App\Models\City', 'id_city', 'id_city');
+    }
+
+    public function company_type()
+    {
+        return $this->belongsTo('App\Models\CompanyType', 'id_company_type', 'id_company_type');
+    }
+
+    public function status_native()
+    {
+        return $this->belongsTo('App\Models\StatusNative', 'native_status', 'id_status_native');
     }
 }
-

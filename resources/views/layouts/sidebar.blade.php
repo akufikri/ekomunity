@@ -759,27 +759,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/pembayaran-cawangan"
-                        class="nav-link {{ request()->is('pembayaran-cawangan') ? 'active' : '' }}">
-                        <i class="fas fa-money-bill-wave nav-icon"></i>
-                        <p>{{ __('menu.branch_payment') }}</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ URL::to('companyDetail/' . Auth::user()->id) }}"
-                        class="nav-link {{ request()->is('companyDetail/' . Auth::user()->id) ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-building"></i>
+                    <a href="{{ URL::to('/profilDigitalCompany') }}"
+                        class="nav-link {{ request()->is('profilDigitalCompany') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-users"></i>
                         <p>
-                            {{ __('menu.branch_info') }}
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ URL::to('maklumatJawatanKuasa') }}"
-                        class="nav-link {{ request()->is('maklumatJawatanKuasa') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-file-invoice-dollar"></i>
-                        <p>
-                            {{ __('menu.committee_info') }}
+                            Community Information
                         </p>
                     </a>
                 </li>
@@ -787,16 +771,16 @@
                     <a href="/senaraiAhli" class="nav-link {{ request()->is('senaraiAhli') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
-                            {{ __('menu.user_list') }}
+                            Member list
                         </p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ URL::to('/setViewCertificate/1') }}" target="_blank"
-                        class="nav-link {{ Route::currentRouteNamed('company.viewWorkers') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-certificate"></i>
+                    <a href="{{ URL::to('maklumatJawatanKuasa') }}"
+                        class="nav-link {{ request()->is('maklumatJawatanKuasa') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-sitemap"></i>
                         <p>
-                            {{ __('menu.age_certificate') }}
+                            Organisation chart
                         </p>
                     </a>
                 </li>
@@ -805,16 +789,7 @@
                         class="nav-link {{ request()->is('profilDigitalCompany') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-qrcode"></i>
                         <p>
-                            {{ __('menu.invitation_qr') }}
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ URL::to('/profilDigitalCompany') }}"
-                        class="nav-link {{ request()->is('profilDigitalCompany') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>
-                            Komuniti
+                            Invitation QR
                         </p>
                     </a>
                 </li>
@@ -822,7 +797,7 @@
                     <li
                         class="nav-item {{ request()->is('logCertificate') || request()->is('log_pembayaran_ahli') || request()->is('log_pendaftar_persatuan') ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon far fa-building"></i>
+                            <i class="nav-icon fas fa-history"></i>
                             <p>
                                 Log
                                 <i class="right fas fa-angle-left"></i>
@@ -830,29 +805,20 @@
                         </a>
                         <ul class="nav nav-treeview offset-md-1">
                             <li class="nav-item">
-                                <a href="{{ URL::to('/logCertificate') }}"
-                                    class="nav-link {{ request()->is('logCertificate') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-history"></i>
+                                <a href="{{ URL::to('/log_pembayaran_ahli') }}"
+                                    class="nav-link {{ request()->is('log_pembayaran_ahli') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-money-bill-wave"></i>
                                     <p>
-                                        {{ __('menu.status_log') }}
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ URL::to('/log_pendaftar_persatuan') }}"
-                                    class="nav-link {{ request()->is('log_pendaftar_persatuan') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-history"></i>
-                                    <p>
-                                        {{ __('menu.association_registrar_log') }}
+                                        Payment log
                                     </p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ URL::to('/log_pembayaran_ahli') }}"
                                     class="nav-link {{ request()->is('log_pembayaran_ahli') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-history"></i>
+                                    <i class="nav-icon fas fa-users"></i>
                                     <p>
-                                        {{ __('menu.member_payment_log') }}
+                                        Member payments
                                     </p>
                                 </a>
                             </li>
@@ -863,7 +829,7 @@
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-cog"></i>
                             <p>
-                                {{ __('menu.settings') }}
+                                Settings
                                 <i class="right fa fa-angle-left"></i>
                             </p>
                         </a>
