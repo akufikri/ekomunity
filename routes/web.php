@@ -1350,10 +1350,14 @@ Route::prefix('category/post')->group(function () {
     Route::delete('/delete/{id}', [CategoryPostController::class, 'delete']);
 });
 
+Route::prefix('comunity')->group(function () {
+    Route::get('/information', function () {
+        return view('comunity-information.index');
+    });
+});
+
 Route::middleware(['auth', 'admin',])->group(function () {
-
     Route::post('/ahli_import/', [SenaraiAhliController::class, 'import']);
-
     //get status native
     Route::resource('/settings_nation', NationController::class);
     Route::any('/list_settings_nation', [NationController::class, 'index']);

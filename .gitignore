@@ -5,6 +5,8 @@
 .env
 .env.backup
 /public/*
+!/public/index.php
+!/public/favicon.ico
 .phpunit.result.cache
 docker-compose.override.yml
 Homestead.json

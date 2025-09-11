@@ -2,6 +2,7 @@
     p {
         font-size: 14px;
     }
+
     /* Aktif link pada sidebar light */
     [class*=sidebar-light-] .nav-sidebar>.nav-item>.nav-link.active,
     [class*=sidebar-light-] .nav-sidebar>.nav-item>.nav-link.active:hover,
@@ -10,6 +11,7 @@
         background-color: #383444;
         color: #ffffff;
     }
+
     /* Aktif link pada sidebar dark */
     [class*=sidebar-dark-] .nav-sidebar>.nav-item>.nav-link.active,
     [class*=sidebar-dark-] .nav-sidebar>.nav-item>.nav-link.active:hover,
@@ -18,6 +20,7 @@
         background-color: #383444;
         color: #ffffff;
     }
+
     /* Untuk komponen lain seperti nav-pills (jika dipakai) */
     .nav-pills .nav-link.active,
     .nav-pills .show>.nav-link {
@@ -31,7 +34,7 @@
     $sub_company = \Auth::user()->sub_company;
     $status_approval = \Auth::user()->status_approval;
     ?>
-    <nav >
+    <nav>
         <!--SUPER ADMIN-->
         @if ($level == 1 || $level == 7)
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
@@ -245,8 +248,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/packages"
-                        class="nav-link {{ request()->is('packages') ? 'active' : '' }}">
+                    <a href="/packages" class="nav-link {{ request()->is('packages') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-box"></i>
                         <p>
                             Packages
@@ -280,7 +282,7 @@
                         'admin/user/activities',
                         'category/post',
                         'setting-brand',
-                        'emailSetting'
+                        'emailSetting',
                     ];
                 @endphp
                 <li
@@ -759,8 +761,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ URL::to('/profilDigitalCompany') }}"
-                        class="nav-link {{ request()->is('profilDigitalCompany') ? 'active' : '' }}">
+                    <a href="{{ URL::to('/comunity/information') }}"
+                        class="nav-link {{ request()->is('comunity/information') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Community Information
