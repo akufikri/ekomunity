@@ -58,6 +58,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingBrandingController;
 use App\Http\Controllers\StatistikController;
 use App\Http\Controllers\StatusApprovalController;
+use App\Http\Controllers\SturctureOrganizationController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\WalletController;
 use Carbon\Carbon;
@@ -72,6 +73,9 @@ use App\Models\InboxRecipient;
 use App\Models\Inbox;
 use App\Models\ManpowerPosition;
 
+// Route::get('/carta', function () {
+//     return view('testing.carta-organtisasi');
+// });
 
 // require_once 'billPlz.php';
 require_once 'toyyibPay.php';
@@ -976,9 +980,25 @@ Route::prefix('packages')->group(function () {
     Route::delete('/destroy/{id}', [PackageSettingController::class, 'destroy']);
 });
 
+Route::get('/carta/organisasi/{id}', [SturctureOrganizationController::class, 'getDetail']);
+
 Route::group(['middleware' => ['auth', 'registrationCompleted'],], function () {
     Route::get('/admin', function () {
         return view('admin');
+    });
+
+    // Route::get('/carta-organisasi', function () {
+    //     return view('company.carta-organisasi.index');
+    // });
+
+    Route::prefix('carta-organisasi')->group(function () {
+        Route::get('/', [SturctureOrganizationController::class, 'getView']);
+        Route::get('/getData', [SturctureOrganizationController::class, 'getData']);
+        Route::get('/getAhli', [SturctureOrganizationController::class, 'getAhli']);
+        Route::post('/save', [SturctureOrganizationController::class, 'saveStructure']);
+        Route::post('/add', [SturctureOrganizationController::class, 'addPosition']);
+        Route::put('/update/{id}', [SturctureOrganizationController::class, 'updatePosition']);
+        Route::delete('/delete/{id}', [SturctureOrganizationController::class, 'deletePosition']);
     });
 
     Route::get('/request_join_bypass_approval/{id}', [App\Http\Controllers\JoinCompanyController::class, 'joinCompanyBypassApproval']);

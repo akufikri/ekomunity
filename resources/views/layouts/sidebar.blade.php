@@ -761,14 +761,23 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ URL::to('/comunity/information') }}"
-                        class="nav-link {{ request()->is('comunity/information') ? 'active' : '' }}">
+                    <a href="{{ URL::to('companyDetail/' . Auth::user()->id) }}"
+                        class="nav-link {{ request()->is('companyDetail/' . Auth::user()->id) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Community Information
                         </p>
                     </a>
                 </li>
+                {{-- <li class="nav-item">
+                    <a href="{{ URL::to('companyDetail/' . Auth::user()->id) }}"
+                        class="nav-link {{ request()->is('companyDetail/' . Auth::user()->id) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Carta Organisasi
+                        </p>
+                    </a>
+                </li> --}}
                 <li class="nav-item">
                     <a href="/senaraiAhli" class="nav-link {{ request()->is('senaraiAhli') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-user"></i>
@@ -777,9 +786,18 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ URL::to('maklumatJawatanKuasa') }}"
                         class="nav-link {{ request()->is('maklumatJawatanKuasa') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-sitemap"></i>
+                        <p>
+                            Organisation chart
+                        </p>
+                    </a>
+                </li> --}}
+                <li class="nav-item">
+                    <a href="{{ URL::to('carta-organisasi') }}"
+                        class="nav-link {{ request()->is('carta-organisasi') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-sitemap"></i>
                         <p>
                             Organisation chart

@@ -31,6 +31,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    @stack('custom-css')
 </head>
 
 <body class="hold-transition sidebar-mini layout-navbar-fixed layout-fixed">
@@ -45,9 +46,11 @@
             <!-- Brand Logo -->
             <a href="#" class="brand-link" style="text-align-last: center;">
                 @if ($global_brand && $global_brand->logo_url)
-                    <img src="{{ $global_brand->logo_url }}" alt="{{ $global_brand->brand_name }}" class="brand-text logo-mini" style="width: 50px;">
+                    <img src="{{ $global_brand->logo_url }}" alt="{{ $global_brand->brand_name }}"
+                        class="brand-text logo-mini" style="width: 50px;">
                 @else
-                    <img src="{{ asset('images/coedev-logo.png') }}" alt="Coedev logo" class="brand-text logo-mini" style="width: 50px;">
+                    <img src="{{ asset('images/coedev-logo.png') }}" alt="Coedev logo" class="brand-text logo-mini"
+                        style="width: 50px;">
                 @endif
                 <!-- <span class="brand-text font-weight-light">AdminLTE 3</span> -->
             </a><br><br>
@@ -104,7 +107,8 @@
             <div class="float-right d-none d-sm-block">
                 {{-- <b>Version</b> 1.0 --}}
             </div>
-            <strong>&copy; Pertubuhan Islam Seluruh Sabah. <a href="#"> Hasil kerjasama Coedev Technology Sdn Bhd</a>.</strong>
+            <strong>&copy; Pertubuhan Islam Seluruh Sabah. <a href="#"> Hasil kerjasama Coedev Technology Sdn
+                    Bhd</a>.</strong>
         </footer>
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">

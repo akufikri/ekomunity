@@ -146,17 +146,20 @@
                                 @csrf
                                 <h4 class="font-weight-700 labelku">{{ __('menu.log_in') }}</h4>
                                 <p class="font-weight-700 labelku">Belum mendaftar?
-                                    <br> Klik <a href="{{ url('register_ahli/create?is_foreign=false') }}" style="color: #383444;"><b> Ahli</b></a>
+                                    <br> Klik <a href="{{ url('register_ahli/create?is_foreign=false') }}"
+                                        style="color: #383444;"><b> Ahli</b></a>
                                     untuk Individu
                                     <br>
-                                    Klik <a href="{{ url('register_company/select_package') }}" style="color: #383444;"><b> Persatuan</b></a> jika Pengerusi / Setiausaha Persatuan
+                                    Klik <a href="{{ url('register_company/select_package') }}" style="color: #383444;"><b>
+                                            Bina komuniti anda sekarang</b></a>
                                     <br>
                                     {{-- Klik <a href="{{ url('register_ahli/create?is_foreign=true') }}" style="color: #383444;"><b> Komuniti</b></a>
                                     bukan warga negara --}}
                                 </p>
 
                                 <div class="form-group">
-                                    <label class="font-weight-700 labelku">{{ __('menu.email') }} <span style="color: #383444;">*</span>
+                                    <label class="font-weight-700 labelku">{{ __('menu.email') }} <span
+                                            style="color: #383444;">*</span>
                                     </label>
                                     <input id="email" type="email"
                                         class="form-control-lg form-control @error('email') is-invalid @enderror"
@@ -183,8 +186,8 @@
                                     @enderror
                                 </div>
                                 <div class="text-left">
-                                    <input type="submit" class="btn btn-md site-button m-r5 button-md" value="{{ __('menu.log_in') }}"
-                                        style="background-color: #383444;"></input>
+                                    <input type="submit" class="btn btn-md site-button m-r5 button-md"
+                                        value="{{ __('menu.log_in') }}" style="background-color: #383444;"></input>
                                     <a href="#" data-target="#forgotModal" data-toggle="modal" class="m-l5"
                                         style="color: #383444;"><i class="fa fa-unlock-alt" style="color: #383444;"></i>
                                         Lupa Kata Laluan?</a>
