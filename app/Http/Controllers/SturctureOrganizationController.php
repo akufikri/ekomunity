@@ -49,7 +49,9 @@ class SturctureOrganizationController extends Controller
     public function getView()
     {
         $user = Auth::user();
-
+        if (!$user) {
+            return redirect('/login');
+        }
         $data = OrganizationChart::where('created_by', $user->id)->first();
         return view('company.carta-organisasi.index', compact('data'));
     }
@@ -93,8 +95,8 @@ class SturctureOrganizationController extends Controller
                     'id' => $structure->id,
                     'title' => $structure->position_title,
                     'name' => $structure->user ? $structure->user->fullname : 'Select person',
-                    'personId' => $structure->user_id,
-                    'parentId' => $structure->parent_id,
+                    'personId' => (int)$structure->user_id,
+                    'parentId' => (int)$structure->parent_id,
                     'level' => $structure->level,
                     'x' => $structure->position_x ?? 0,
                     'y' => $structure->position_y ?? 0,

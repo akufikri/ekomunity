@@ -6,7 +6,7 @@
     <li class="breadcrumb-item active"><a>Carta Organisasi</a></li>
 @endsection
 
-@push('custom-css')
+@section('content')
     <style>
         #orgChart {
             width: 100%;
@@ -16,7 +16,7 @@
             border-radius: 8px;
             overflow: auto;
             padding: 20px;
-            position: relative;
+            position: relative !important;
         }
 
         /* Responsive container adjustments */
@@ -88,16 +88,20 @@
             box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
         }
 
-        .org-connection {
+        .org-connections-svg {
             position: absolute;
-            border-left: 2px solid #3498db;
-            z-index: 5;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
         }
 
-        .org-connection-h {
-            position: absolute;
-            border-top: 2px solid #3498db;
-            z-index: 5;
+        .org-connections-svg line {
+            stroke: #3498db;
+            stroke-width: 2;
+            fill: none;
         }
 
         .diagram-controls {
@@ -133,7 +137,7 @@
         .org-node:hover .add-btn,
         .add-btn:hover {
             opacity: 1;
-            pointer-events: all;
+            pointer-events: auto;
         }
 
         .org-node:hover {
@@ -245,9 +249,6 @@
             }
         }
     </style>
-@endpush
-
-@section('content')
     <section>
         <div class="card">
             <div class="card-body">
@@ -269,7 +270,9 @@
                         </div>
                     </div>
                     <div>
-                        <a href="/carta/organisasi/{{ $data->id }}" class="btn btn-info btn-sm">Preview</a>
+                        @if ($data)
+                            <a href="/carta/organisasi/{{ $data->id }}" class="btn btn-info btn-sm">Preview</a>
+                        @endif
                     </div>
                 </div>
                 <div class="diagram-container">
@@ -277,6 +280,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- Edit Position Modal -->
         <div class="modal fade" id="editPositionModal" tabindex="-1" role="dialog">
@@ -311,9 +315,6 @@
             </div>
         </div>
     </section>
-@endsection
-
-@push('custom-js')
     <script type="text/javascript">
         $(document).ready(function() {
             var positionCounter = 1;
@@ -348,6 +349,19 @@
             function renderChart() {
                 $('#orgChart').empty();
 
+                // Get container dimensions first
+                var containerWidth = $('#orgChart').width();
+                var containerHeight = $('#orgChart').height();
+
+                // Add SVG for connections with explicit dimensions
+                var svg = $('<svg class="org-connections-svg" xmlns="http://www.w3.org/2000/svg"></svg>');
+                svg.attr({
+                    'width': containerWidth,
+                    'height': containerHeight,
+                    'viewBox': '0 0 ' + containerWidth + ' ' + containerHeight
+                });
+                $('#orgChart').append(svg);
+
                 // Get container dimensions
                 var containerWidth = $('#orgChart').width() - 40; // Account for padding
                 var containerHeight = $('#orgChart').height() - 40;
@@ -361,10 +375,14 @@
                 // Group by levels
                 orgData.forEach(function(item) {
                     var level = getLevel(item.id);
-                    console.log('Item:', item.title, 'Level:', level, 'ParentId:', item.parentId);
+                    console.log('Item:', item.title, 'ID:', item.id, 'Level:', level, 'ParentId:', item
+                        .parentId);
                     if (!levels[level]) levels[level] = [];
                     levels[level].push(item);
                 });
+
+                // Debug levels
+                console.log('Calculated levels:', levels);
 
                 // Calculate responsive positions based on container size
                 Object.keys(levels).forEach(function(level) {
@@ -414,69 +432,132 @@
                     });
                 });
 
-                // Render connections first
-                orgData.forEach(function(item) {
-                    if (item.parentId) {
-                        var parent = orgData.find(p => p.id === item.parentId);
-                        if (parent) {
-                            // Calculate responsive center positions based on screen size
-                            var screenWidth = $(window).width();
-                            var nodeEstimatedWidth, nodeEstimatedHeight;
+                // Render SVG connections with delay and debugging
+                setTimeout(function() {
+                    var svg = $('.org-connections-svg')[0];
+                    if (!svg) {
+                        console.error('SVG element not found');
+                        return;
+                    }
 
-                            if (screenWidth <= 576) {
-                                // Mobile
-                                nodeEstimatedWidth = 120;
-                                nodeEstimatedHeight = 60;
-                            } else if (screenWidth <= 768) {
-                                // Tablet
-                                nodeEstimatedWidth = 140;
-                                nodeEstimatedHeight = 70;
-                            } else {
-                                // Desktop
-                                nodeEstimatedWidth = 160;
-                                nodeEstimatedHeight = 80;
-                            }
+                    console.log('Rendering connections for', orgData.length, 'items');
 
-                            var parentCenterX = parent.x + (nodeEstimatedWidth / 2);
-                            var parentBottomY = parent.y + nodeEstimatedHeight;
-                            var childCenterX = item.x + (nodeEstimatedWidth / 2);
-                            var childTopY = item.y;
+                    orgData.forEach(function(item) {
+                        console.log('Processing item:', item.title, 'parentId:', item.parentId,
+                            'type:', typeof item.parentId);
+                        if (item.parentId) {
+                            // Debug: check all ids and types
+                            console.log('Looking for parent with id:', item.parentId);
+                            orgData.forEach(function(p) {
+                                console.log('Available item - id:', p.id, 'type:', typeof p
+                                    .id, 'title:', p.title);
+                            });
 
-                            // Calculate vertical gap and midpoint
-                            var verticalGap = childTopY - parentBottomY;
-                            var midY = parentBottomY + (verticalGap / 2);
+                            // Try both strict and loose comparison
+                            var parent = orgData.find(p => p.id == item
+                                .parentId); // Use loose equality
+                            console.log('Found parent:', parent ? parent.title : 'null');
+                            if (parent) {
+                                // Calculate responsive center positions based on screen size
+                                var screenWidth = $(window).width();
+                                var nodeEstimatedWidth, nodeEstimatedHeight;
 
-                            // Only draw connectors if there's enough space
-                            if (verticalGap > 10) {
-                                // Vertical line from parent down
-                                $('<div class="org-connection"></div>').css({
-                                    left: parentCenterX - 1,
-                                    top: parentBottomY,
-                                    height: verticalGap / 2
-                                }).appendTo('#orgChart');
-
-                                // Horizontal line connecting parent to child
-                                var minX = Math.min(parentCenterX, childCenterX);
-                                var maxX = Math.max(parentCenterX, childCenterX);
-
-                                if (Math.abs(maxX - minX) > 5) { // Only draw if nodes are not aligned
-                                    $('<div class="org-connection-h"></div>').css({
-                                        left: minX,
-                                        top: midY - 1,
-                                        width: maxX - minX + 2
-                                    }).appendTo('#orgChart');
+                                if (screenWidth <= 576) {
+                                    // Mobile
+                                    nodeEstimatedWidth = 120;
+                                    nodeEstimatedHeight = 60;
+                                } else if (screenWidth <= 768) {
+                                    // Tablet
+                                    nodeEstimatedWidth = 140;
+                                    nodeEstimatedHeight = 70;
+                                } else {
+                                    // Desktop
+                                    nodeEstimatedWidth = 160;
+                                    nodeEstimatedHeight = 80;
                                 }
 
-                                // Vertical line down to child
-                                $('<div class="org-connection"></div>').css({
-                                    left: childCenterX - 1,
-                                    top: midY,
-                                    height: (verticalGap / 2) + 1
-                                }).appendTo('#orgChart');
+                                var parentCenterX = parent.x + (nodeEstimatedWidth / 2) +
+                                    20; // Add padding offset
+                                var parentBottomY = parent.y + nodeEstimatedHeight + 20;
+                                var childCenterX = item.x + (nodeEstimatedWidth / 2) + 20;
+                                var childTopY = item.y + 20;
+
+                                // Calculate vertical gap and midpoint
+                                var verticalGap = childTopY - parentBottomY;
+                                var midY = parentBottomY + (verticalGap / 2);
+
+                                console.log('Drawing connection from', parent.title, 'to', item
+                                    .title, {
+                                        parentCenterX: parentCenterX,
+                                        parentBottomY: parentBottomY,
+                                        childCenterX: childCenterX,
+                                        childTopY: childTopY,
+                                        verticalGap: verticalGap
+                                    });
+
+                                // Only draw connectors if there's enough space
+                                console.log('Checking vertical gap:', verticalGap, 'threshold: 10');
+                                if (verticalGap > 10) {
+                                    console.log('Creating SVG lines...');
+
+                                    try {
+                                        // Vertical line from parent down
+                                        var line1 = document.createElementNS(
+                                            'http://www.w3.org/2000/svg', 'line');
+                                        line1.setAttribute('x1', parentCenterX);
+                                        line1.setAttribute('y1', parentBottomY);
+                                        line1.setAttribute('x2', parentCenterX);
+                                        line1.setAttribute('y2', midY);
+                                        line1.setAttribute('stroke', '#3498db');
+                                        line1.setAttribute('stroke-width', '2');
+                                        svg.appendChild(line1);
+                                        console.log('Line 1 added');
+
+                                        // Horizontal line connecting parent to child
+                                        if (Math.abs(parentCenterX - childCenterX) > 5) {
+                                            var line2 = document.createElementNS(
+                                                'http://www.w3.org/2000/svg', 'line');
+                                            line2.setAttribute('x1', parentCenterX);
+                                            line2.setAttribute('y1', midY);
+                                            line2.setAttribute('x2', childCenterX);
+                                            line2.setAttribute('y2', midY);
+                                            line2.setAttribute('stroke', '#3498db');
+                                            line2.setAttribute('stroke-width', '2');
+                                            svg.appendChild(line2);
+                                            console.log('Line 2 added');
+                                        }
+
+                                        // Vertical line down to child
+                                        var line3 = document.createElementNS(
+                                            'http://www.w3.org/2000/svg', 'line');
+                                        line3.setAttribute('x1', childCenterX);
+                                        line3.setAttribute('y1', midY);
+                                        line3.setAttribute('x2', childCenterX);
+                                        line3.setAttribute('y2', childTopY);
+                                        line3.setAttribute('stroke', '#3498db');
+                                        line3.setAttribute('stroke-width', '2');
+                                        svg.appendChild(line3);
+                                        console.log('Line 3 added');
+
+                                        console.log('All lines added to SVG successfully');
+                                    } catch (error) {
+                                        console.error('Error creating SVG lines:', error);
+                                    }
+                                } else {
+                                    console.log('Vertical gap too small, skipping connection');
+                                }
                             }
                         }
+                    });
+
+                    console.log('Total lines in SVG:', svg.children.length);
+
+                    // Fallback: If no lines were added, try using canvas or div fallback
+                    if (svg.children.length === 0 && orgData.length > 1) {
+                        console.warn('SVG rendering failed, trying div fallback');
+                        renderDivConnections();
                     }
-                });
+                }, 200);
 
                 // Render nodes
                 orgData.forEach(function(item) {
@@ -528,18 +609,50 @@
                         $('#editPositionModal').modal('show');
                     });
 
-                    // Add button event handlers
+                    // Add button event handlers with improved debugging
                     node.find('.add-btn-bottom').click(function(e) {
                         e.stopPropagation();
+                        e.preventDefault();
                         console.log('Bottom button clicked for item:', item.title, 'id:', item.id);
-                        addNewPosition(item.id, 'subordinate'); // Add as child of this item
+                        try {
+                            addNewPosition(item.id, 'subordinate'); // Add as child of this item
+                        } catch (error) {
+                            console.error('Error adding subordinate position:', error);
+                        }
                     });
 
-                    node.find('.add-btn-right, .add-btn-left').click(function(e) {
+                    node.find('.add-btn-right').click(function(e) {
                         e.stopPropagation();
-                        console.log('Side button clicked for item:', item.title, 'parentId:', item
+                        e.preventDefault();
+                        console.log('Right button clicked for item:', item.title, 'parentId:', item
                             .parentId);
-                        addNewPosition(item.parentId, 'sibling'); // Add as sibling of this item
+                        if (!item.parentId) {
+                            console.warn('Cannot add sibling to root node');
+                            showAlert('warning', 'Cannot add sibling to root position');
+                            return;
+                        }
+                        try {
+                            addNewPosition(item.parentId, 'sibling'); // Add as sibling of this item
+                        } catch (error) {
+                            console.error('Error adding sibling position (right):', error);
+                        }
+                    });
+
+                    node.find('.add-btn-left').click(function(e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        console.log('Left button clicked for item:', item.title, 'parentId:', item
+                            .parentId);
+                        if (!item.parentId) {
+                            console.warn('Cannot add sibling to root node');
+                            showAlert('warning', 'Cannot add sibling to root position');
+                            return;
+                        }
+                        try {
+                            addNewPosition(item.parentId, 'sibling'); // Add as sibling of this item
+                        } catch (error) {
+                            console.error('Error adding sibling position (left):', error);
+                        }
                     });
 
                     $('#orgChart').append(node);
@@ -548,7 +661,7 @@
 
 
             function getLevel(id, level = 0) {
-                var item = orgData.find(i => i.id === id);
+                var item = orgData.find(i => i.id == id); // Use loose equality for type matching
                 if (!item) return level;
                 if (!item.parentId) return level; // Root level
                 return getLevel(item.parentId, level + 1); // Go up the tree
@@ -927,6 +1040,83 @@
                 });
             }
 
+            // Fallback div connection renderer
+            function renderDivConnections() {
+                console.log('Using div fallback for connections');
+
+                orgData.forEach(function(item) {
+                    if (item.parentId) {
+                        var parent = orgData.find(p => p.id === item.parentId);
+                        if (parent) {
+                            var screenWidth = $(window).width();
+                            var nodeEstimatedWidth, nodeEstimatedHeight;
+
+                            if (screenWidth <= 576) {
+                                nodeEstimatedWidth = 120;
+                                nodeEstimatedHeight = 60;
+                            } else if (screenWidth <= 768) {
+                                nodeEstimatedWidth = 140;
+                                nodeEstimatedHeight = 70;
+                            } else {
+                                nodeEstimatedWidth = 160;
+                                nodeEstimatedHeight = 80;
+                            }
+
+                            var parentCenterX = parent.x + (nodeEstimatedWidth / 2) + 20;
+                            var parentBottomY = parent.y + nodeEstimatedHeight + 20;
+                            var childCenterX = item.x + (nodeEstimatedWidth / 2) + 20;
+                            var childTopY = item.y + 20;
+
+                            var verticalGap = childTopY - parentBottomY;
+                            var midY = parentBottomY + (verticalGap / 2);
+
+                            if (verticalGap > 10) {
+                                // Vertical line from parent down
+                                $('<div></div>').css({
+                                    'position': 'absolute',
+                                    'left': (parentCenterX - 1) + 'px',
+                                    'top': parentBottomY + 'px',
+                                    'width': '2px',
+                                    'height': (verticalGap / 2) + 'px',
+                                    'background-color': '#3498db',
+                                    'z-index': '1',
+                                    'pointer-events': 'none'
+                                }).appendTo('#orgChart');
+
+                                // Horizontal line
+                                if (Math.abs(parentCenterX - childCenterX) > 5) {
+                                    var minX = Math.min(parentCenterX, childCenterX);
+                                    var maxX = Math.max(parentCenterX, childCenterX);
+
+                                    $('<div></div>').css({
+                                        'position': 'absolute',
+                                        'left': minX + 'px',
+                                        'top': (midY - 1) + 'px',
+                                        'width': (maxX - minX + 2) + 'px',
+                                        'height': '2px',
+                                        'background-color': '#3498db',
+                                        'z-index': '1',
+                                        'pointer-events': 'none'
+                                    }).appendTo('#orgChart');
+                                }
+
+                                // Vertical line down to child
+                                $('<div></div>').css({
+                                    'position': 'absolute',
+                                    'left': (childCenterX - 1) + 'px',
+                                    'top': midY + 'px',
+                                    'width': '2px',
+                                    'height': ((verticalGap / 2) + 1) + 'px',
+                                    'background-color': '#3498db',
+                                    'z-index': '1',
+                                    'pointer-events': 'none'
+                                }).appendTo('#orgChart');
+                            }
+                        }
+                    }
+                });
+            }
+
             // Initialize default chart if no data exists
             function initializeDefaultChart() {
                 // Get authenticated user data from Laravel
@@ -1210,4 +1400,4 @@
             updateUndoRedoButtons(); // Initialize button states
         });
     </script>
-@endpush
+@endsection

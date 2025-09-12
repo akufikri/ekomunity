@@ -980,6 +980,13 @@ Route::prefix('packages')->group(function () {
     Route::delete('/destroy/{id}', [PackageSettingController::class, 'destroy']);
 });
 
+Route::prefix('carta-organisasi')->group(function () {
+    Route::get('/', [SturctureOrganizationController::class, 'getView']);
+    Route::get('/getData', [SturctureOrganizationController::class, 'getData']);
+    Route::get('/getAhli', [SturctureOrganizationController::class, 'getAhli']);
+});
+
+
 Route::get('/carta/organisasi/{id}', [SturctureOrganizationController::class, 'getDetail']);
 
 Route::group(['middleware' => ['auth', 'registrationCompleted'],], function () {
@@ -992,9 +999,6 @@ Route::group(['middleware' => ['auth', 'registrationCompleted'],], function () {
     // });
 
     Route::prefix('carta-organisasi')->group(function () {
-        Route::get('/', [SturctureOrganizationController::class, 'getView']);
-        Route::get('/getData', [SturctureOrganizationController::class, 'getData']);
-        Route::get('/getAhli', [SturctureOrganizationController::class, 'getAhli']);
         Route::post('/save', [SturctureOrganizationController::class, 'saveStructure']);
         Route::post('/add', [SturctureOrganizationController::class, 'addPosition']);
         Route::put('/update/{id}', [SturctureOrganizationController::class, 'updatePosition']);
