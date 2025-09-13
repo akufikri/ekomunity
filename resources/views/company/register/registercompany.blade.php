@@ -80,8 +80,8 @@
                             <form action="{{ route('company.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <h4 class="font-weight-700 titleku">MAKLUMAT PERIBADI</h4>
-                                <p class="font-weight-600">Jika anda sudah menjadi ahli ekomuniti ? <a
-                                        href="{{ route('login') }}"><b style="color: #383444;"> Log Masuk</b></a>
+                                <p class="font-weight-600">Sudah mempunyai akaun ? <a href="{{ route('login') }}"><b
+                                            style="color: #383444;"> Log Masuk</b></a>
                                 </p>
                                 <div>
                                     <input hidden type="number" value="{{ Request::input('price') }}"
