@@ -80,7 +80,7 @@
                             <form action="{{ route('company.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <h4 class="font-weight-700 titleku">MAKLUMAT PERIBADI</h4>
-                                <p class="font-weight-600">Sudah mempunyai akaun ? <a href="{{ route('login') }}"><b
+                                <p class="font-weight-600">Jika anda sudah berdaftar sila <a href="{{ route('login') }}"><b
                                             style="color: #383444;"> Log Masuk</b></a>
                                 </p>
                                 <div>
