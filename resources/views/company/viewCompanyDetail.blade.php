@@ -228,9 +228,29 @@
                                     <label class="filldata" for=""
                                         id="label_form">{{ isset($data->company->address) ? $data->company->address : 'Data has not been filled' }}</label>
                                 </div>
-
                             </div>
-
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label class="filldata text-muted font-italic label_form_judul"
+                                        style="margin-bottom: 0px;" for="">Slogan</label><br>
+                                    <label class="filldata" for=""
+                                        id="label_form">{{ isset($data->company->slogan) ? $data->company->slogan : 'Data has not been filled' }}</label>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="filldata text-muted font-italic label_form_judul"
+                                        style="margin-bottom: 0px;" for="">Mengenai</label><br>
+                                    <label class="filldata" for=""
+                                        id="label_form">{{ isset($data->company->mengenai) ? $data->company->mengenai : 'Data has not been filled' }}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label class="filldata text-muted font-italic label_form_judul"
+                                        style="margin-bottom: 0px;" for="">Banner</label><br>
+                                    <img src="/CompanyBanner/{{ $data->company->banner }}" alt="Upload Profile"
+                                        width="100" height="100">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

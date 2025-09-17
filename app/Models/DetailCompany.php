@@ -71,7 +71,10 @@ class DetailCompany extends Model
         'price_subscribe',
         'year_expired_subscribe',
         'valid_subscribe',
-        'tempoh_lantikan'
+        'tempoh_lantikan',
+        'slogan',
+        'mengenai',
+        'banner'
     ];
 
     static $stepRegistration = 2;

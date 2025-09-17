@@ -86,8 +86,8 @@ require_once('globalFunction.php');
 // });
 
 Route::get('/', function () {
-    // return view('landingpage.pages.design-v2');
-    return redirect('/login');
+    return view('landingpage.pages.design-v2');
+    // return redirect('/login');
 });
 Route::get('/direktori', [LandingPageController::class, 'direktori']);
 Route::get('/buletin', [LandingPageController::class, 'blogPost']);

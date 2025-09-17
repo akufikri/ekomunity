@@ -20,6 +20,7 @@ use DB;
 use Auth;
 use PDF;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 use Illuminate\Support\Facades\Crypt;
 
@@ -121,7 +122,7 @@ class CompanyController extends Controller
     {
 
         $data = User::findOrFail($id);
-
+        // dd($request->all());
         if ($data) {
 
             $man = DetailCompany::where('id_user', $data->id)->first();
@@ -134,6 +135,8 @@ class CompanyController extends Controller
             $man->fax_number = $request->fax_number;
             $man->company_website = $request->company_website;
             $man->joining_fee = $request->joining_fee;
+            $man->slogan = $request->slogan;
+            $man->mengenai = $request->mengenai;
 
             if ($request->hasFile('img')) {
                 $file = $request->file('img');
@@ -142,6 +145,21 @@ class CompanyController extends Controller
                 $file->move(public_path() . '/CompanyLogo', $name);
                 $photo1 = $name;
                 $man->logo_picture = $photo1;
+            }
+
+            if ($request->hasFile('banner')) {
+                try {
+                    $bannerDir = public_path('/CompanyBanner');
+                    if (!file_exists($bannerDir)) {
+                        mkdir($bannerDir, 0755, true);
+                    }
+                    $file = $request->file('banner');
+                    $filename = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+                    $file->move($bannerDir, $filename);
+                    $man->banner = $filename;
+                } catch (\Exception $e) {
+                    return back()->withErrors(['banner' => 'Failed to upload banner: ' . $e->getMessage()]);
+                }
             }
 
             if ($request->id_state) $man->id_state = $request->id_state;

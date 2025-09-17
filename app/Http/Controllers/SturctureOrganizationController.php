@@ -66,25 +66,24 @@ class SturctureOrganizationController extends Controller
     public function getData(Request $request)
     {
         try {
-            // Get chart ID from request or use default (first chart)
+            // Get chart ID from request and authenticated user's ID
             $chartId = $request->get('chart_id');
+            $user = Auth::user();
 
-            // If no chart_id provided, get the first available chart
-            if (!$chartId) {
-                $chart = OrganizationChart::with(['activeStructures.user'])
-                    ->where('is_active', true)
-                    ->first();
-            } else {
-                $chart = OrganizationChart::with(['activeStructures.user'])
-                    ->where('id', $chartId)
-                    ->where('is_active', true)
-                    ->first();
-            }
+            // Build query with created_by filter
+            $query = OrganizationChart::with(['activeStructures.user'])
+                ->where('is_active', true)
+                ->where('created_by', $user->id);
+
+            // If chart_id is provided, filter by it; otherwise, get the first matching chart
+            $chart = $chartId
+                ? $query->where('id', $chartId)->first()
+                : $query->first();
 
             if (!$chart) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Chart not found',
+                    'message' => 'No chart found for the current user',
                     'data' => []
                 ]);
             }

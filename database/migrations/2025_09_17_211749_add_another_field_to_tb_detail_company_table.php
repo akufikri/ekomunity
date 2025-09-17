@@ -1,0 +1,30 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('tb_detail_company', function (Blueprint $table) {
+            $table->string('slogan')->after('tempoh_lantikan')->nullable();
+            $table->text('mengenai')->after('slogan')->nullable();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('tb_detail_company', function (Blueprint $table) {
+            $table->dropColumn('slogan');
+            $table->dropColumn('mengenai');
+        });
+    }
+};

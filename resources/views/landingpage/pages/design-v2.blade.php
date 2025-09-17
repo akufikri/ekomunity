@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Landing v2</title>
+    <title>eKomuniti - Satu platform, Semua komuniti</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
 </head>
@@ -16,7 +16,11 @@
         <div class="flex items-center justify-between w-full max-w-[1080px] mx-auto">
             <div class="flex items-center">
                 <div class="flex-1">
-                    <a class="btn btn-ghost text-xl">Ekomuniti</a>
+                    <a href="/" class="btn btn-ghost text-xl w-14 h-14 overflow-hidden rounded-2xl shadow-sm p-0">
+                        <img src="{{ asset('landingpage/images/logo/logo-ekomuniti.png') }}"
+                            alt="Satu platform, Semua komuniti" class="w-full h-full object-contain" />
+
+                    </a>
                 </div>
                 <div class="flex-none">
                     <ul class="menu menu-horizontal px-1">
@@ -38,15 +42,15 @@
             <!-- Konten Teks -->
             <div class="max-w-lg md:max-w-2xl space-y-6 text-center md:text-left">
                 <h1 class="text-white font-bold text-3xl sm:text-4xl md:text-5xl leading-tight">
-                    Solusi Mudah untuk Penjaja dan Peniaga Kecil
+                    Urus Keahlian Lebih Mudah, Semua Dalam Satu Platform
                 </h1>
                 <p class="text-white text-sm sm:text-base opacity-90">
-                    DATAPPK BIZ direka khas untuk membantu penjaja dan peniaga kecil menguruskan
-                    perniagaan mereka dengan lebih mudah dan efisien.
+                    Satu platform digital untuk persatuan & komuniti mengurus ahli, aktiviti, dan komunikasi dengan
+                    lebih teratur.
                 </p>
                 <button
                     class="btn bg-yellow-500 text-white border-none shadow-lg hover:scale-105 transition-transform mx-auto md:mx-0">
-                    Get started
+                    Bina komuniti anda sekarang
                 </button>
             </div>
 
@@ -62,6 +66,7 @@
     {{-- start : feature --}}
     <div class="max-w-[1080px] w-full mx-auto flex lg:flex-row flex-col items-center justify-between gap-8 pt-[28px]">
         <div class="grid lg:grid-cols-2 w-full gap-3 max-w-xl">
+            <!-- 1 -->
             <div class="card card-border bg-[#1569a0]">
                 <div class="card-body">
                     <div class="flex justify-between w-full gap-4">
@@ -71,99 +76,91 @@
                             </div>
                         </div>
                         <div class="space-y-2">
-                            <h2 class="font-bold text-white">Pengurusan Produk yang mudah</h2>
-                            <p class="text-[12px] text-white">Jejak produk anda mengikut kategori bersesuaian untuk
-                                pengurusan yang kemas, pastikan
-                                stok sentiasa tersedia</p>
+                            <h2 class="font-bold text-white">Pengurusan Keahlian yang Mudah</h2>
+                            <p class="text-[12px] text-white">
+                                Jejak dan urus ahli persatuan/komuniti dengan sistem teratur. Daftar, semak status &
+                                maklumat ahli dalam satu tempat.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="relative p-6 rounded-2xl border border-pink-200 shadow-md bg-white">
-                <!-- Efek bayangan 3D di kanan bawah -->
-                <div class="absolute top-2 right-0 left-2 w-full h-full bg-pink-100 rounded-2xl -z-10"></div>
 
+            <!-- 2 -->
+            <div class="relative p-6 rounded-2xl border border-[#1569a0] shadow-md bg-white">
+                <div class="absolute top-2 right-0 left-2 w-full h-full bg-blue-50 rounded-2xl -z-10"></div>
                 <div class="flex gap-4">
-                    <!-- Nomor bulat -->
                     <div>
                         <div
-                            class="flex items-center justify-center w-10 h-10 rounded-full bg-pink-200 text-pink-700 font-bold text-xl">
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-[#1569a0] text-white font-bold text-xl">
                             2
                         </div>
                     </div>
-
-                    <!-- Isi konten -->
                     <div class="space-y-2">
-                        <h2 class="font-bold text-pink-700 text-lg">
-                            Buat Transaksi dengan Cepat dan Tepat
+                        <h2 class="font-bold text-[#1569a0] text-lg">
+                            Bayaran Yuran & Sumbangan Lebih Lancar
                         </h2>
                         <p class="text-gray-600 text-sm">
-                            Jana resit, sebutharga, dan invois secara teratur, menjimatkan masa dan
-                            mengurangkan kesilapan
+                            Sokongan pembayaran digital untuk yuran ahli, derma & tabungan komuniti – lebih cepat,
+                            selamat dan telus.
                         </p>
                     </div>
                 </div>
             </div>
-            <div class="relative p-6 rounded-2xl border border-pink-200 shadow-md bg-white">
-                <!-- Efek bayangan 3D di kanan bawah -->
-                <div class="absolute top-2 right-0 left-2 w-full h-full bg-pink-100 rounded-2xl -z-10"></div>
 
+            <!-- 3 -->
+            <div class="relative p-6 rounded-2xl border border-[#1569a0] shadow-md bg-white">
+                <div class="absolute top-2 right-0 left-2 w-full h-full bg-blue-50 rounded-2xl -z-10"></div>
                 <div class="flex gap-4">
-                    <!-- Nomor bulat -->
                     <div>
                         <div
-                            class="flex items-center justify-center w-10 h-10 rounded-full bg-pink-200 text-pink-700 font-bold text-xl">
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-[#1569a0] text-white font-bold text-xl">
                             3
                         </div>
                     </div>
-
-                    <!-- Isi konten -->
                     <div class="space-y-2">
-                        <h2 class="font-bold text-pink-700 text-lg">
-                            Simpan Maklumat Pelanggan Sebagai Sumber Rujukan
+                        <h2 class="font-bold text-[#1569a0] text-lg">
+                            Komunikasi & Pengumuman Pantas
                         </h2>
                         <p class="text-gray-600 text-sm">
-                            Penyimpanan data pelanggan yang teratur, memudahkan urusan perniagaan dan penjanaan laporan
-                            yang lebih telus
+                            Sampaikan berita, notis & aktiviti terus kepada ahli tanpa perlu group WhatsApp berselerak.
                         </p>
                     </div>
                 </div>
             </div>
-            <div class="relative p-6 rounded-2xl border border-pink-200 shadow-md bg-white">
-                <!-- Efek bayangan 3D di kanan bawah -->
-                <div class="absolute top-2 right-0 left-2 w-full h-full bg-pink-100 rounded-2xl -z-10"></div>
 
+            <!-- 4 -->
+            <div class="relative p-6 rounded-2xl border border-[#1569a0] shadow-md bg-white">
+                <div class="absolute top-2 right-0 left-2 w-full h-full bg-blue-50 rounded-2xl -z-10"></div>
                 <div class="flex gap-4">
-                    <!-- Nomor bulat -->
                     <div>
                         <div
-                            class="flex items-center justify-center w-10 h-10 rounded-full bg-pink-200 text-pink-700 font-bold text-xl">
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-[#1569a0] text-white font-bold text-xl">
                             4
                         </div>
                     </div>
-
-                    <!-- Isi konten -->
                     <div class="space-y-2">
-                        <h2 class="font-bold text-pink-700 text-lg">
-                            Mari merekod transaksi Perniagaan anda
+                        <h2 class="font-bold text-[#1569a0] text-lg">
+                            Rekod Aktiviti & Laporan Automatik
                         </h2>
                         <p class="text-gray-600 text-sm">
-                            Jadi usahawan yang berjaya mengikut sasaran anda. Selamat penggunakan Aplikasi DATAPPK BIZ
+                            Rekod mesyuarat, acara & laporan persatuan disimpan secara digital – mudah dicapai bila
+                            diperlukan.
                         </p>
                     </div>
                 </div>
             </div>
-
-
         </div>
+
         <div>
             <img src="{{ asset('images/ic-lg-box.svg') }}" alt="">
         </div>
     </div>
+    {{-- end : feature --}}
 
     {{-- start: cta --}}
     <div class="lg:max-w-[1080px] mx-auto mt-[28px]">
-        <div class="card card-border bg-pink-500 overflow-hidden lg:h-[50vh] h-36">
+        <div class="card card-border bg-[#1569a0] overflow-hidden lg:h-[50vh] h-36">
             <div class="card-body lg:overflow-hidden">
                 <div class="lg:grid hidden grid-cols-3 gap-10">
                     <div class="grid grid-cols-1 gap-4 rotate-10 -translate-x-40 -translate-y-72">
@@ -230,7 +227,7 @@
                 {{-- content --}}
                 <div class="lg:absolute z-10 w-full h-full">
                     <div class="text-center flex items-center justify-center h-full flex-col gap-4">
-                        <h1 class="text-2xl font-bold text-white">Pelancaran DATAPPK.Biz</h1>
+                        <h1 class="text-2xl font-bold text-white">Pelancaran Ekomunity</h1>
                         <div class="btn bg-[#1569a0] border-0 text-white shadow-lg hover:scale-110 transition-all">
                             Gabung sekarang</div>
                     </div>
@@ -241,113 +238,14 @@
     {{-- start : blog --}}
     <div class="lg:max-w-[1080px] mx-auto mt-[28px]">
         <h1 class="text-2xl font-bold text-center">Berita terbaru</h1>
-        <div class="mt-5 grid lg:grid-cols-3 grid-cols-2 gap-4">
-            <div class="card bg-base-100 shadow-sm">
-                <figure>
-                    <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                        alt="Shoes" />
-                </figure>
-                <div class="card-body">
-                    <h2 class="card-title">
-                        Card Title
-                        <div class="badge badge-secondary">NEW</div>
-                    </h2>
-                    <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-                    <div class="card-actions justify-end">
-                        <div class="badge badge-outline">Fashion</div>
-                        <div class="badge badge-outline">Products</div>
-                    </div>
-                </div>
-            </div>
-            <div class="card bg-base-100 shadow-sm">
-                <figure>
-                    <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                        alt="Shoes" />
-                </figure>
-                <div class="card-body">
-                    <h2 class="card-title">
-                        Card Title
-                        <div class="badge badge-secondary">NEW</div>
-                    </h2>
-                    <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-                    <div class="card-actions justify-end">
-                        <div class="badge badge-outline">Fashion</div>
-                        <div class="badge badge-outline">Products</div>
-                    </div>
-                </div>
-            </div>
-            <div class="card bg-base-100 shadow-sm">
-                <figure>
-                    <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                        alt="Shoes" />
-                </figure>
-                <div class="card-body">
-                    <h2 class="card-title">
-                        Card Title
-                        <div class="badge badge-secondary">NEW</div>
-                    </h2>
-                    <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-                    <div class="card-actions justify-end">
-                        <div class="badge badge-outline">Fashion</div>
-                        <div class="badge badge-outline">Products</div>
-                    </div>
-                </div>
-            </div>
-            <div class="card bg-base-100 shadow-sm">
-                <figure>
-                    <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                        alt="Shoes" />
-                </figure>
-                <div class="card-body">
-                    <h2 class="card-title">
-                        Card Title
-                        <div class="badge badge-secondary">NEW</div>
-                    </h2>
-                    <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-                    <div class="card-actions justify-end">
-                        <div class="badge badge-outline">Fashion</div>
-                        <div class="badge badge-outline">Products</div>
-                    </div>
-                </div>
-            </div>
-            <div class="card bg-base-100 shadow-sm">
-                <figure>
-                    <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                        alt="Shoes" />
-                </figure>
-                <div class="card-body">
-                    <h2 class="card-title">
-                        Card Title
-                        <div class="badge badge-secondary">NEW</div>
-                    </h2>
-                    <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-                    <div class="card-actions justify-end">
-                        <div class="badge badge-outline">Fashion</div>
-                        <div class="badge badge-outline">Products</div>
-                    </div>
-                </div>
-            </div>
-            <div class="card bg-base-100 shadow-sm">
-                <figure>
-                    <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                        alt="Shoes" />
-                </figure>
-                <div class="card-body">
-                    <h2 class="card-title">
-                        Card Title
-                        <div class="badge badge-secondary">NEW</div>
-                    </h2>
-                    <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-                    <div class="card-actions justify-end">
-                        <div class="badge badge-outline">Fashion</div>
-                        <div class="badge badge-outline">Products</div>
-                    </div>
-                </div>
-            </div>
+        <div id="blog-container" class="mt-5 grid lg:grid-cols-3 grid-cols-2 gap-4">
+            <!-- Blog posts akan dimasukkan disini melalui JavaScript -->
         </div>
         <div class="mt-5 w-full flex items-center justify-center">
-            <button class="btn bg-pink-500 text-white border-0">Read More</button>
+            <button class="btn bg-[#1569a0] text-white border-0">Read More</button>
         </div>
+
+
     </div>
     {{-- start: price --}}
     <div class="bg-[#1569a0]">
@@ -365,139 +263,158 @@
     <div class="max-w-[1080px] w-full mx-auto gap-4 h-auto items-center flex flex-col justify-center mt-12">
         <h1 class="text-2xl font-bold text-center">Kenapa harus kami? (FAQ)</h1>
         <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-3 w-full">
+
+            <!-- Card 1 -->
             <div class="card border-none">
                 <div class="card-body flex flex-col items-center justify-center">
-                    <div class="avatar">
-                        <div class="w-20 rounded-full bg-gray-200">
-                            {{-- <img src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp" /> --}}
-                        </div>
+                    <div class="flex items-center justify-center w-20 h-20 rounded-full bg-blue-100">
+                        <i data-lucide="users" class="w-10 h-10 text-blue-600"></i>
                     </div>
                     <div class="mt-2 text-center space-y-4">
-                        <h1 class="text-base font-bold">Adakah terdapat pelan percuma, dan apa yang disertakan?</h1>
-                        <p class="text-[12px]">Ya! Kami menyediakan pelan percuma dengan ciri asas seperti pengurusan
-                            inventori, pengebilan, dan pemantauan pelanggan. Anda boleh menaik taraf bila-bila masa
-                            untuk lebih banyak ciri.</p>
+                        <h1 class="text-base font-bold">Adakah platform ini sesuai untuk semua jenis persatuan &
+                            komuniti?</h1>
+                        <p class="text-[12px]">
+                            Ya, <a href="https://ekomuniti.my" class="underline font-bold">ekomuniti.my</a>
+                            direka fleksibel untuk pelbagai jenis komuniti – sama ada persatuan, NGO, koperasi,
+                            kelab sukan, alumni atau komuniti kejiranan.
+                        </p>
                     </div>
                 </div>
             </div>
+
+            <!-- Card 2 -->
             <div class="card border-none">
                 <div class="card-body flex flex-col items-center justify-center">
-                    <div class="avatar">
-                        <div class="w-20 rounded-full bg-gray-200">
-                            {{-- <img src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp" /> --}}
-                        </div>
+                    <div class="flex items-center justify-center w-20 h-20 rounded-full bg-green-100">
+                        <i data-lucide="layers" class="w-10 h-10 text-green-600"></i>
                     </div>
                     <div class="mt-2 text-center space-y-4">
-                        <h1 class="text-base font-bold">Bagaimana platform ini memudahkan pengurusan perniagaan?</h1>
-                        <p class="text-[12px]">Kami menawarkan sistem mesra pengguna yang membolehkan anda mengurus
-                            jualan, inventori, pemasaran, dan laporan kewangan dengan mudah, semuanya dalam satu
-                            aplikasi.</p>
+                        <h1 class="text-base font-bold">
+                            Apa kelebihan utama menggunakan <a href="https://ekomuniti.my"
+                                class="underline">ekomuniti.my</a>?
+                        </h1>
+                        <p class="text-[12px]">
+                            Semua urusan keahlian, bayaran yuran, pengumuman & rekod aktiviti boleh diurus
+                            dalam satu platform. Lebih mudah, telus, dan profesional.
+                        </p>
                     </div>
                 </div>
             </div>
+
+            <!-- Card 3 -->
             <div class="card border-none">
                 <div class="card-body flex flex-col items-center justify-center">
-                    <div class="avatar">
-                        <div class="w-20 rounded-full bg-gray-200">
-                            {{-- <img src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp" /> --}}
-                        </div>
+                    <div class="flex items-center justify-center w-20 h-20 rounded-full bg-blue-50">
+                        <i data-lucide="credit-card" class="w-10 h-10 text-blue-600"></i>
                     </div>
                     <div class="mt-2 text-center space-y-4">
-                        <h1 class="text-base font-bold">Apakah kelebihan menggunakan platform ini?</h1>
-                        <p class="text-[12px]">Dengan harga yang rendah, anda mendapat akses kepada pelbagai alat
-                            pengurusan, integrasi dengan rakan kongsi perniagaan, aplikasi mudah alih, dan sokongan
-                            pelanggan yang cekap.</p>
+                        <h1 class="text-base font-bold">Bolehkah ahli membuat bayaran yuran secara online?</h1>
+                        <p class="text-[12px]">
+                            Boleh. Sistem kami menyokong pembayaran digital supaya ahli boleh membayar
+                            yuran atau sumbangan terus melalui platform dengan selamat menggunakan tetapan
+                            gerbang pembayaran anda.
+                        </p>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
+    {{-- end : about us --}}
+
     {{-- start: testimoni --}}
     <div class="bg-[#1569a0] py-8">
         <div class="max-w-[1080px] w-full mx-auto gap-4 h-auto items-center flex flex-col justify-center">
-            <h1 class="text-2xl font-bold text-center text-white">Partners kami</h1>
-            <div class="grid grid-cols-3 gap-3 w-full">
+            <h1 class="text-2xl font-bold text-center text-white">Rakan Strategik</h1>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
+                <!-- Logo 1 -->
                 <div class="card border-none">
                     <div class="card-body flex flex-col items-center justify-center">
-                        <div class="avatar">
-                            <div class="w-20 rounded-full bg-gray-200">
-                                <img src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp" />
-                            </div>
+                        <div class="w-32 h-20 flex items-center justify-center">
+                            <img src="https://datappk.com/assets/images/logo/g3pns.png" alt="G3PNS"
+                                class="max-w-full max-h-full object-contain" />
                         </div>
+                        <h1 class="font-semibold text-white text-[16px]">G3PNS</h1>
                     </div>
                 </div>
+
+                <!-- Logo 2 -->
                 <div class="card border-none">
                     <div class="card-body flex flex-col items-center justify-center">
-                        <div class="avatar">
-                            <div class="w-20 rounded-full bg-gray-200">
-                                <img src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp" />
-                            </div>
+                        <div class="w-32 h-20 flex items-center justify-center">
+                            <img src="https://datappk.com/assets/images/logo/coedev.png" alt="Coedev"
+                                class="max-w-full max-h-full object-contain" />
                         </div>
+                        <h1 class="font-semibold text-white text-[16px]">Coedev Technology</h1>
                     </div>
                 </div>
+
+                <!-- Logo 3 -->
                 <div class="card border-none">
                     <div class="card-body flex flex-col items-center justify-center">
-                        <div class="avatar">
-                            <div class="w-20 rounded-full bg-gray-200">
-                                <img src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp" />
-                            </div>
+                        <div class="w-32 h-20 flex items-center justify-center">
+                            <img src="https://amalprihatinsabah.com/assets/icon-paks/logo-aps.png"
+                                alt="Amal Prihatin Sabah" class="max-w-full max-h-full object-contain" />
                         </div>
+                        <h1 class="font-semibold text-white text-[16px]">Amalprihatin Sabah</h1>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
     <footer class="mt-[28px]">
         {{-- start : footer top --}}
         <div class="flex items-center justify-center flex-col max-w-[500px] w-full mx-auto">
-            <div class="flex items-center gap-4">
+            <div class="flex items-center justify-center gap-4">
                 <div class="avatar">
-                    <div class="w-16 rounded-full bg-gray-200">
-                        <img src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp" />
+                    <div class="w-24 rounded-full bg-gray-200 flex items-center justify-center">
+                        <img src="{{ asset('landingpage/images/logo/logo-ekomuniti.png') }}"
+                            class="w-full h-full object-contain rounded-full" />
                     </div>
                 </div>
-                <span class="text-2xl font-bold">DataPPK.Biz</span>
+                <span class="text-2xl font-bold">Ekomuniti</span>
             </div>
-            <ul class="flex items-center gap-2 mt-5 font-bold text-pink-500 w-full justify-center">
+            <ul class="flex items-center gap-2 mt-5 font-bold text-[#1569a0] w-full justify-center">
                 <li><a href="">Polisi Privasi</a></li>
                 <li><a href="">Terma & Syarat</a></li>
                 <li><a href="">Penghapusan Akaun</a></li>
             </ul>
             <div class="flex items-center justify-center gap-5 w-full mt-4">
-                <a href="" class="flex gap-2 items-center text-pink-500"><i data-lucide="mail"
+                <a href="" class="flex gap-2 items-center text-[#1569a0]"><i data-lucide="mail"
                         class="w-5 h-5"></i> <span>john@example.com</span></a>
-                <a href="" class="flex gap-2 items-center text-pink-500"><i data-lucide="phone"
+                <a href="" class="flex gap-2 items-center text-[#1569a0]"><i data-lucide="phone"
                         class="w-5 h-5"></i> <span>john@example.com</span></a>
             </div>
         </div>
         {{-- start: footer center --}}
         <div class="flex mt-5 justify-between w-full">
-            <div class="card bg-[#F1739C] max-w-2xl rounded-none w-full h-20 rounded-tr-2xl">
+            <div class="card bg-[#1569a0] max-w-2xl rounded-none w-full h-20 rounded-tr-2xl">
                 <div class="card-body"></div>
             </div>
             <div class="w-full max-w-sm h-full h-24">
                 <ul class="flex items-center justify-center justify-center mt-5 gap-10">
-                    <li class="bg-pink-500 p-3 rounded-2xl text-white">
+                    <li class="bg-[#1569a0] p-3 rounded-2xl text-white">
                         <a href=""><i data-lucide="facebook"></i></a>
                     </li>
-                    <li class="bg-pink-500 p-3 rounded-2xl text-white">
+                    <li class="bg-[#1569a0] p-3 rounded-2xl text-white">
                         <a href=""><i data-lucide="twitter"></i></a>
                     </li>
-                    <li class="bg-pink-500 p-3 rounded-2xl text-white">
+                    <li class="bg-[#1569a0] p-3 rounded-2xl text-white">
                         <a href=""><i data-lucide="linkedin"></i></a>
                     </li>
-                    <li class="bg-pink-500 p-3 rounded-2xl text-white">
+                    <li class="bg-[#1569a0] p-3 rounded-2xl text-white">
                         <a href=""><i data-lucide="instagram"></i></a>
                     </li>
                 </ul>
             </div>
-            <div class="card bg-[#F1739C] max-w-2xl rounded-none w-full h-20 rounded-tl-2xl">
+            <div class="card bg-[#1569a0] max-w-2xl rounded-none w-full h-20 rounded-tl-2xl">
                 <div class="card-body"></div>
             </div>
         </div>
         {{-- start : footer bottom --}}
-        <div class="bg-pink-500 w-full py-10 flex items-center justify-center">
-            <h1 class="text-base text-white font-semibold">©DataPPK Biz. Dimiliki oleh Idolegacy Sdn Bhd</h1>
+        <div class="bg-[#1569a0] w-full py-10 flex items-center justify-center">
+            <h1 class="text-base text-white font-semibold">©Ekomuniti. Dimiliki oleh Coedev Technology Sdn Bhd</h1>
         </div>
     </footer>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -507,8 +424,90 @@
     <script>
         $(document).ready(function() {
             lucide.createIcons();
+            const baseUrl = "https://coedev.my/api/public/blogpost?brand_name=ekomuniti&page=1";
 
-            // ambil data dari API
+            // fetch blog posts
+            $.ajax({
+                type: "GET",
+                url: baseUrl,
+                dataType: "JSON",
+                success: function(response) {
+                    if (response.success && response.data && response.data.length > 0) {
+                        let posts = response.data.slice(0, 6); // limit to 6 posts
+                        let blogHtml = '';
+
+                        posts.forEach(post => {
+                            // extract text content from HTML
+                            let textContent = $('<div>').html(post.post_content).text();
+                            let excerpt = textContent.length > 100 ? textContent.substring(0,
+                                100) + '...' : textContent;
+
+                            // format date
+                            let publishedDate = new Date(post.published_at).toLocaleDateString(
+                                'ms-MY', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                });
+
+                            blogHtml += `
+                                <div class="card bg-base-100 shadow-sm">
+                                    <figure>
+                                        <img src="${post.thumbnail}" alt="${post.post_title}"
+                                             class="w-full h-48 object-cover" />
+                                    </figure>
+                                    <div class="card-body">
+                                        <h2 class="card-title">
+                                            ${post.post_title}
+                                            <div class="badge badge-secondary">NEW</div>
+                                        </h2>
+                                        <p class="text-sm text-gray-600">${excerpt}</p>
+                                        <div class="card-actions justify-between items-center mt-3">
+                                            <div class="badge badge-outline">${post.category.category_name}</div>
+                                            <div class="text-xs text-gray-500">${publishedDate}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+
+                        $("#blog-container").html(blogHtml);
+                    } else {
+                        // show no data message
+                        $("#blog-container").html(`
+                            <div class="col-span-full">
+                                <div class="card bg-white shadow border border-gray-100 mt-5">
+                                    <div class="card-body items-center space-y-2">
+                                        <div class="flex items-center justify-center w-20 h-20 rounded-full bg-blue-100">
+                                            <i data-lucide="newspaper" class="w-10 h-10 text-blue-600"></i>
+                                        </div>
+                                        <h1 class="card-title text-center">Opss! News Not Found</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        `);
+                        lucide.createIcons();
+                    }
+                },
+                error: function() {
+                    // show error message
+                    $("#blog-container").html(`
+                        <div class="col-span-full">
+                            <div class="card bg-white shadow border border-gray-100 mt-5">
+                                <div class="card-body items-center space-y-2">
+                                    <div class="flex items-center justify-center w-20 h-20 rounded-full bg-blue-100">
+                                        <i data-lucide="newspaper" class="w-10 h-10 text-blue-600"></i>
+                                    </div>
+                                    <h1 class="card-title text-center">Opss! News Not Found</h1>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                    lucide.createIcons();
+                }
+            });
+
+            // ambil data dari API packages
             $.ajax({
                 type: "GET",
                 url: "/packages/getData",
