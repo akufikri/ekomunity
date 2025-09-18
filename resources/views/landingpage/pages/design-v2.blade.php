@@ -153,7 +153,7 @@
         </div>
 
         <div>
-            <img src="{{ asset('images/ic-lg-box.svg') }}" alt="">
+            <img src="{{ asset('images/ic-lg-box.png') }}" alt="">
         </div>
     </div>
     {{-- end : feature --}}

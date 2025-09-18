@@ -46,25 +46,27 @@ use Yajra\DataTables\Facades\DataTables;
 class RegisManpowerController extends Controller
 {
 
-    public function testSendEmailVerification($id) {
+    public function testSendEmailVerification($id)
+    {
         $this->sendEmailVerification($id);
     }
 
-    public function testSendEmailRegisAhli($id) {
+    public function testSendEmailRegisAhli($id)
+    {
         $this->sendEmailNoticeAhliRegistered($id);
     }
 
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = DetailManpower::orderBy('id_detail_manpower','desc')->get();
-            foreach($data as $d){
+            $data = DetailManpower::orderBy('id_detail_manpower', 'desc')->get();
+            foreach ($data as $d) {
                 $city = City::where('id_city', $d->id_city)->first();
                 $state = State::where('id_state', $d->id_state)->first();
                 $user = User::where('id', $d->id_user)->first();
-                $d->city = isset($city)?$city->city:'';
-                $d->state = isset($state)?$state->state:'';
-                $d->first_name = isset($user)?$user->first_name:'';
+                $d->city = isset($city) ? $city->city : '';
+                $d->state = isset($state) ? $state->state : '';
+                $d->first_name = isset($user) ? $user->first_name : '';
 
                 $d->create_date = date('d-m-Y h:i:s', strtotime($d->created_at));
             }
@@ -78,19 +80,19 @@ class RegisManpowerController extends Controller
     {
         if ($request->ajax()) {
 
-            $data = DetailManpower::whereHas('user', function($user) {
-                $user->where('status','ACTIVE');
+            $data = DetailManpower::whereHas('user', function ($user) {
+                $user->where('status', 'ACTIVE');
             })->with('user')
-            ->where('current_work_status','EMPLOYED')
-            ->orderBy('id_detail_manpower','desc')->get();
+                ->where('current_work_status', 'EMPLOYED')
+                ->orderBy('id_detail_manpower', 'desc')->get();
 
-            foreach($data as $d){
+            foreach ($data as $d) {
                 $city = City::where('id_city', $d->id_city)->first();
                 $state = State::where('id_state', $d->id_state)->first();
                 $user = User::where('id', $d->id_user)->first();
-                $d->city = isset($city)?$city->city:'';
-                $d->state = isset($state)?$state->state:'';
-                $d->first_name = isset($user)?$user->first_name:'';
+                $d->city = isset($city) ? $city->city : '';
+                $d->state = isset($state) ? $state->state : '';
+                $d->first_name = isset($user) ? $user->first_name : '';
 
                 $d->create_date = date('d-m-Y h:i:s', strtotime($d->created_at));
             }
@@ -103,19 +105,19 @@ class RegisManpowerController extends Controller
     {
         if ($request->ajax()) {
 
-            $data = DetailManpower::whereHas('user', function($user) {
-                $user->where('status','ACTIVE');
+            $data = DetailManpower::whereHas('user', function ($user) {
+                $user->where('status', 'ACTIVE');
             })->with('user')
-            ->where('current_work_status','UNEMPLOYED')
-            ->orderBy('id_detail_manpower','desc')->get();
+                ->where('current_work_status', 'UNEMPLOYED')
+                ->orderBy('id_detail_manpower', 'desc')->get();
 
-            foreach($data as $d){
+            foreach ($data as $d) {
                 $city = City::where('id_city', $d->id_city)->first();
                 $state = State::where('id_state', $d->id_state)->first();
                 $user = User::where('id', $d->id_user)->first();
-                $d->city = isset($city)?$city->city:'';
-                $d->state = isset($state)?$state->state:'';
-                $d->first_name = isset($user)?$user->first_name:'';
+                $d->city = isset($city) ? $city->city : '';
+                $d->state = isset($state) ? $state->state : '';
+                $d->first_name = isset($user) ? $user->first_name : '';
 
                 $d->create_date = date('d-m-Y h:i:s', strtotime($d->created_at));
             }
@@ -129,21 +131,21 @@ class RegisManpowerController extends Controller
     {
         if ($request->ajax()) {
 
-            $data = DetailManpower::whereHas('user', function($user) {
-                $user->where('status','ACTIVE');
+            $data = DetailManpower::whereHas('user', function ($user) {
+                $user->where('status', 'ACTIVE');
             })->with('user')
-            ->where('current_work_status','EMPLOYED')
-            ->where('id_country','1')
-            ->where('id_state','1')
-            ->orderBy('id_detail_manpower','desc')->get();
+                ->where('current_work_status', 'EMPLOYED')
+                ->where('id_country', '1')
+                ->where('id_state', '1')
+                ->orderBy('id_detail_manpower', 'desc')->get();
 
-            foreach($data as $d){
+            foreach ($data as $d) {
                 $city = City::where('id_city', $d->id_city)->first();
                 $state = State::where('id_state', $d->id_state)->first();
                 $user = User::where('id', $d->id_user)->first();
-                $d->city = isset($city)?$city->city:'';
-                $d->state = isset($state)?$state->state:'';
-                $d->first_name = isset($user)?$user->first_name:'';
+                $d->city = isset($city) ? $city->city : '';
+                $d->state = isset($state) ? $state->state : '';
+                $d->first_name = isset($user) ? $user->first_name : '';
 
                 $d->create_date = date('d-m-Y h:i:s', strtotime($d->created_at));
             }
@@ -156,21 +158,21 @@ class RegisManpowerController extends Controller
     {
         if ($request->ajax()) {
 
-            $data = DetailManpower::whereHas('user', function($user) {
-                $user->where('status','ACTIVE');
+            $data = DetailManpower::whereHas('user', function ($user) {
+                $user->where('status', 'ACTIVE');
             })->with('user')
-            ->where('current_work_status','UNEMPLOYED')
-            ->where('id_country','1')
-            ->where('id_state','1')
-            ->orderBy('id_detail_manpower','desc')->get();
+                ->where('current_work_status', 'UNEMPLOYED')
+                ->where('id_country', '1')
+                ->where('id_state', '1')
+                ->orderBy('id_detail_manpower', 'desc')->get();
 
-            foreach($data as $d){
+            foreach ($data as $d) {
                 $city = City::where('id_city', $d->id_city)->first();
                 $state = State::where('id_state', $d->id_state)->first();
                 $user = User::where('id', $d->id_user)->first();
-                $d->city = isset($city)?$city->city:'';
-                $d->state = isset($state)?$state->state:'';
-                $d->first_name = isset($user)?$user->first_name:'';
+                $d->city = isset($city) ? $city->city : '';
+                $d->state = isset($state) ? $state->state : '';
+                $d->first_name = isset($user) ? $user->first_name : '';
 
                 $d->create_date = date('d-m-Y h:i:s', strtotime($d->created_at));
             }
@@ -184,21 +186,21 @@ class RegisManpowerController extends Controller
     {
         if ($request->ajax()) {
 
-            $data = DetailManpower::whereHas('user', function($user) {
-                $user->where('status','ACTIVE');
+            $data = DetailManpower::whereHas('user', function ($user) {
+                $user->where('status', 'ACTIVE');
             })->with('user')
-            ->where('current_work_status','EMPLOYED')
-            ->where('id_country','1')
-            ->where('id_state','!=','1')
-            ->orderBy('id_detail_manpower','desc')->get();
+                ->where('current_work_status', 'EMPLOYED')
+                ->where('id_country', '1')
+                ->where('id_state', '!=', '1')
+                ->orderBy('id_detail_manpower', 'desc')->get();
 
-            foreach($data as $d){
+            foreach ($data as $d) {
                 $city = City::where('id_city', $d->id_city)->first();
                 $state = State::where('id_state', $d->id_state)->first();
                 $user = User::where('id', $d->id_user)->first();
-                $d->city = isset($city)?$city->city:'';
-                $d->state = isset($state)?$state->state:'';
-                $d->first_name = isset($user)?$user->first_name:'';
+                $d->city = isset($city) ? $city->city : '';
+                $d->state = isset($state) ? $state->state : '';
+                $d->first_name = isset($user) ? $user->first_name : '';
 
                 $d->create_date = date('d-m-Y h:i:s', strtotime($d->created_at));
             }
@@ -211,21 +213,21 @@ class RegisManpowerController extends Controller
     {
         if ($request->ajax()) {
 
-            $data = DetailManpower::whereHas('user', function($user) {
-                $user->where('status','ACTIVE');
+            $data = DetailManpower::whereHas('user', function ($user) {
+                $user->where('status', 'ACTIVE');
             })->with('user')
-            ->where('current_work_status','UNEMPLOYED')
-            ->where('id_country','1')
-            ->where('id_state','!=','1')
-            ->orderBy('id_detail_manpower','desc')->get();
+                ->where('current_work_status', 'UNEMPLOYED')
+                ->where('id_country', '1')
+                ->where('id_state', '!=', '1')
+                ->orderBy('id_detail_manpower', 'desc')->get();
 
-            foreach($data as $d){
+            foreach ($data as $d) {
                 $city = City::where('id_city', $d->id_city)->first();
                 $state = State::where('id_state', $d->id_state)->first();
                 $user = User::where('id', $d->id_user)->first();
-                $d->city = isset($city)?$city->city:'';
-                $d->state = isset($state)?$state->state:'';
-                $d->first_name = isset($user)?$user->first_name:'';
+                $d->city = isset($city) ? $city->city : '';
+                $d->state = isset($state) ? $state->state : '';
+                $d->first_name = isset($user) ? $user->first_name : '';
 
                 $d->create_date = date('d-m-Y h:i:s', strtotime($d->created_at));
             }
@@ -239,20 +241,20 @@ class RegisManpowerController extends Controller
     {
         if ($request->ajax()) {
 
-            $data = DetailManpower::whereHas('user', function($user) {
-                $user->where('status','ACTIVE');
+            $data = DetailManpower::whereHas('user', function ($user) {
+                $user->where('status', 'ACTIVE');
             })->with('user')
-            ->where('current_work_status','EMPLOYED')
-            ->where('id_country','!=','1')
-            ->orderBy('id_detail_manpower','desc')->get();
+                ->where('current_work_status', 'EMPLOYED')
+                ->where('id_country', '!=', '1')
+                ->orderBy('id_detail_manpower', 'desc')->get();
 
-            foreach($data as $d){
+            foreach ($data as $d) {
                 $city = City::where('id_city', $d->id_city)->first();
                 $state = State::where('id_state', $d->id_state)->first();
                 $user = User::where('id', $d->id_user)->first();
-                $d->city = isset($city)?$city->city:'';
-                $d->state = isset($state)?$state->state:'';
-                $d->first_name = isset($user)?$user->first_name:'';
+                $d->city = isset($city) ? $city->city : '';
+                $d->state = isset($state) ? $state->state : '';
+                $d->first_name = isset($user) ? $user->first_name : '';
 
                 $d->create_date = date('d-m-Y h:i:s', strtotime($d->created_at));
             }
@@ -265,20 +267,20 @@ class RegisManpowerController extends Controller
     {
         if ($request->ajax()) {
 
-            $data = DetailManpower::whereHas('user', function($user) {
-                $user->where('status','ACTIVE');
+            $data = DetailManpower::whereHas('user', function ($user) {
+                $user->where('status', 'ACTIVE');
             })->with('user')
-            ->where('current_work_status','UNEMPLOYED')
-            ->where('id_country','!=','1')
-            ->orderBy('id_detail_manpower','desc')->get();
+                ->where('current_work_status', 'UNEMPLOYED')
+                ->where('id_country', '!=', '1')
+                ->orderBy('id_detail_manpower', 'desc')->get();
 
-            foreach($data as $d){
+            foreach ($data as $d) {
                 $city = City::where('id_city', $d->id_city)->first();
                 $state = State::where('id_state', $d->id_state)->first();
                 $user = User::where('id', $d->id_user)->first();
-                $d->city = isset($city)?$city->city:'';
-                $d->state = isset($state)?$state->state:'';
-                $d->first_name = isset($user)?$user->first_name:'';
+                $d->city = isset($city) ? $city->city : '';
+                $d->state = isset($state) ? $state->state : '';
+                $d->first_name = isset($user) ? $user->first_name : '';
 
                 $d->create_date = date('d-m-Y h:i:s', strtotime($d->created_at));
             }
@@ -288,45 +290,46 @@ class RegisManpowerController extends Controller
     }
 
 
-        // RegisterController.php
-        public function create()
-        {
-            $status = 'Active';
+    // RegisterController.php
+    public function create()
+    {
+        $status = 'Active';
 
-            // Ambil semua bahagian
-            $getBahagian = City::where('is_active', 'ENABLE')
-                ->orderBy('city', 'ASC')
-                ->get();
+        // Ambil semua bahagian
+        $getBahagian = City::where('is_active', 'ENABLE')
+            ->orderBy('city', 'ASC')
+            ->get();
 
-            // Kosongkan dulu data cawangan (biar hanya muncul setelah pilih bahagian)
-            $data = collect();
+        // Kosongkan dulu data cawangan (biar hanya muncul setelah pilih bahagian)
+        $data = collect();
 
-            return view('employee.register.registerManpower', compact('data', 'getBahagian'));
-        }
+        return view('employee.register.registerManpower', compact('data', 'getBahagian'));
+    }
 
-        // AJAX endpoint untuk ambil cawangan by bahagian
-        public function getCawanganByBahagian($id_city)
-        {
-            $status = 'Active';
+    // AJAX endpoint untuk ambil cawangan by bahagian
+    public function getCawanganByBahagian($id_city)
+    {
+        $status = 'Active';
 
-            $data = DetailCompany::with('user')
-                ->where('id_city', $id_city)
-                ->whereHas('user', function ($query) use ($status) {
-                    if ($status !== "Overall" && $status !== "") {
-                        $query->where('status', $status);
-                    }
-                })
-                ->orderBy('created_at', 'DESC')
-                ->get();
+        $data = DetailCompany::with('user')
+            ->where('id_city', $id_city)
+            ->whereHas('user', function ($query) use ($status) {
+                if ($status !== "Overall" && $status !== "") {
+                    $query->where('status', $status);
+                }
+            })
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
-            return response()->json([
-                'success' => true,
-                'data' => $data
-            ]);
-        }
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
+    }
 
 
-    public function registerStepTwo() {
+    public function registerStepTwo()
+    {
 
         $state = State::where('is_active', 'ENABLE')->get();
         $city = City::where('is_active', 'ENABLE')->get();
@@ -334,7 +337,8 @@ class RegisManpowerController extends Controller
         return view('employee.register.registerStepTwo', compact('state', 'city'));
     }
 
-    public function registerStepThree() {
+    public function registerStepThree()
+    {
 
         $status_education = StatusEducation::where('is_active', 'ENABLE')->get();
         $study = Study::where('is_active', 'ENABLE')->get();
@@ -342,9 +346,10 @@ class RegisManpowerController extends Controller
         return view('employee.register.registerStepThree', compact('status_education', 'study'));
     }
 
-    public function registerStepFour() {
+    public function registerStepFour()
+    {
 
-        if(Auth::user()){
+        if (Auth::user()) {
             $auth = Auth::user();
 
             $user = User::with('manpower')->where('id', $auth->id)->first();
@@ -361,14 +366,15 @@ class RegisManpowerController extends Controller
         $pegawai_daerah = User::where('status', 'ACTIVE')->where('id_level', 4)->get();
         $business_income = BusinessIncome::where('is_active', 'ENABLE')->where('type_income', "TAHUNAN")->get();
 
-        $persatuan = User::with('company')->whereHas('company', function($q) {
+        $persatuan = User::with('company')->whereHas('company', function ($q) {
             $q->where('step_registration', 2);
         })->where('status', 'ACTIVE')->where('id_level', '2')->get();
 
-        return view('employee.register.registerStepFour', compact('user','business_activity', 'business_type', 'sub_business_activity', 'category_product', 'pegawai_daerah', 'business_income', 'persatuan'));
+        return view('employee.register.registerStepFour', compact('user', 'business_activity', 'business_type', 'sub_business_activity', 'category_product', 'pegawai_daerah', 'business_income', 'persatuan'));
     }
 
-    public function registerStepFive() {
+    public function registerStepFive()
+    {
 
         $agency = Agency::where('is_active', 'ENABLE')->get();
         $business_type = BusinessType::where('is_active', 'ENABLE')->get();
@@ -380,7 +386,8 @@ class RegisManpowerController extends Controller
         return view('employee.register.registerStepFive', compact('agency', 'business_type', 'sub_business_activity', 'category_product', 'pegawai_daerah', 'business_income'));
     }
 
-    public function registerStepSix() {
+    public function registerStepSix()
+    {
 
         $agency_pelatihan = AgencyPelatihan::where('is_active', 'ENABLE')->get();
         $business_type = BusinessType::where('is_active', 'ENABLE')->get();
@@ -392,7 +399,8 @@ class RegisManpowerController extends Controller
         return view('employee.register.registerStepSix', compact('agency_pelatihan', 'business_type', 'sub_business_activity', 'category_product', 'pegawai_daerah', 'business_income'));
     }
 
-    public function registerStepSeven() {
+    public function registerStepSeven()
+    {
 
         $business_income_monthly = BusinessIncome::where('is_active', 'ENABLE')->where('type_income', "BULANAN")->get();
         $business_income_weekly = BusinessIncome::where('is_active', 'ENABLE')->where('type_income', "MINGGUAN")->get();
@@ -403,7 +411,8 @@ class RegisManpowerController extends Controller
         return view('employee.register.registerStepSeven', compact('business_income_monthly', 'business_income_weekly', 'business_income_daily'));
     }
 
-    public function registerInvoice() {
+    public function registerInvoice()
+    {
 
         $user = Auth::user();
         $detail = DetailManpower::with('business_type_text')->where('id_user', $user->id)->first();
@@ -412,7 +421,7 @@ class RegisManpowerController extends Controller
 
         $setting_subscribe = SettingSubscribe::where('subscribe_for', 'REGISTER AHLI')->where('is_active', 'ENABLE')->first();
 
-        if ($detail->subscribe_free	== '0') {
+        if ($detail->subscribe_free    == '0') {
             $setting_subscribe->price = $setting_subscribe->price;
         }
 
@@ -421,13 +430,14 @@ class RegisManpowerController extends Controller
         return view('employee.register.invoice', compact('user', 'detail', 'setting_subscribe'));
     }
 
-    public function registerPayment() {
+    public function registerPayment()
+    {
 
         $user = Auth::user();
         $detail = DetailManpower::where('id_user', $user->id)->first();
         $setting_subscribe = SettingSubscribe::where('subscribe_for', 'REGISTER AHLI')->where('is_active', 'ENABLE')->first();
 
-        if ($detail->subscribe_free	== '0') {
+        if ($detail->subscribe_free    == '0') {
             $setting_subscribe->price = $setting_subscribe->price;
         }
 
@@ -438,11 +448,12 @@ class RegisManpowerController extends Controller
         return view('employee.register.payment', compact('user', 'detail', 'setting_subscribe', 'encrypt'));
     }
 
-    public function registerPaymentCash(Request $r) {
+    public function registerPaymentCash(Request $r)
+    {
 
         $user = Auth::user();
 
-        if($r->ref){
+        if ($r->ref) {
             $id_user = Crypt::decryptString($r->ref);
         } else {
             $id_user = $user->id;
@@ -451,11 +462,11 @@ class RegisManpowerController extends Controller
         $detail = DetailManpower::where('id_user', $id_user)->first();
         $setting_subscribe = SettingSubscribe::where('subscribe_for', 'REGISTER AHLI')->where('is_active', 'ENABLE')->first();
 
-        if ($detail->subscribe_free	== '0') {
+        if ($detail->subscribe_free    == '0') {
             $setting_subscribe->price = 0;
         }
 
-        if($setting_subscribe->price == 0) {
+        if ($setting_subscribe->price == 0) {
 
             // return $setting_subscribe->price;
 
@@ -482,22 +493,20 @@ class RegisManpowerController extends Controller
             $detail->subscribe_free = 1;
             $detail->save();
 
-            try{
+            try {
                 $this->sendEmailNoticeAhliRegistered($id_user);
-            }catch(\Exception $e){
-
+            } catch (\Exception $e) {
             }
 
 
-            if($approval_payment) {
+            if ($approval_payment) {
 
-                if($r->daftar_persatuan) {
+                if ($r->daftar_persatuan) {
                     return redirect()->to("/daftar_persatuan/$r->code");
                 }
 
                 return redirect()->to('/');
             }
-
         }
 
         // return response()->json($detail);
@@ -505,11 +514,12 @@ class RegisManpowerController extends Controller
         return view('employee.register.paymentCash', compact('user', 'detail', 'setting_subscribe'));
     }
 
-    public function registerStepTwoUpdate(Request $request) {
+    public function registerStepTwoUpdate(Request $request)
+    {
 
         $user = Auth::user();
 
-        if($request->registered_by_persatuan){
+        if ($request->registered_by_persatuan) {
             $id_user = Crypt::decryptString($request->ref);
             $user = User::where('id', $id_user)->first();
         }
@@ -528,15 +538,15 @@ class RegisManpowerController extends Controller
         $detail->key_reference = Str::random(6);
 
         $cek = DetailManpower::where('key_reference', $detail->key_reference)->first();
-        if($cek) {
+        if ($cek) {
             $detail->key_reference = Str::random(6);
             $cek = DetailManpower::where('key_reference', $detail->key_reference)->first();
-            if($cek) {
+            if ($cek) {
                 $detail->key_reference = Str::random(6);
             }
         }
 
-        if($request->registered_by_persatuan){
+        if ($request->registered_by_persatuan) {
             $log_payment = new LogPaymentManpower();
             $log_payment->id_user = $id_user;
             $log_payment->id_detail_manpower =  $detail->id_detail_manpower;
@@ -555,7 +565,7 @@ class RegisManpowerController extends Controller
             $log_payment->save();
             $detail->save();
 
-            if(Auth::user()->id_level == '2'){
+            if (Auth::user()->id_level == '2') {
                 $request = new Request;
                 $request->approval = "Approve";
                 $request->approval_note = "Payment bypass via Persatuan!";
@@ -599,9 +609,7 @@ class RegisManpowerController extends Controller
                 $log_payment_join_company->approval_note = "Payment bypass via Persatuan!";
 
                 $log_payment_join_company->save();
-
             }
-
         }
 
         $detail->save();
@@ -612,7 +620,8 @@ class RegisManpowerController extends Controller
 
     }
 
-    public function approvalPayment(Request $request, $id) {
+    public function approvalPayment(Request $request, $id)
+    {
 
         $user = Auth::user();
 
@@ -636,22 +645,22 @@ class RegisManpowerController extends Controller
 
             $certificate = Certifikat::first();
             $publish = new PublishedCertificate();
-            $running_number = PublishedCertificate::orderBy('id_published_certificate','desc')->first();
+            $running_number = PublishedCertificate::orderBy('id_published_certificate', 'desc')->first();
 
             $dateNow = date("dmy");
 
-            if(!$check_exists){
-                if($running_number){
+            if (!$check_exists) {
+                if ($running_number) {
                     $add_number = ((int)$running_number->number_certificate) + 1;
                     $next_number = str_pad($add_number, 6, '0', STR_PAD_LEFT);
-                }else{
+                } else {
                     $next_number = str_pad(1, 6, '0', STR_PAD_LEFT);
                 }
             }
 
             // FIX: Cast valid_time ke integer
             $validTime = (int) $certificate->valid_time;
-            
+
             // Gunakan addYears (plural) untuk multiple years, atau addYear untuk single year
             if ($validTime == 1) {
                 $newDateTime = Carbon::now()->addYear();
@@ -659,8 +668,8 @@ class RegisManpowerController extends Controller
                 $newDateTime = Carbon::now()->addYears($validTime);
             }
 
-            if(!$check_exists){
-                $detail_manpower->number_certificate = 'A'.$dateNow.'-'.$next_number;
+            if (!$check_exists) {
+                $detail_manpower->number_certificate = 'A' . $dateNow . '-' . $next_number;
                 $publish->number_certificate = $next_number;
                 $publish->id_user = $detail_manpower->id_user;
                 $publish->expire_date = $newDateTime;
@@ -673,7 +682,6 @@ class RegisManpowerController extends Controller
             // Cast juga saat menyimpan ke detail_manpower
             $detail_manpower->valid_time_certificate = $validTime;
             $detail_manpower->certificate_expired_date = $newDateTime;
-
         } else {
             $approval = "Rejected";
             $detail_manpower->is_subscribe = "FALSE";
@@ -694,10 +702,10 @@ class RegisManpowerController extends Controller
         ];
 
         return response()->json($result);
-
     }
 
-    public function listLogPaymentManpower(Request $request) {
+    public function listLogPaymentManpower(Request $request)
+    {
 
         $user = Auth::user();
 
@@ -715,7 +723,7 @@ class RegisManpowerController extends Controller
             if ($status) {
                 $data = $data->where('approval', $status);
 
-                if($status == "Approved" || $status == "Rejected"){
+                if ($status == "Approved" || $status == "Rejected") {
                     $data = $data->orderBy('id_log_payment_manpower', 'DESC');
                 }
             }
@@ -725,16 +733,15 @@ class RegisManpowerController extends Controller
                 $pegawai_daerah = User::select('id')->where('id_city', $user->id_city)->where('id_level', 4)->get();
 
                 foreach ($pegawai_daerah as $i => $d) {
-                    if($i == 0){
-                        $data = $data->whereHas('user.manpower', function($query) use($d) {
+                    if ($i == 0) {
+                        $data = $data->whereHas('user.manpower', function ($query) use ($d) {
                             $query->where('id_pegawai_daerah', $d->id);
                         });
                     } else {
-                        $data = $data->whereHas('user.manpower', function($query) use($d) {
+                        $data = $data->whereHas('user.manpower', function ($query) use ($d) {
                             $query->orWhere('id_pegawai_daerah', $d->id);
                         });
                     }
-
                 }
 
                 // $data = $data->whereHas('user.manpower', function($query) use($user) {
@@ -748,17 +755,16 @@ class RegisManpowerController extends Controller
 
             $data = $data->get();
 
-            foreach($data as $d){
+            foreach ($data as $d) {
                 $d->create_date = date('d-m-Y H:i:s', strtotime($d->created_at));
                 $d->approval_by_name = "";
                 $by = User::where('id', $d->approval_by)->first();
-                if($by) {
+                if ($by) {
                     $d->approval_by_name = $by->fullname;
                 }
-
             }
 
-            if($request->responseJson) {
+            if ($request->responseJson) {
                 $result = [
                     'message' => "Success get data",
                     'data' => $data
@@ -777,14 +783,14 @@ class RegisManpowerController extends Controller
         // return $data;
 
         return view('logPayment.index');
-
     }
 
-    public function createLogPaymentManpower(Request $request) {
+    public function createLogPaymentManpower(Request $request)
+    {
 
         $user = Auth::user();
 
-        if($request->ref){
+        if ($request->ref) {
             $id_user = Crypt::decryptString($request->ref);
         } else {
             $id_user = $user->id;
@@ -794,18 +800,18 @@ class RegisManpowerController extends Controller
 
         $setting_subscribe = SettingSubscribe::where('subscribe_for', 'REGISTER AHLI')->where('is_active', 'ENABLE')->first();
 
-        if ($detail->subscribe_free	== '0') {
+        if ($detail->subscribe_free    == '0') {
             $setting_subscribe->price = 0;
         }
 
-        if($request->hasFile('img')){
+        if ($request->hasFile('img')) {
             $file = $request->file('img');
             $n = $file->getClientOriginalName();
             $current_date = date('Ymdhis');
             $name = "$current_date$n";
-            $file->move(public_path().'/ImagePaymentProof',$name);
+            $file->move(public_path() . '/ImagePaymentProof', $name);
             $image = $name;
-        }else{
+        } else {
             $image = 'default.png';
         }
 
@@ -820,14 +826,14 @@ class RegisManpowerController extends Controller
         $log_payment->created_by = $user->id;
 
         $subscribe_status = "WAITING";
-        if($request->subscribe_status) $subscribe_status = $request->subscribe_status;
+        if ($request->subscribe_status) $subscribe_status = $request->subscribe_status;
 
         $detail->subscribe_status = $subscribe_status;
 
         $log_payment->save();
         $detail->save();
 
-        if(Auth::user()->id_level == '1'){
+        if (Auth::user()->id_level == '1') {
             $request = new Request;
             $request->approval = "Approve";
             $request->approval_note = "Payment bypass via Admin!";
@@ -838,7 +844,7 @@ class RegisManpowerController extends Controller
             return redirect()->to('/senaraiAhli?status=Expired');
         }
 
-        if($request->responsefunction){
+        if ($request->responsefunction) {
 
             return $log_payment->id_log_payment_manpower;
             // $result = [
@@ -848,14 +854,15 @@ class RegisManpowerController extends Controller
         }
 
         return redirect()->to('/');
-
     }
 
-    public function waitingPaymentApproval() {
+    public function waitingPaymentApproval()
+    {
         return view('employee.register.waitingPaymentApproval');
     }
 
-    public function registerStepThreeUpdate(Request $request) {
+    public function registerStepThreeUpdate(Request $request)
+    {
 
         $user = Auth::user();
 
@@ -878,41 +885,41 @@ class RegisManpowerController extends Controller
         $detail->save();
 
         return redirect()->to('/home');
-
     }
 
-    public function registerStepFourUpdate(Request $request) {
+    public function registerStepFourUpdate(Request $request)
+    {
 
         $user = Auth::user();
 
         // return $user;
 
-        if($request->hasFile('img_perniagaan')){
+        if ($request->hasFile('img_perniagaan')) {
             $file = $request->file('img_perniagaan');
             $n = $file->getClientOriginalName();
             $current_date = date('Ymdhis');
             $name = "$current_date$n";
-            $file->move(public_path().'/BusinessImage',$name);
+            $file->move(public_path() . '/BusinessImage', $name);
             $perniagaan_picture = $name;
-        }else{
+        } else {
             $perniagaan_picture = 'default.png';
         }
 
-        if($request->hasFile('img_produk')){
+        if ($request->hasFile('img_produk')) {
             $file = $request->file('img_produk');
             $n = $file->getClientOriginalName();
             $current_date = date('Ymdhis');
             $name = "$current_date$n";
-            $file->move(public_path().'/BusinessProductImage',$name);
+            $file->move(public_path() . '/BusinessProductImage', $name);
             $product_picture = $name;
-        }else{
+        } else {
             $product_picture = 'default.png';
         }
 
         $detail = DetailManpower::where('id_user', $user->id)->first();
 
 
-        if($request->persatuan && $request->persatuan != '0') {
+        if ($request->persatuan && $request->persatuan != '0') {
             $detail->id_detail_company = $request->persatuan;
         }
 
@@ -950,10 +957,10 @@ class RegisManpowerController extends Controller
         // $this->sendEmailInvoice($user->id);
 
         return redirect()->to('/home');
-
     }
 
-    public function registerStepFiveUpdate(Request $request) {
+    public function registerStepFiveUpdate(Request $request)
+    {
 
         $user = Auth::user();
 
@@ -961,7 +968,7 @@ class RegisManpowerController extends Controller
 
         $detail->q_financing = $request->radio1;
 
-        if($request->agency) {
+        if ($request->agency) {
             $id_agency = $request->agency;
             // array_pop($id_agency);
             $detail->id_agency = $id_agency;
@@ -986,10 +993,10 @@ class RegisManpowerController extends Controller
         // $this->sendEmailInvoice($user->id);
 
         return redirect()->to('/register_ahli/step_six');
-
     }
 
-    public function registerStepSixUpdate(Request $request) {
+    public function registerStepSixUpdate(Request $request)
+    {
 
         $user = Auth::user();
 
@@ -1004,10 +1011,10 @@ class RegisManpowerController extends Controller
         // $this->sendEmailInvoice($user->id);
 
         return redirect()->to('/register_ahli/step_seven');
-
     }
 
-    public function registerStepSevenUpdate(Request $request) {
+    public function registerStepSevenUpdate(Request $request)
+    {
 
         $user = Auth::user();
 
@@ -1022,22 +1029,22 @@ class RegisManpowerController extends Controller
         // $this->sendEmailInvoice($user->id);
 
         return redirect()->to('/home');
-
     }
 
-    public function semakPendaftaran(Request $request) {
+    public function semakPendaftaran(Request $request)
+    {
 
         return view('employee.register.checkRegistration');
-
     }
 
-    public function semakPendaftaranResult(Request $request) {
+    public function semakPendaftaranResult(Request $request)
+    {
 
         $manpower = DetailManpower::where('ic_number', $request->no_kad)->first();
 
-        if($manpower) {
+        if ($manpower) {
 
-            $tgl_daftar = date_format($manpower->created_at,"d/m/Y");
+            $tgl_daftar = date_format($manpower->created_at, "d/m/Y");
 
             $data = [
                 "no_kad" => "MYKADNO. $request->no_kad",
@@ -1055,18 +1062,15 @@ class RegisManpowerController extends Controller
         // return $data['no_kad'];
 
         return view('employee.register.checkRegistrationResult', compact('data'));
-
     }
 
     public function store(Request $request)
     {
-        // dd($request->all());
         $auth = Auth::user();
-
         $authCompany = false;
 
-        if(isset($auth)){
-            if($auth->id_level != 2){
+        if (isset($auth)) {
+            if ($auth->id_level != 2) {
                 return $this->commitResponse('Anda tidak bisa membuat akaun ahli, silahkan logout dahulu!');
             }
             $authCompany = true;
@@ -1075,15 +1079,14 @@ class RegisManpowerController extends Controller
         $user = new User;
 
         $email = $request->email;
-        $em = User::where('email',$email)->first();
+        $em = User::where('email', $email)->first();
 
-        if($em){
+        if ($em) {
             return $this->commitResponse('Emel anda sudah digunakan, sila guna emel lain!');
         }
 
-        // Perbaikan logika is_foreign
         $isForeign = $request->is_foreign == 1 || $request->is_foreign == "true" || $request->is_foreign == true;
-        
+
         if (!$isForeign) {
             $ic_number = preg_replace("/[^0-9]+/", "", $request->no_kad);
         } else {
@@ -1092,7 +1095,7 @@ class RegisManpowerController extends Controller
 
         $emic = DetailManpower::where('ic_number', $ic_number)->first();
 
-        if($emic){
+        if ($emic) {
             return $this->commitResponse('IC Number sudah digunakan!');
         }
 
@@ -1103,7 +1106,7 @@ class RegisManpowerController extends Controller
         $user->email = $request->email;
         $user->id_level = 3;
 
-        if($authCompany){
+        if ($authCompany) {
             $user->registered_by = $auth->id;
             $user->is_verified = true;
             $user->email_verified_at = date('d-m-Y h:i:s');
@@ -1111,25 +1114,23 @@ class RegisManpowerController extends Controller
         }
 
         $user->password = Hash::make($request->password);
-
         $user->save();
 
-        if($user){
+        if ($user) {
             $employee = new DetailManpower;
             $employee->id_user = $user->id;
             $employee->ic_number = $ic_number;
-            $employee->is_foreign = $isForeign; 
+            $employee->is_foreign = $isForeign;
             $employee->id_cawangan = $request->id_cawangan;
-            $employee->nama_pencadang = $request->nama_pencadang;
-            $employee->nama_peyokong = $request->nama_peyokong;
 
-            // ===== Tambahan field Mualaf =====
-            $employee->is_mualaf = $request->input('mualaf', 0);
-            $employee->tarikh_pengislaman = $request->input('tarikh_pengislaman', null);
+            // Mualaf dan tarikh_pengislaman dihapus
+            // $employee->nama_pencadang = $request->nama_pencadang;
+            // $employee->nama_peyokong = $request->nama_peyokong;
+            // $employee->is_mualaf = $request->input('mualaf', 0);
+            // $employee->tarikh_pengislaman = $request->input('tarikh_pengislaman', null);
 
-
-            if ($employee) {
-                $company = DetailCompany::where('id_user', $request->id_cawangan)->first();
+            $company = DetailCompany::where('id_user', $request->id_cawangan)->first();
+            if ($company) {
                 $joinComp = new JoinCompany();
                 $joinComp->id_detail_manpower = $employee->id_detail_manpower;
                 $joinComp->id_detail_company = $company->id_detail_company;
@@ -1138,28 +1139,33 @@ class RegisManpowerController extends Controller
                 $joinComp->status_approval_at = now();
                 $joinComp->expired_at = Carbon::now()->addYear(1);
                 $joinComp->save();
+
+                $employee->id_city = $company->id_city ?? null;
             }
-            $employee->id_city = $company->id_city ?? null;
+
             $employee->save();
         }
 
-
-        if(!$authCompany){
-            try{
+        if (!$authCompany) {
+            try {
                 $this->sendEmailVerification($user->id, $request->daftar_persatuan, $request->code);
-            } catch (\Exception $e){
-
+            } catch (\Exception $e) {
+                // Handle exception silently
             }
         }
+
         $encrypt = Crypt::encryptString($user->id);
         return $this->commitResponse('Registration Successfuly!', true, $encrypt);
     }
 
-    public function verify_email(Request $r, $id){
+
+    public function verify_email(Request $r, $id)
+    {
         return $id;
     }
 
-    public function index_detail_employee($id, $id_max) {
+    public function index_detail_employee($id, $id_max)
+    {
 
         $data = User::findOrFail($id);
 
@@ -1170,42 +1176,42 @@ class RegisManpowerController extends Controller
 
         $user = $id;
 
-         $data_bumiputera = CompanyShareHolders::where('id_user', $user)->where('id_status','1')->sum('total');
-         $data_non_bumiputera = CompanyShareHolders::where('id_user', $user)->where('id_status','2')->sum('total');
-         $data_foreign = CompanyShareHolders::where('id_user', $user)->where('id_status','3')->sum('total');
+        $data_bumiputera = CompanyShareHolders::where('id_user', $user)->where('id_status', '1')->sum('total');
+        $data_non_bumiputera = CompanyShareHolders::where('id_user', $user)->where('id_status', '2')->sum('total');
+        $data_foreign = CompanyShareHolders::where('id_user', $user)->where('id_status', '3')->sum('total');
 
-         $company_detail = DetailCompany::where('id_user', $user)->first();
+        $company_detail = DetailCompany::where('id_user', $user)->first();
 
-         if($company_detail->paid_up_capital !== null){
-             $data->percentage_bumiputera = number_format((($data_bumiputera / $company_detail->paid_up_capital) * 100), 1, ',', '.').'%';
-         }else{
-             $data->percentage_bumiputera = '0%';
-         }
+        if ($company_detail->paid_up_capital !== null) {
+            $data->percentage_bumiputera = number_format((($data_bumiputera / $company_detail->paid_up_capital) * 100), 1, ',', '.') . '%';
+        } else {
+            $data->percentage_bumiputera = '0%';
+        }
 
-         if($company_detail->paid_up_capital !== null){
-             $data->percentage_non_bumiputera = number_format((($data_non_bumiputera / $company_detail->paid_up_capital) * 100), 1, ',', '.').'%';
-         }else{
-             $data->percentage_non_bumiputera = '0%';
-         }
+        if ($company_detail->paid_up_capital !== null) {
+            $data->percentage_non_bumiputera = number_format((($data_non_bumiputera / $company_detail->paid_up_capital) * 100), 1, ',', '.') . '%';
+        } else {
+            $data->percentage_non_bumiputera = '0%';
+        }
 
-         if($company_detail->paid_up_capital !== null){
-             $data->percentage_foreign = number_format((($data_foreign / $company_detail->paid_up_capital) * 100), 1, ',', '.').'%';
-         }else{
-             $data->percentage_foreign = '0%';
-         }
+        if ($company_detail->paid_up_capital !== null) {
+            $data->percentage_foreign = number_format((($data_foreign / $company_detail->paid_up_capital) * 100), 1, ',', '.') . '%';
+        } else {
+            $data->percentage_foreign = '0%';
+        }
 
-         $data_equity_by_status = [
+        $data_equity_by_status = [
             'bumiputera' => $data_bumiputera,
             'non-bumiputera' => $data_non_bumiputera,
             'foreign' => $data_foreign
-            ];
+        ];
 
         $data->bumiputera = money_format('%i', $data_bumiputera);
         $data->non_bumiputera = money_format('%i', $data_non_bumiputera);
         $data->foreign = money_format('%i', $data_foreign);
 
         $status_certificate = LogCertificate::where('id_user', $id)
-        ->where('id_log_certificate', $id_max)->first();
+            ->where('id_log_certificate', $id_max)->first();
 
         $data->status_detail = $status_certificate->status;
 
@@ -1213,7 +1219,6 @@ class RegisManpowerController extends Controller
 
 
         // return view('company.viewCompanyEquityBreakdown', compact('data'));
-        return view('company.active.detailCompany',compact('data'));
+        return view('company.active.detailCompany', compact('data'));
     }
-
 }

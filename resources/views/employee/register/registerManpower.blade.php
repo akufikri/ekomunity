@@ -189,24 +189,26 @@
                                     </select>
                                 </div> --}}
 
-                            <div class="form-group">
-                                <label class="font-weight-700 labelku">Bahagian <span style="color: #383444;">*</span></label>
-                                <select name="id_bahagian" id="id_bahagian"
-                                    class="form-control form-control4 form-control-lg select2">
-                                    <option selected>--- Pilih Bahagian ---</option>
-                                    @foreach ($getBahagian as $item)
-                                        <option value="{{ $item->id_city }}">{{ $item->city }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                                <div class="form-group">
+                                    <label class="font-weight-700 labelku">Bahagian <span
+                                            style="color: #383444;">*</span></label>
+                                    <select name="id_bahagian" id="id_bahagian"
+                                        class="form-control form-control4 form-control-lg select2">
+                                        <option selected>--- Pilih Bahagian ---</option>
+                                        @foreach ($getBahagian as $item)
+                                            <option value="{{ $item->id_city }}">{{ $item->city }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
-                            <div class="form-group">
-                                <label class="font-weight-700 labelku">Cawangan <span style="color: #383444;">*</span></label>
-                                <select name="id_cawangan" id="id_cawangan"
-                                    class="form-control form-control4 form-control-lg select2">
-                                    <option selected>--- Pilih Cawangan ---</option>
-                                </select>
-                            </div>
+                                <div class="form-group">
+                                    <label class="font-weight-700 labelku">Cawangan <span
+                                            style="color: #383444;">*</span></label>
+                                    <select name="id_cawangan" id="id_cawangan"
+                                        class="form-control form-control4 form-control-lg select2">
+                                        <option selected>--- Pilih Cawangan ---</option>
+                                    </select>
+                                </div>
 
                                 {{-- <div class="form-group" id="bahagian_wrapper" style="display:none;">
                                     <label class="font-weight-700 labelku">Bahagian</label>
@@ -235,7 +237,7 @@
                                         autocomplete="new-password">
                                 </div>
 
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label class="font-weight-700 labelku">Nama Pencadang <span
                                             style="color: #383444;">*</span></label>
                                     <input id="nama_pencadang" type="text"
@@ -246,8 +248,8 @@
                                         <span class="invalid-feedback"
                                             role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
-                                </div>
-
+                                </div> --}}
+                                {{-- 
                                 <div class="form-group">
                                     <label class="font-weight-700 labelku">Nama Peyokong <span
                                             style="color: #383444;">*</span></label>
@@ -259,10 +261,10 @@
                                         <span class="invalid-feedback"
                                             role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
-                                </div>
+                                </div> --}}
 
                                 <!-- Radio Mualaf -->
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label class="font-weight-700 labelku">
                                         Saya seorang Mualaf? <span style="color: #383444;">*</span>
                                     </label>
@@ -282,7 +284,7 @@
                                     <label class="font-weight-700 labelku">Tarikh Pengislaman</label>
                                     <input id="tarikh_pengislaman" type="date" name="tarikh_pengislaman"
                                         class="form-control-lg form-control" value="{{ old('tarikh_pengislaman') }}">
-                                </div>
+                                </div> --}}
 
                                 <div class="form-group">
                                     <br>
