@@ -428,13 +428,13 @@
                                 <p class="">{{ __('menu.post_category') }}</p>
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
+                        <li class="nav-item">
                             <a href="{{ URL::to('/setting-brand') }}"
                                 class="nav-link {{ request()->is('setting-brand') ? 'active' : '' }}">
                                 <i class="fas fa-cogs nav-icon"></i>
                                 <p class="">{{ __('menu.brand_setting') }}</p>
                             </a>
-                        </li> --}}
+                        </li>
                         <li class="nav-item">
                             <a href="{{ URL::to('/emailSetting') }}"
                                 class="nav-link {{ request()->is('emailSetting') ? 'active' : '' }}">

@@ -1,4 +1,5 @@
-  <header id="header" class="header d-flex align-items-center sticky-top shadow" style="background:{{ $global_brand ? $global_brand->brand_color : ""  }}">
+  <header id="header" class="header d-flex align-items-center sticky-top shadow"
+      style="background:{{ $global_brand ? $global_brand->brand_color : '' }}">
       <div class="container position-relative d-flex align-items-center justify-content-between">
 
           @if ($global_brand)
@@ -14,7 +15,8 @@
               </a>
           @else
               <a href="/" class="logo d-flex align-items-center me-auto me-xl-0">
-                  <img src="{{ asset('images/coedev-logo.png') }}" alt="" style="height: 50px; width: auto;">
+                  <img src="{{ asset('landingpage/images/logo/logo-ekomuniti.png') }}" alt=""
+                      style="height: 50px; width: auto;">
                   <div class="ms-2 d-flex flex-column justify-content-center">
                       <h6 class="sitename text-white fw-bold mb-0">Coedev</h6>
                       <p class="text-white mb-0" style="font-size: 12px; line-height: 1.2;">
@@ -62,9 +64,9 @@
 
       </div>
   </header>
-<script>
-    document.getElementById('lang-switcher').addEventListener('change', function () {
-        const lang = this.value;
-        window.location.href = `/locale/${lang}`;
-    });
-</script>
+  <script>
+      document.getElementById('lang-switcher').addEventListener('change', function() {
+          const lang = this.value;
+          window.location.href = `/locale/${lang}`;
+      });
+  </script>

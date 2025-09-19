@@ -49,8 +49,8 @@
                     <img src="{{ $global_brand->logo_url }}" alt="{{ $global_brand->brand_name }}"
                         class="brand-text logo-mini" style="width: 50px;">
                 @else
-                    <img src="{{ asset('images/coedev-logo.png') }}" alt="Coedev logo" class="brand-text logo-mini"
-                        style="width: 50px;">
+                    <img src="{{ asset('landingpage/images/logo/logo-ekomuniti.png') }}" alt="Coedev logo"
+                        class="brand-text logo-mini" style="width: 50px;">
                 @endif
                 <!-- <span class="brand-text font-weight-light">AdminLTE 3</span> -->
             </a><br><br>

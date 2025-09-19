@@ -1121,28 +1121,8 @@ class RegisManpowerController extends Controller
             $employee->id_user = $user->id;
             $employee->ic_number = $ic_number;
             $employee->is_foreign = $isForeign;
-            $employee->id_cawangan = $request->id_cawangan;
 
-            // Mualaf dan tarikh_pengislaman dihapus
-            // $employee->nama_pencadang = $request->nama_pencadang;
-            // $employee->nama_peyokong = $request->nama_peyokong;
-            // $employee->is_mualaf = $request->input('mualaf', 0);
-            // $employee->tarikh_pengislaman = $request->input('tarikh_pengislaman', null);
-
-            $company = DetailCompany::where('id_user', $request->id_cawangan)->first();
-            if ($company) {
-                $joinComp = new JoinCompany();
-                $joinComp->id_detail_manpower = $employee->id_detail_manpower;
-                $joinComp->id_detail_company = $company->id_detail_company;
-                $joinComp->joining_fee = null;
-                $joinComp->status_approval = 'APPROVED';
-                $joinComp->status_approval_at = now();
-                $joinComp->expired_at = Carbon::now()->addYear(1);
-                $joinComp->save();
-
-                $employee->id_city = $company->id_city ?? null;
-            }
-
+            // Sudah tidak ada id_cawangan, pencadang, peyokong, mualaf, tarikh_pengislaman
             $employee->save();
         }
 
@@ -1157,6 +1137,7 @@ class RegisManpowerController extends Controller
         $encrypt = Crypt::encryptString($user->id);
         return $this->commitResponse('Registration Successfuly!', true, $encrypt);
     }
+
 
 
     public function verify_email(Request $r, $id)

@@ -8,8 +8,8 @@
                         <img src="{{ $global_brand->logo_url }}" style="height: 70px !important;" class="m-b15"
                             alt="" />
                     @else
-                        <img src="{{ asset('images/coedev-logo.png') }}" style="height: 70px !important;" class="m-b15"
-                            alt="" />
+                        <img src="{{ asset('landingpage/images/logo/logo-ekomuniti.png') }}"
+                            style="height: 70px !important;" class="m-b15" alt="" />
                     @endif
                     <p class="text-capitalize m-b20">
                         Ekomuniti adalah satu platform digital untuk persatuan & komuniti mengurus ahli, aktiviti, dan

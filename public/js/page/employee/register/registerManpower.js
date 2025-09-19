@@ -48,7 +48,6 @@ $(function () {
             type: "POST",
             data: {
                 _token: input_token.val(),
-                id_cawangan: form.find("select[name=id_cawangan]").val(),
                 email: form.find("input[name=email]").val(),
                 no_kad: form.find("input[name=no_kad]").val(),
                 dial_code: form.find("input[name=dial_code]").val(),
@@ -76,91 +75,5 @@ $(function () {
             }
         })
         .fail();
-    });
-
-    $("#bahagian_wrapper").hide();
-    $(document).on("change", "#id_cawangan", function () {
-        var idCawangan = $(this).val();
-
-        if (idCawangan && idCawangan !== "--- Pilih Cawangan ---") {
-            $.ajax({
-                url: "/get_bahagian_with_ketua/" + idCawangan,
-                type: "GET",
-                success: function (res) {
-                    if (res.success && res.data) {
-                        $("#bahagian_display").val(
-                            res.data.bahagian +
-                                " / " +
-                                res.data.name_ketua_bahagian
-                        );
-
-                        $("#bahagian_wrapper").show();
-                    } else {
-                        $("#bahagian_display").val("N/A");
-                        $("#bahagian_wrapper").show();
-                    }
-                },
-                error: function () {
-                    $("#bahagian_display").val("N/A");
-                    $("#bahagian_wrapper").show();
-                },
-            });
-        } else {
-            $("#bahagian_wrapper").hide();
-            $("#bahagian_display").val("");
-        }
-    });
-
-    // Inisialisasi Select2 untuk kedua dropdown
-    $("#id_bahagian").select2({
-        placeholder: "--- Pilih Bahagian ---",
-        allowClear: true,
-        width: "100%",
-    });
-
-    $("#id_cawangan").select2({
-        placeholder: "--- Pilih Cawangan ---",
-        allowClear: true,
-        width: "100%",
-    });
-
-    $(document).on("change", "#id_bahagian", function () {
-        var idBahagian = $(this).val();
-
-        $("#id_cawangan")
-            .empty()
-            .append('<option value="">--- Pilih Cawangan ---</option>');
-        $("#id_cawangan").select2("val", "");
-
-        if (idBahagian) {
-            $.ajax({
-                url: "/get-cawangan/" + idBahagian,
-                type: "GET",
-                success: function (res) {
-                    if (res.success && res.data && res.data.length > 0) {
-                        $.each(res.data, function (i, item) {
-                            var kodCawangan = item.user.kod_cawangan || "N/A";
-                            var namaUser = item.user.fullname || "-";
-                            var companyName = item.full_company_name || "-";
-
-                            $("#id_cawangan").append(
-                                `<option value="${item.user.id}">
-                                (${kodCawangan}) ${namaUser} - ${companyName}
-                            </option>`
-                            );
-                        });
-                        $("#id_cawangan").trigger("change");
-                    } else {
-                        $("#id_cawangan").append(
-                            '<option value="">Tiada Cawangan</option>'
-                        );
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error("AJAX Error:", error);
-                    alert("Gagal memuat cawangan. Error: " + error);
-                },
-            });
-        }
     });
 });

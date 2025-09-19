@@ -250,6 +250,15 @@
                                     <img src="/CompanyBanner/{{ $data->company->banner }}" alt="Upload Profile"
                                         width="100" height="100">
                                 </div>
+                                <div class="col-lg-6">
+                                    <label class="filldata text-muted font-italic label_form_judul"
+                                        style="margin-bottom: 0px;" for="">Pautan</label><br>
+                                    @if ($data->company->custom_link)
+                                        <a href="{{ env('APP_URL') }}/{{ $data->company->custom_link }}">
+                                            <i><u>{{ env('APP_URL') }}/{{ $data->company->custom_link }}</u></i>
+                                        </a>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>

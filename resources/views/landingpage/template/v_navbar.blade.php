@@ -11,13 +11,13 @@
             <!-- website logo -->
             <div class="logo-header mostion">
                 <!--<a href="/" class="navbar-brand" style="color">OG<b>SE</b></a>  -->
-              @if ($global_brand)
+                @if ($global_brand)
                     <a href="/"><img src="{{ $global_brand->logo_url }}" class="logo" alt=""
-                        style="height: 50px !important;"></a>
-              @else
-                <a href="/"><img src="{{ asset('images/coedev-logo.png') }}" class="logo" alt=""
-                        style="height: 50px !important;"></a>
-              @endif
+                            style="height: 50px !important;"></a>
+                @else
+                    <a href="/"><img src="{{ asset('landingpage/images/logo/logo-ekomuniti.png') }}"
+                            class="logo" alt="" style="height: 50px !important;"></a>
+                @endif
             </div>
             <!-- nav toggle button -->
             <!-- nav toggle button -->
@@ -77,8 +77,8 @@
                         @auth
                             <a href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                class="btn btn-md"
-                                style="color: white !important; background-color: #b91c1c; "><i class="fa fa-lock"></i>
+                                class="btn btn-md" style="color: white !important; background-color: #b91c1c; "><i
+                                    class="fa fa-lock"></i>
                                 Logout</a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

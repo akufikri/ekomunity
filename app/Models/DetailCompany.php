@@ -74,7 +74,8 @@ class DetailCompany extends Model
         'tempoh_lantikan',
         'slogan',
         'mengenai',
-        'banner'
+        'banner',
+        'custom_link'
     ];
 
     static $stepRegistration = 2;

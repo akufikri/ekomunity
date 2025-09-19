@@ -120,13 +120,28 @@ class CompanyController extends Controller
 
     public function update(Request $request, $id)
     {
-
         $data = User::findOrFail($id);
-        // dd($request->all());
         if ($data) {
-
             $man = DetailCompany::where('id_user', $data->id)->first();
 
+            // ======== Handle Custom Link ========
+            if ($request->custom_link) {
+                // Replace spasi dengan "/"
+                $processedLink = preg_replace('/\s+/', '/', trim($request->custom_link));
+
+                // Cek duplicate custom_link di table detail_company (kecuali current user)
+                $exists = DetailCompany::where('custom_link', $processedLink)
+                    ->where('id_user', '!=', $data->id)
+                    ->exists();
+
+                if ($exists) {
+                    return back()->withErrors(['custom_link' => 'Custom link sudah digunakan, silakan pilih link lain!']);
+                }
+
+                $man->custom_link = $processedLink;
+            }
+
+            // ======== Update data lain ========
             $man->full_company_name = $request->full_company_name;
             $man->company_registration = $request->company_registration;
             $man->address = $request->address;
@@ -143,8 +158,7 @@ class CompanyController extends Controller
                 $n = $file->getClientOriginalName();
                 $name = "$n";
                 $file->move(public_path() . '/CompanyLogo', $name);
-                $photo1 = $name;
-                $man->logo_picture = $photo1;
+                $man->logo_picture = $name;
             }
 
             if ($request->hasFile('banner')) {
@@ -163,7 +177,6 @@ class CompanyController extends Controller
             }
 
             if ($request->id_state) $man->id_state = $request->id_state;
-
             if ($request->id_city) $man->id_city = $request->id_city;
 
             $man->save();

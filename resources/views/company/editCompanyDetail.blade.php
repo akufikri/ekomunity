@@ -225,11 +225,16 @@
                         </div>
                     </div>
 
+                    {{-- @php
+                        dd($data->custom_link);
+                    @endphp --}}
+
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="font-weight-700 labelku">Kostum Nama Pautan</label>
-                            <input type="text" value="" class="form-control form-control-lg" placeholder=""
-                                name="custom_link" autofocus>
+                            <input type="text"
+                                value="{{ isset($data->company->custom_link) ? $data->company->custom_link : '' }}"
+                                class="form-control form-control-lg" placeholder="" name="custom_link" autofocus>
                         </div>
                     </div>
 

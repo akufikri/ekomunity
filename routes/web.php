@@ -495,44 +495,135 @@ Route::get('/pembayaran_success', function () {
 
     return view('joinCompany.paymentSuccess');
 });
+// Route::get('/{code}', function ($code) {
+//     $auth = Auth::user();
 
+//     // 1️⃣ Coba cari dulu berdasarkan custom_link
+//     $data = DetailCompany::with('user')->where('custom_link', $code)->first();
+//     $total_company = DetailCompany::with('user')->where('custom_link', $code)->count();
 
+//     // 2️⃣ Kalau tidak ketemu di custom_link, cek ke key_reference
+//     if (!$data) {
+//         $data = DetailCompany::with('user')->where('key_reference', $code)->first();
+//         $total_company = DetailCompany::with('user')->where('key_reference', $code)->count();
+//     }
 
+//     if (!$data) {
+//         return "Data not found!";
+//     }
+
+//     $user = User::where('id', $data->id_user)->first();
+//     if (!$user) {
+//         return "Data not found!";
+//     }
+
+//     // Format phone number
+//     if ($user->phone_number != null) {
+//         $first = substr($user->phone_number, 0, 1);
+//         $second = substr($user->phone_number, 1, 1);
+//         if ($first . $second == 60) {
+//             $data->phone_number = $user->phone_number;
+//         } else if ($first == 0) {
+//             $data->phone_number = '6' . $user->phone_number;
+//         } else if ($first != 6 && $first != 0) {
+//             $data->phone_number = '60' . $user->phone_number;
+//         }
+//     } else {
+//         $data->phone_number = '-';
+//     }
+
+//     // Tentukan share_link sesuai kondisi
+//     if ($data->custom_link) {
+//         $data->share_link = env('APP_URL') . "/persatuan/$data->custom_link";
+//     } else {
+//         $data->share_link = env('APP_URL') . "/persatuan/$data->key_reference";
+//     }
+
+//     return view('digitalprofile.persatuan', compact('data', 'auth', 'total_company'));
+// })->where('code', '.*');
 Route::get('/persatuan/{code}', function ($code) {
-
-    $data = DetailCompany::with('user')->where('key_reference', $code)->first();
-    $total_company = DetailCompany::with('user')->where('key_reference', $code)->count();
     $auth = Auth::user();
+
+    // 1️⃣ Coba cari dulu berdasarkan custom_link
+    $data = DetailCompany::with('user')->where('custom_link', $code)->first();
+    $total_company = DetailCompany::with('user')->where('custom_link', $code)->count();
+
+    // 2️⃣ Kalau tidak ketemu di custom_link, cek ke key_reference
+    if (!$data) {
+        $data = DetailCompany::with('user')->where('key_reference', $code)->first();
+        $total_company = DetailCompany::with('user')->where('key_reference', $code)->count();
+    }
 
     if (!$data) {
         return "Data not found!";
-    } else {
-
-        $user = User::where('id', $data->id_user)->first();
-
-        if (!$user) {
-            return "Data not found!";
-        }
-
-        if ($user->phone_number != null) {
-            $first = substr($user->phone_number, 0, 1);
-            $second = substr($user->phone_number, 1, 1);
-            if ($first . $second == 60) {
-                $data->phone_number = $user->phone_number;
-            } else if ($first == 0) {
-                $data->phone_number = '6' . $user->phone_number;
-            } else if ($first != 6 && $first != 0) {
-                $data->phone_number = '60' . $user->phone_number;
-            }
-        } else {
-            $data->phone_number = '-';
-        }
-
-        $data->share_link = env('APP_URL') . "/persatuan/$data->key_reference";
-
-        return view('digitalprofile.persatuan', compact('data', 'auth', 'total_company'));
     }
-});
+
+    $user = User::where('id', $data->id_user)->first();
+    if (!$user) {
+        return "Data not found!";
+    }
+
+    // Format phone number
+    if ($user->phone_number != null) {
+        $first = substr($user->phone_number, 0, 1);
+        $second = substr($user->phone_number, 1, 1);
+        if ($first . $second == 60) {
+            $data->phone_number = $user->phone_number;
+        } else if ($first == 0) {
+            $data->phone_number = '6' . $user->phone_number;
+        } else if ($first != 6 && $first != 0) {
+            $data->phone_number = '60' . $user->phone_number;
+        }
+    } else {
+        $data->phone_number = '-';
+    }
+
+    // Tentukan share_link sesuai kondisi
+    if ($data->custom_link) {
+        $data->share_link = env('APP_URL') . "/persatuan/$data->custom_link";
+    } else {
+        $data->share_link = env('APP_URL') . "/persatuan/$data->key_reference";
+    }
+
+    return view('digitalprofile.persatuan', compact('data', 'auth', 'total_company'));
+})->where('code', '.*');
+
+
+// Route::get('/persatuan/{code}', function ($code) {
+
+//     $data = DetailCompany::with('user')->where('key_reference', $code)->first();
+//     $total_company = DetailCompany::with('user')->where('key_reference', $code)->count();
+//     $auth = Auth::user();
+
+//     if (!$data) {
+//         return "Data not found!";
+//     } else {
+
+//         $user = User::where('id', $data->id_user)->first();
+
+//         if (!$user) {
+//             return "Data not found!";
+//         }
+
+//         if ($user->phone_number != null) {
+//             $first = substr($user->phone_number, 0, 1);
+//             $second = substr($user->phone_number, 1, 1);
+//             if ($first . $second == 60) {
+//                 $data->phone_number = $user->phone_number;
+//             } else if ($first == 0) {
+//                 $data->phone_number = '6' . $user->phone_number;
+//             } else if ($first != 6 && $first != 0) {
+//                 $data->phone_number = '60' . $user->phone_number;
+//             }
+//         } else {
+//             $data->phone_number = '-';
+//         }
+
+//         $data->share_link = env('APP_URL') . "/persatuan/$data->key_reference";
+
+//         return view('digitalprofile.persatuan', compact('data', 'auth', 'total_company'));
+//     }
+// });
 
 Route::get('/persatuan/structure/{code}', function ($code) {
 
@@ -1577,3 +1668,45 @@ Route::middleware(['auth', 'employee',])->group(function () {
     Route::any('/kerjasamaAgensi/update/{id}', [CollaborationAgencyController::class, 'update']);
     Route::delete('/kerjasamaAgensi/destroy/{id}', [CollaborationAgencyController::class, 'destroy']);
 });
+
+Route::get('/{code}', function ($code) {
+    $auth = Auth::user();
+
+    // Cari berdasarkan custom_link atau key_reference
+    $query = DetailCompany::with('user')
+        ->where('custom_link', $code)
+        ->orWhere('key_reference', $code);
+
+    $data = $query->first();
+    $total_company = $query->count();
+
+    if (!$data) {
+        return "Data not found!";
+    }
+
+    $user = User::find($data->id_user);
+    if (!$user) {
+        return "Data not found!";
+    }
+
+    // Format phone number
+    if ($user->phone_number) {
+        $first = substr($user->phone_number, 0, 1);
+        $second = substr($user->phone_number, 1, 1);
+
+        if ($first . $second == "60") {
+            $data->phone_number = $user->phone_number;
+        } elseif ($first == "0") {
+            $data->phone_number = '6' . $user->phone_number;
+        } else {
+            $data->phone_number = '60' . $user->phone_number;
+        }
+    } else {
+        $data->phone_number = '-';
+    }
+
+    // Tentukan share link
+    $data->share_link = env('APP_URL') . "/persatuan/" . ($data->custom_link ?? $data->key_reference);
+
+    return view('digitalprofile.persatuan', compact('data', 'auth', 'total_company'));
+})->where('code', '.*');
