@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetailCompany;
+use App\Models\DetailManpower;
+use App\Models\JoinCompany;
 use App\Models\User;
 use App\Models\OrganizationChart;
 use App\Models\OrganizationStructure;
@@ -9,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Validator;
 
 class SturctureOrganizationController extends Controller
@@ -16,35 +20,44 @@ class SturctureOrganizationController extends Controller
     /**
      * Get users for select dropdown (renamed from getAhli for better clarity)
      */
-    public function getUsers()
-    {
-        try {
-            $data = User::where('id_level', 3)
-                ->select('id', 'fullname')
-                ->get();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Successfully get users',
-                'data' => $data
-            ]);
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed fetch users. please try again later',
-                'data' => $e->getMessage()
-            ]);
+    public function getAhli(Request $request)
+    {
+        $user = Auth::user();
+
+        $id_user = $user->sub_company ?? $user->id;
+        if ($request->id_user) $id_user = $request->id_user;
+
+        if ($user->id_level == "2" || $request->id_user) {
+            $detail = DetailCompany::where('id_user', $id_user)->first();
         }
+
+        $data = JoinCompany::with(['manpower.user' => function ($query) {
+            $query->select('id', 'fullname');
+        }])
+            ->where('id_detail_company', $detail->id_detail_company)
+            ->whereDate('expired_at', '>', date('Y-m-d'))
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        $data = $data->map(function ($item) {
+            return [
+                'id' => $item->manpower->user->id,
+                'fullname' => $item->manpower->user->fullname,
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully fetch data',
+            'data' => $data
+        ], 200);
     }
+
 
     /**
      * Keep backward compatibility
      */
-    public function getAhli()
-    {
-        return $this->getUsers();
-    }
 
     public function getView()
     {

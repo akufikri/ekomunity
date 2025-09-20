@@ -941,35 +941,33 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview offset-md-1">
-                        @if ($status_approval == true || $status_approval == 1)
-                            <li class="nav-item">
-                                <a href="{{ URL::to('/setViewCertificate/1') }}" target="_blank"
-                                    class="nav-link {{ request()->is('certificate/' . Auth::user()->id) ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-certificate"></i>
-                                    <p>
-                                        {{ __('menu.registration_certificate') }}
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ URL::to('/sijilCawangan') }}"
-                                    class="nav-link {{ request()->is('sijilCawangan') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-certificate"></i>
-                                    <p>
-                                        {{ __('menu.branch_certificate') }}
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ URL::to('/companyCard') }}"
-                                    class="nav-link {{ request()->is('companyCard') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-id-card"></i>
-                                    <p>
-                                        {{ __('menu.membership_card') }}
-                                    </p>
-                                </a>
-                            </li>
-                        @endif
+                        <li class="nav-item">
+                            <a href="{{ URL::to('/setViewCertificate/1') }}" target="_blank"
+                                class="nav-link {{ request()->is('certificate/' . Auth::user()->id) ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-certificate"></i>
+                                <p>
+                                    {{ __('menu.registration_certificate') }}
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ URL::to('/sijilCawangan') }}"
+                                class="nav-link {{ request()->is('sijilCawangan') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-certificate"></i>
+                                <p>
+                                    {{ __('menu.branch_certificate') }}
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ URL::to('/companyCard') }}"
+                                class="nav-link {{ request()->is('companyCard') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-id-card"></i>
+                                <p>
+                                    {{ __('menu.membership_card') }}
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="{{ URL::to('/profilDigital') }}"
                                 class="nav-link {{ request()->is('profilDigital') ? 'active' : '' }}">

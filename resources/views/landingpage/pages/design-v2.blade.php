@@ -424,7 +424,7 @@
     <script>
         $(document).ready(function() {
             lucide.createIcons();
-            const baseUrl = "https://coedev.my/api/public/blogpost?brand_name=ekomuniti&page=1";
+            const baseUrl = "https://coedevtechnology.com/api/public/blogpost?brand_name=ekomuniti&page=1";
 
             // fetch blog posts
             $.ajax({

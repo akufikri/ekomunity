@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 class SettingBrandingController extends Controller
 {
     use ApiResponder;
+
     public function index()
     {
         try {
@@ -36,8 +37,12 @@ class SettingBrandingController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     return '
-                    <button type="button" class="btn btn-sm btn-success" onclick="editBrand(' . $row->id . ')">Edit</button>
-                    <button type="button" class="btn btn-sm btn-danger" onclick="deleteBrand(' . $row->id . ')">Delete</button>
+                    <button type="button" class="btn btn-sm btn-success me-1" onclick="editBrand(' . $row->id . ')">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button type="button" class="btn btn-sm btn-danger" onclick="deleteBrand(' . $row->id . ')">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
                 ';
                 })
                 ->rawColumns(['action'])
@@ -46,7 +51,6 @@ class SettingBrandingController extends Controller
             return $this->error("Failed fetch setting branding, please try again later", 500);
         }
     }
-
 
     public function updateOrStore(Request $request)
     {
@@ -69,24 +73,24 @@ class SettingBrandingController extends Controller
 
             $data = [
                 'name_brand'   => $request->name_brand,
-                'description'  => $request->description, 
-                'brand_color'  => $request->brand_color, 
-                'cta'  => $request->cta, 
+                'description'  => $request->description,
+                'brand_color'  => $request->brand_color,
+                'cta'  => $request->cta,
             ];
 
             if ($request->hasFile('logo')) {
-                
+
                 $path = $request->file('logo')->store('logos', 'public');
 
                 $data['logo']     = $path;
-                $data['logo_url'] = Storage::url($path); 
+                $data['logo_url'] = Storage::url($path);
             }
 
             if ($request->id) {
-                
+
                 $brand = SettingBranding::find($request->id);
 
-                
+
                 if ($request->hasFile('logo') && $brand->logo && Storage::disk('public')->exists($brand->logo)) {
                     Storage::disk('public')->delete($brand->logo);
                 }
@@ -95,7 +99,7 @@ class SettingBrandingController extends Controller
 
                 return $this->success($brand, "Brand updated successfully", 200);
             } else {
-                
+
                 $brand = SettingBranding::create($data);
 
                 return $this->success($brand, "Brand created successfully", 201);
@@ -116,7 +120,7 @@ class SettingBrandingController extends Controller
                 return $this->error("Brand not found", 404);
             }
 
-            
+
             if ($brand->logo && Storage::disk('public')->exists($brand->logo)) {
                 Storage::disk('public')->delete($brand->logo);
             }
