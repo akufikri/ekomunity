@@ -75,8 +75,16 @@
             @forelse($data as $d)
                 <div class="card card-danger card-outline" style="border-top: 3px solid dark">
                     <div class="card-header">
-                        <h3 class="card-title my-header"><img src="/CompanyLogo/{{ $d->company->logo_picture }}" alt=""
-                                width="50" height="50"> {{ $d->company->full_company_name }}</h3>
+                        <h3 class="card-title my-header">
+                            @if ($d->company->logo_picture)
+                                <img src="/CompanyLogo/{{ $d->company->logo_picture }}" alt="" width="50"
+                                    height="50">
+                            @else
+                                <img src="{{ asset('landingpage/images/logo/logo-ekomuniti.png') }}" alt=""
+                                    width="50" height="50">
+                            @endif
+                            {{ $d->company->full_company_name }}
+                        </h3>
                         <div class="card-tools">
                             <a href="/sijilPersatuanView/{{ $d->encrypt }}" target="_blank" title="View"
                                 class="btn btn-sm btn-info" title="View">View</a>
@@ -86,8 +94,9 @@
             @empty
                 <div class="card card-danger card-outline" style="border-top: 3px solid dark">
                     <div class="card-header">
-                        <h3 class="card-title my-header"><img src="{{ asset('landingpage/images/logo-usia.png') }}" alt="" width="50"
-                                height="50">Anda belum didaftarkan ke mana-mana cawangan</h3>
+                        <h3 class="card-title my-header"><img src="{{ asset('landingpage/images/logo-usia.png') }}"
+                                alt="" width="50" height="50">Anda belum didaftarkan ke mana-mana cawangan
+                        </h3>
                     </div>
                 </div>
             @endforelse

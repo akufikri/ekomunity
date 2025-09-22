@@ -1,0 +1,43 @@
+on:
+  push:
+    branches:
+      - dev
+name: 🚀 Deploy website on push
+
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v3
+
+      - name: ♻️ Cache FTP state
+        uses: actions/cache@v3
+        with:
+          path: .ftp-deploy-sync-state.json
+          key: ${{ runner.os }}-ftp-${{ github.ref }}
+          
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.DEV_SERVER }}
+          username: ${{ secrets.DEV_USERNAME }}
+          password: ${{ secrets.DEV_PASSWORD }}
+          port: 21
+          exclude: |
+            public/**
+            !public/index.php
+            !public/.htaccess
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/vendor/**
+            **/tests/**
+            **/storage/debugbar/**
+            **/storage/framework/cache/**
+            **/storage/framework/sessions/**
+            **/storage/framework/testing/**
+            **/storage/logs/**
+            .ftpquota

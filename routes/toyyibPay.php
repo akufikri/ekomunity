@@ -221,6 +221,7 @@ class ToyyibPayController
     {
         $request = request();
 
+
         // Validation
         $validation = $this->validateRequired([
             [$request->id, 'id user is required'],
@@ -246,6 +247,45 @@ class ToyyibPayController
         $manpower = DetailManpower::where('id_user', $user->id)->first();
         if (!$manpower) {
             return redirect("/errorPaymentGateway");
+        }
+
+        $company = DetailCompany::where('key_reference', $request->input('code'))->first();
+        if ($company) {
+            $rqJoinCompany = new JoinCompany();
+            $rqJoinCompany->id_detail_manpower = $manpower->id;
+            $rqJoinCompany->id_detail_company = $company->id_detail_company;
+            $rqJoinCompany->joining_fee = $payment->amount;
+            $rqJoinCompany->status_approval = "APPROVED";
+            $rqJoinCompany->status_approval_at = now();
+            $rqJoinCompany->status_approval_by = $company->id_user;
+            $rqJoinCompany->payment_method = "TOYYIBPAY";
+            $rqJoinCompany->payment_date = now();
+            $rqJoinCompany->expired_at = now()->addYears(1);
+            $rqJoinCompany->created_by = $company->id_user;
+            $rqJoinCompany->created_at = now();
+            $rqJoinCompany->save();
+
+            if ($rqJoinCompany) {
+                $today = now();
+                $lgCompany = new LogPaymentJoinCompany();
+                $lgCompany->id_request_join_company = $rqJoinCompany->id;
+                $lgCompany->id_user = $user->id;
+                $lgCompany->id_detail_manpower = $manpower->id;
+                $lgCompany->id_detail_company = $company->id_detail_company;
+                $lgCompany->day = (int) $today->day;
+                $lgCompany->month = (int) $today->month;
+                $lgCompany->year = (int) $today->year;
+                $lgCompany->amount = $payment->amount;
+                $lgCompany->payment_proof = "default.png";
+                $lgCompany->payment_type = "TOYYIBPAY";
+                $lgCompany->approval = "APPROVED";
+                $lgCompany->approval_note = "Payment automatic approval by sistem!";
+                $lgCompany->approval_date = now();
+                $lgCompany->approval_by = $company->id_user;
+                $lgCompany->created_by = $company->id_user;
+                $lgCompany->created_at = now();
+                $lgCompany->save();
+            }
         }
 
         // Create payment record

@@ -1,19 +1,20 @@
 $(function () {
-    $("#btnsubmitku").on(function () {
 
-         var negeri = $('select[name=negeri]').val()
+    $("#btnsubmitku").on("click", function () { // <-- Perbaikan: tambahkan "click"
 
-         if(negeri == null){
-             alert("Negeri wajib dipilih.");
-             return false;
-         }
+        var negeri = $('select[name=negeri]').val();
 
-         var bandar = $('select[name=bandar]').val()
+        if (negeri == null) {
+            alert("Negeri wajib dipilih.");
+            return false;
+        }
 
-         if(bandar == null){
-             alert("Bandar wajib dipilih.");
-             return false;
-         }
+        var bandar = $('select[name=bandar]').val();
+
+        if (bandar == null) {
+            alert("Bandar wajib dipilih.");
+            return false;
+        }
 
         return true;
     });
@@ -26,9 +27,7 @@ $(function () {
     triggerSelectParliament(tempState);
     triggerSelectDun(tempParliament);
 
-    
-    $(document).on('change', '#negeri', function() {
-
+    $(document).on('change', '#negeri', function () {
         var current_select = $('#negeri').find(":selected").val();
         tempState.val(current_select);
 
@@ -36,35 +35,29 @@ $(function () {
         triggerSelectParliament(tempState);
         getCityByState(current_select);
         getParliamentByState(current_select);
-
     });
 
-    $(document).on('change', '#parliament', function() {
-
+    $(document).on('change', '#parliament', function () {
         var current_select = $('#parliament').find(":selected").val();
         tempParliament.val(current_select);
 
         triggerSelectDun(tempParliament);
         getDunByParliament(current_select);
-
     });
 
-    $(document).on('submit', '.form-register', function(e) {
+    $(document).on('submit', '.form-register', function (e) {
         e.preventDefault();
 
         var queryString = window.location.search;
         var urlParams = new URLSearchParams(queryString);
 
-        // $("#email").val(urlParams.get("email"))
-        
         var e_modal_wait = $("#modalWait");
         showLoading(e_modal_wait);
 
-        var form = $(this)
-        var input_token = $('input[name=_token]')
+        var form = $(this);
+        var input_token = $('input[name=_token]');
         var registered_by_persatuan = urlParams.get("registered_by_persatuan");
         var ref = urlParams.get("ref");
-
 
         $.ajax({
             url: "/register_ahli/step_two_update",
@@ -77,75 +70,76 @@ $(function () {
                 parliament: form.find('select[name=parliament]').val(),
                 dun: form.find('select[name=dun]').val(),
                 poskod: form.find('input[name=poskod]').val(),
-                registered_by_persatuan : registered_by_persatuan,
+                registered_by_persatuan: registered_by_persatuan,
                 ref: ref,
             },
         }).done(function (result) {
-            
+
             hideLoading(e_modal_wait);
-            
-            input_token.val(result.newToken)
+            input_token.val(result.newToken);
 
-            if(result.isSuccess) {
+            if (result.isSuccess) {
 
-                swal(
-                    'Success!',
-                    result.message,
-                    'success'
-                )
+                swal('Success!', result.message, 'success');
 
-                if(urlParams.get("daftar_persatuan")){
-                    window.location = "/register_ahli/invoice"+queryString;
-                } if(urlParams.get("registered_by_persatuan")){
+                // ✅ Perbaikan utama: hanya bawa parameter penting ke invoice
+                if (urlParams.get("daftar_persatuan")) {
+                    const paramsToKeep = ['daftar_persatuan', 'code', 'ref', 'registered_by_persatuan'];
+                    const newParams = new URLSearchParams();
+
+                    paramsToKeep.forEach(param => {
+                        const value = urlParams.get(param);
+                        if (value !== null) {
+                            newParams.append(param, value);
+                        }
+                    });
+
+                    const newQueryString = newParams.toString();
+                    window.location = "/register_ahli/invoice" + (newQueryString ? '?' + newQueryString : '');
+
+                } else if (urlParams.get("registered_by_persatuan")) {
                     window.location = "/senaraiAhli";
+
                 } else {
                     window.location = "/home";
                 }
-                // window.location = "/success_register"+queryString;
 
             } else {
-                swal(
-                    'Warning!',
-                    result.message,
-                    'warning'
-                )
+                swal('Warning!', result.message, 'warning');
             }
 
-        }).fail();
+        }).fail(function () {
+            hideLoading(e_modal_wait);
+            swal('Error!', 'Terjadi kesalahan sistem. Sila cuba lagi.', 'error');
+        });
 
     });
 
 });
 
+// Fungsi-fungsi helper
+
 function triggerSelectBandar(param) {
-    console.log('test bandar '+param.val())
-    if(param.val() == "") {
-        $("select[name=bandar]").attr('disabled','true');
-        $("select[name=bandar]").css("background", "#d3d3d35c");
+    if (param.val() == "") {
+        $("select[name=bandar]").attr('disabled', 'true').css("background", "#d3d3d35c");
     } else {
-        $("select[name=bandar]").removeAttr("disabled");
-        $("select[name=bandar]").css("background", "#f9faff");
+        $("select[name=bandar]").removeAttr("disabled").css("background", "#f9faff");
     }
 }
 
 function triggerSelectParliament(param) {
-    console.log('test parliament '+param.val())
-    if(param.val() == "") {
-        $("select[name=parliament]").attr('disabled','true');
-        $("select[name=parliament]").css("background", "#d3d3d35c");
+    if (param.val() == "") {
+        $("select[name=parliament]").attr('disabled', 'true').css("background", "#d3d3d35c");
     } else {
-        $("select[name=parliament]").removeAttr("disabled");
-        $("select[name=parliament]").css("background", "#f9faff");
+        $("select[name=parliament]").removeAttr("disabled").css("background", "#f9faff");
     }
 }
 
 function triggerSelectDun(param) {
-    if(param.val() == "") {
-        $("select[name=dun]").attr('disabled','true');
-        $("select[name=dun]").css("background", "#d3d3d35c");
+    if (param.val() == "") {
+        $("select[name=dun]").attr('disabled', 'true').css("background", "#d3d3d35c");
     } else {
-        $("select[name=dun]").removeAttr("disabled");
-        $("select[name=dun]").css("background", "#f9faff");
+        $("select[name=dun]").removeAttr("disabled").css("background", "#f9faff");
     }
 }
 
@@ -156,30 +150,25 @@ function getCityByState(id) {
         data: {
             id_state: id,
         },
-    })
-    .done(function (result) {
-        
+    }).done(function (result) {
         var selectbandar = $("#bandar");
-        selectbandar.find('option').remove();
-        
-        var optionDefault = $("<option />");
-        optionDefault.html("Pilih Bandar");
-        optionDefault.attr("disabled", true);
-        optionDefault.attr('selected','selected');
+        selectbandar.empty();
+
+        var optionDefault = $("<option />")
+            .html("Pilih Bandar")
+            .attr("disabled", true)
+            .attr('selected', 'selected');
         selectbandar.append(optionDefault);
 
         $(result).each(function () {
-            var option = $("<option />");
-        
-            option.html(this.city);
-            option.val(this.id_city);
-
-            //Add the Option element to DropDownList.
+            var option = $("<option />")
+                .html(this.city)
+                .val(this.id_city);
             selectbandar.append(option);
         });
-       
-    })
-    .fail();
+    }).fail(function () {
+        console.error("Gagal memuat bandar.");
+    });
 }
 
 function getParliamentByState(id) {
@@ -189,31 +178,25 @@ function getParliamentByState(id) {
         data: {
             id_state: id,
         },
-    })
-    .done(function (result) {
-        
+    }).done(function (result) {
         var selectparliament = $("#parliament");
-        selectparliament.find('option').remove();
+        selectparliament.empty();
 
-        var optionDefault = $("<option />");
-        optionDefault.html("Pilih Parlimen");
-        optionDefault.attr("disabled", true);
-        optionDefault.attr('selected','selected');
+        var optionDefault = $("<option />")
+            .html("Pilih Parlimen")
+            .attr("disabled", true)
+            .attr('selected', 'selected');
         selectparliament.append(optionDefault);
 
         $(result).each(function () {
-            
-            var option = $("<option />");
-
-            option.html(this.parliament);
-            option.val(this.id);
-
-            //Add the Option element to DropDownList.
+            var option = $("<option />")
+                .html(this.parliament)
+                .val(this.id);
             selectparliament.append(option);
         });
-       
-    })
-    .fail();
+    }).fail(function () {
+        console.error("Gagal memuat parlimen.");
+    });
 }
 
 function getDunByParliament(id) {
@@ -223,40 +206,33 @@ function getDunByParliament(id) {
         data: {
             id_parliament: id,
         },
-    })
-    .done(function (result) {
-        
+    }).done(function (result) {
         var selectdun = $("#dun");
-        selectdun.find('option').remove();
+        selectdun.empty();
 
-        var optionDefault = $("<option />");
-        optionDefault.html("Pilih DUN");
-        optionDefault.attr("disabled", true);
-        optionDefault.attr('selected','selected');
+        var optionDefault = $("<option />")
+            .html("Pilih DUN")
+            .attr("disabled", true)
+            .attr('selected', 'selected');
         selectdun.append(optionDefault);
 
         $(result).each(function () {
-            var option = $("<option />");
-
-            option.html(this.dun);
-            option.val(this.id);
-
-            //Add the Option element to DropDownList.
+            var option = $("<option />")
+                .html(this.dun)
+                .val(this.id);
             selectdun.append(option);
         });
-       
-    })
-    .fail();
+    }).fail(function () {
+        console.error("Gagal memuat DUN.");
+    });
 }
 
 function readURL(input) {
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-
-    reader.onload = function (e) {
-      $('#image').attr('src', e.target.result).width(100).height(74);
-    };
-
-    reader.readAsDataURL(input.files[0]);
-  }
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#image').attr('src', e.target.result).width(100).height(74);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
 }
