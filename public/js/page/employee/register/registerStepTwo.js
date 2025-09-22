@@ -1,16 +1,13 @@
-$(function() {
-    $("#btnsubmitku").on("click", function() {
-        // <-- Perbaikan: tambahkan "click"
+$(function () {
 
+    $("#btnsubmitku").on("click", function () {
         var negeri = $("select[name=negeri]").val();
-
         if (negeri == null) {
             alert("Negeri wajib dipilih.");
             return false;
         }
 
         var bandar = $("select[name=bandar]").val();
-
         if (bandar == null) {
             alert("Bandar wajib dipilih.");
             return false;
@@ -27,10 +24,8 @@ $(function() {
     triggerSelectParliament(tempState);
     triggerSelectDun(tempParliament);
 
-    $(document).on("change", "#negeri", function() {
-        var current_select = $("#negeri")
-            .find(":selected")
-            .val();
+    $(document).on("change", "#negeri", function () {
+        var current_select = $("#negeri").find(":selected").val();
         tempState.val(current_select);
 
         triggerSelectBandar(tempState);
@@ -39,21 +34,22 @@ $(function() {
         getParliamentByState(current_select);
     });
 
-    $(document).on("change", "#parliament", function() {
-        var current_select = $("#parliament")
-            .find(":selected")
-            .val();
+    $(document).on("change", "#parliament", function () {
+        var current_select = $("#parliament").find(":selected").val();
         tempParliament.val(current_select);
 
         triggerSelectDun(tempParliament);
         getDunByParliament(current_select);
     });
 
-    $(document).on("submit", ".form-register", function(e) {
+    $(document).on("submit", ".form-register", function (e) {
         e.preventDefault();
 
         var queryString = window.location.search;
         var urlParams = new URLSearchParams(queryString);
+
+        // Debug: Lihat apa parameter yang ada di URL sekarang
+        console.log("[DEBUG] Current URL parameters:", Object.fromEntries(urlParams.entries()));
 
         var e_modal_wait = $("#modalWait");
         showLoading(e_modal_wait);
@@ -61,7 +57,7 @@ $(function() {
         var form = $(this);
         var input_token = $("input[name=_token]");
 
-        // ✅ Perbaikan di sini
+        // ✅ Ambil parameter dengan betul
         var registered_by_persatuan =
             urlParams.get("daftar_persatuan") ||
             urlParams.get("registered_by_persatuan") ||
@@ -83,14 +79,14 @@ $(function() {
                 ref: ref
             }
         })
-            .done(function(result) {
+            .done(function (result) {
                 hideLoading(e_modal_wait);
                 input_token.val(result.newToken);
 
                 if (result.isSuccess) {
                     swal("Success!", result.message, "success");
 
-                    // ✅ Redirect dengan mengekalkan parameter
+                    // ✅ Senarai parameter yang ingin dikekalkan
                     const paramsToKeep = [
                         "daftar_persatuan",
                         "code",
@@ -99,28 +95,33 @@ $(function() {
                     ];
                     const newParams = new URLSearchParams();
 
+                    // ✅ Kumpulkan semula parameter
                     paramsToKeep.forEach(param => {
                         const value = urlParams.get(param);
-                        if (value !== null) {
+                        if (value !== null && value !== "") {
                             newParams.append(param, value);
                         }
                     });
 
+                    // ✅ Bina URL
                     const newQueryString = newParams.toString();
-                    window.location =
-                        "/register_ahli/invoice" +
-                        (newQueryString ? "?" + newQueryString : "");
+                    const finalUrl = "/register_ahli/invoice" + (newQueryString ? "?" + newQueryString : "");
+
+                    // ✅ DEBUG: Log URL akhir
+                    console.log("[DEBUG] Redirecting to:", finalUrl);
+                    console.log("[DEBUG] Parameters carried over:", Object.fromEntries(newParams.entries()));
+
+                    // ✅ Redirect dengan .href — LEBIH SELAMAT
+                    window.location.href = finalUrl;
+
                 } else {
                     swal("Warning!", result.message, "warning");
                 }
             })
-            .fail(function() {
+            .fail(function (xhr, status, error) {
                 hideLoading(e_modal_wait);
-                swal(
-                    "Error!",
-                    "Terjadi kesalahan sistem. Sila cuba lagi.",
-                    "error"
-                );
+                console.error("[ERROR] AJAX Failed:", error);
+                swal("Error!", "Terjadi kesalahan sistem. Sila cuba lagi.", "error");
             });
     });
 });
@@ -171,7 +172,7 @@ function getCityByState(id) {
             id_state: id
         }
     })
-        .done(function(result) {
+        .done(function (result) {
             var selectbandar = $("#bandar");
             selectbandar.empty();
 
@@ -181,14 +182,14 @@ function getCityByState(id) {
                 .attr("selected", "selected");
             selectbandar.append(optionDefault);
 
-            $(result).each(function() {
+            $(result).each(function () {
                 var option = $("<option />")
                     .html(this.city)
                     .val(this.id_city);
                 selectbandar.append(option);
             });
         })
-        .fail(function() {
+        .fail(function () {
             console.error("Gagal memuat bandar.");
         });
 }
@@ -201,7 +202,7 @@ function getParliamentByState(id) {
             id_state: id
         }
     })
-        .done(function(result) {
+        .done(function (result) {
             var selectparliament = $("#parliament");
             selectparliament.empty();
 
@@ -211,14 +212,14 @@ function getParliamentByState(id) {
                 .attr("selected", "selected");
             selectparliament.append(optionDefault);
 
-            $(result).each(function() {
+            $(result).each(function () {
                 var option = $("<option />")
                     .html(this.parliament)
                     .val(this.id);
                 selectparliament.append(option);
             });
         })
-        .fail(function() {
+        .fail(function () {
             console.error("Gagal memuat parlimen.");
         });
 }
@@ -231,7 +232,7 @@ function getDunByParliament(id) {
             id_parliament: id
         }
     })
-        .done(function(result) {
+        .done(function (result) {
             var selectdun = $("#dun");
             selectdun.empty();
 
@@ -241,14 +242,14 @@ function getDunByParliament(id) {
                 .attr("selected", "selected");
             selectdun.append(optionDefault);
 
-            $(result).each(function() {
+            $(result).each(function () {
                 var option = $("<option />")
                     .html(this.dun)
                     .val(this.id);
                 selectdun.append(option);
             });
         })
-        .fail(function() {
+        .fail(function () {
             console.error("Gagal memuat DUN.");
         });
 }
@@ -256,7 +257,7 @@ function getDunByParliament(id) {
 function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             $("#image")
                 .attr("src", e.target.result)
                 .width(100)
