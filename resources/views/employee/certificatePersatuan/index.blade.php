@@ -94,8 +94,14 @@
             @empty
                 <div class="card card-danger card-outline" style="border-top: 3px solid dark">
                     <div class="card-header">
-                        <h3 class="card-title my-header"><img src="{{ asset('landingpage/images/logo-usia.png') }}"
-                                alt="" width="50" height="50">Anda belum didaftarkan ke mana-mana cawangan
+                        <h3 class="card-title my-header">
+                            @if ($global_brand)
+                                <img src="{{ $global_brand->logo_url }}" alt="" width="50" height="50">
+                            @else
+                                <img src="{{ asset('landingpage/images/logo/logo-ekomuniti.png') }}" alt=""
+                                    width="50" height="50">
+                            @endif
+                            Anda belum didaftarkan ke mana-mana cawangan
                         </h3>
                     </div>
                 </div>
