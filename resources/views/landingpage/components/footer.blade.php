@@ -1,4 +1,5 @@
-<footer id="footer" class="footer dark-background" style="background: {{ $global_brand ? $global_brand->brand_color : "#323448" }}">
+<footer id="footer" class="footer dark-background"
+    style="background: {{ $global_brand ? $global_brand->brand_color : '#323448' }}">
 
     <div class="container footer-top">
         <div class="row gy-4">
@@ -9,7 +10,7 @@
                         <span class="sitename" style="font-size: 14px">{{ $global_brand->name_brand }}</span>
                     @else
                         <img src="{{ asset('landingpage/images/logo-usia.png') }}" alt="">
-                        <span class="sitename" style="font-size: 14px">USIA - Pertumbuhan Islam Seluruh Sabah</span>
+                        <span class="sitename" style="font-size: 14px">eKomunity</span>
                     @endif
                 </a>
                 <div class="footer-contact pt-3">
