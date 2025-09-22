@@ -40,7 +40,10 @@ class SturctureOrganizationController extends Controller
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        $data = $data->map(function ($item) {
+        // ✅ Filter hanya yang manpower & user-nya ADA
+        $data = $data->filter(function ($item) {
+            return $item->manpower && $item->manpower->user;
+        })->map(function ($item) {
             return [
                 'id' => $item->manpower->user->id,
                 'fullname' => $item->manpower->user->fullname,

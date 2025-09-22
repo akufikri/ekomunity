@@ -56,8 +56,8 @@ $(function () {
 
         var form = $(this);
         var input_token = $('input[name=_token]');
-        var registered_by_persatuan = urlParams.get("registered_by_persatuan");
-        var ref = urlParams.get("ref");
+        var registered_by_persatuan = urlParams.get("daftar_persatuan") || urlParams('registered_by_persatuan');
+        var ref = urlParams.get("code") || urlParams('ref');
 
         $.ajax({
             url: "/register_ahli/step_two_update",
@@ -82,7 +82,6 @@ $(function () {
 
                 swal('Success!', result.message, 'success');
 
-                // ✅ Perbaikan utama: hanya bawa parameter penting ke invoice
                 if (urlParams.get("daftar_persatuan")) {
                     const paramsToKeep = ['daftar_persatuan', 'code', 'ref', 'registered_by_persatuan'];
                     const newParams = new URLSearchParams();

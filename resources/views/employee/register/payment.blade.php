@@ -142,8 +142,15 @@
                             </form>
                             @if ($setting_subscribe->price != '0')
                                 <div class="text-right">
-                                    <a href=""><button style="width:100%" onclick="window.location.href='/create_bill_subscribe_ahli?id={{ $encrypt }}'"
-                                            class="site-button button-md outline outline-2 btnku btn btn-xl d-block">Bayar via Payment Gateway</button></a>
+                                      <button style="width:100%" onclick="window.location.href='/create_bill_subscribe_ahli?id={{ $encrypt }}'"
+                                            class="site-button button-md outline outline-2 btnku btn btn-xl d-block">Bayar via Payment Gateway</button>
+                                    {{-- @if (!Request::input('code'))
+                                    <button style="width:100%" onclick="window.location.href='/create_bill_subscribe_ahli?id={{ $encrypt }}'"
+                                            class="site-button button-md outline outline-2 btnku btn btn-xl d-block">Bayar via Payment Gateway</button>
+                                    @else
+                                        <button style="width:100%" onclick="window.location.href='/create_bill_join_company?id={{ $encrypt }}'"
+                                            class="site-button button-md outline outline-2 btnku btn btn-xl d-block">Bayar via Payment Gateway</button>
+                                    @endif --}}
                                 </div>
                             @endif
                             <br>

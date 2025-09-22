@@ -170,10 +170,11 @@
                 @if (Auth::user()->sub_company == null)
                     <div class="card-tools">
                         @if ($user->id_level == '1' || $user->id_level == '7')
-                          <a class="btn btn-sm btn-info pull-right text-white" data-toggle="modal" data-target="#confirmDownloadModal">
-                            <i class="fa fa-download nav-icon"></i>
-                            &nbsp; Template
-                        </a>
+                            <a class="btn btn-sm btn-info pull-right text-white" data-toggle="modal"
+                                data-target="#confirmDownloadModal">
+                                <i class="fa fa-download nav-icon"></i>
+                                &nbsp; Template
+                            </a>
 
                             <a href="#" data-toggle="modal" data-target="#importModal"
                                 class="btn btn-sm btn-info pull-right">
@@ -220,11 +221,11 @@
                             </div>
                         @endif
 
-                        @if(session('import_errors'))
+                        @if (session('import_errors'))
                             <div class="alert alert-danger">
                                 <strong>Beberapa row gagal di-import:</strong>
                                 <ul>
-                                    @foreach(session('import_errors') as $error)
+                                    @foreach (session('import_errors') as $error)
                                         <li>{{ $error }}</li>
                                     @endforeach
                                 </ul>
@@ -519,45 +520,48 @@
 <!-- END DELETE HISTORY-->
 
 <!-- MODAL CONFIRM & INSTRUCTION USE TEMPLATE -->
-<div class="modal fade" id="confirmDownloadModal" tabindex="-1" role="dialog" aria-labelledby="confirmDownloadLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+<div class="modal fade" id="confirmDownloadModal" tabindex="-1" role="dialog"
+    aria-labelledby="confirmDownloadLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
 
-      <!-- Header -->
-      <div class="modal-header">
-        <h5 class="modal-title" id="confirmDownloadLabel">Konfirmasi Download</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+            <!-- Header -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDownloadLabel">Konfirmasi Download</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
-      <!-- Body -->
-      <div class="modal-body">
-        <h6 class="mb-3">Tata cara penggunaan template:</h6>
-        <ol class="text-sm">
-          <li class="mb-2">
-            <span class="badge badge-primary px-3">BIRU</span> 
-            Bebas di isi, namun untuk <b>email</b>, <b>No IC/Passport</b>, <b>phone number</b> harus <u>unique</u>.
-          </li>
-          <li class="mb-2">
-            <span class="badge badge-warning px-3">FLAX</span> 
-            <b>Wajib di isi dengan format yang benar</b>, agar data tidak salah ketika di import.
-          </li>
-          <li>
-            <b>NOTES:</b> Untuk status warga negara di isi dengan <b>FOREIGN</b> atau <b>NO FOREIGN</b>, 
-            dan untuk style wording <b>Gender</b> dan <b>Marital status</b> gunakan format 
-            <u>Capitalize</u> (Huruf depan huruf besar).
-          </li>
-        </ol>
-      </div>
+            <!-- Body -->
+            <div class="modal-body">
+                <h6 class="mb-3">Tata cara penggunaan template:</h6>
+                <ol class="text-sm">
+                    <li class="mb-2">
+                        <span class="badge badge-primary px-3">BIRU</span>
+                        Bebas di isi, namun untuk <b>email</b>, <b>No IC/Passport</b>, <b>phone number</b> harus
+                        <u>unique</u>.
+                    </li>
+                    <li class="mb-2">
+                        <span class="badge badge-warning px-3">FLAX</span>
+                        <b>Wajib di isi dengan format yang benar</b>, agar data tidak salah ketika di import.
+                    </li>
+                    <li>
+                        <b>NOTES:</b> Untuk status warga negara di isi dengan <b>FOREIGN</b> atau <b>NO FOREIGN</b>,
+                        dan untuk style wording <b>Gender</b> dan <b>Marital status</b> gunakan format
+                        <u>Capitalize</u> (Huruf depan huruf besar).
+                    </li>
+                </ol>
+            </div>
 
-      <!-- Footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-        <a href="{{ asset('template/Template Import Usia.xlsx') }}" class="btn btn-info text-white" id="confirmDownloadBtn">Mengerti</a>
-      </div>
+            <!-- Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <a href="{{ asset('template/Template Import Usia.xlsx') }}" class="btn btn-info text-white"
+                    id="confirmDownloadBtn">Mengerti</a>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 @include('layouts.modals')
@@ -692,8 +696,15 @@
                     defaultContent: '-'
                 },
                 {
-                    data防衛省: 'status_native_text',
-                    defaultContent: '-'
+                    data: null,
+                    render: function(data, type, row) {
+                        if (row.manpower && row.manpower.status_native && row.manpower.status_native
+                            .status_native) {
+                            return row.manpower.status_native.status_native;
+                        }
+                        return '-';
+                    },
+                    name: 'status_native_text'
                 },
                 {
                     data: 'invoice',
@@ -750,8 +761,8 @@
                     }
                 },
                 {
-                targets: 9, // Invoice
-                visible: false // hide kolom Invoice
+                    targets: 9, // Invoice
+                    visible: false // hide kolom Invoice
                 },
                 {
                     targets: 10, // Action
@@ -879,7 +890,7 @@
                     // render: function(data, type, row) {
                     //     return row.persatuan || '-';
                     // }
-                    visible:false
+                    visible: false
                 },
                 {
                     targets: 2, // Name

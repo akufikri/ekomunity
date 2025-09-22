@@ -518,14 +518,14 @@ class RegisManpowerController extends Controller
     {
 
         $user = Auth::user();
-
-        if ($request->registered_by_persatuan) {
-            $id_user = Crypt::decryptString($request->ref);
-            $user = User::where('id', $id_user)->first();
+        // dd($user);
+        if ($request->input('registered_by_persatuan')) {
+            // $id_user = Crypt::decryptString($request->ref);
+            // $user = User::where('id', $id_user)->first();
+            $key_ref = request()->input('ref');
+            $companyDetail = DetailCompany::where('key_reference', $key_ref)->first();
         }
-
         $detail = DetailManpower::where('id_user', $user->id)->first();
-
         $detail->address = $request->address;
         $detail->id_country = '1';
         $detail->id_state = $request->negeri;
@@ -546,17 +546,16 @@ class RegisManpowerController extends Controller
             }
         }
 
-        if ($request->registered_by_persatuan) {
+        if ($request->input('registered_by_persatuan')) {
             $log_payment = new LogPaymentManpower();
-            $log_payment->id_user = $id_user;
+            $log_payment->id_user = $user->id;
             $log_payment->id_detail_manpower =  $detail->id_detail_manpower;
             $log_payment->day = date('d', strtotime(now()));
             $log_payment->month = date('m', strtotime(now()));
             $log_payment->year = date('Y', strtotime(now()));
             $log_payment->amount = "0";
             $log_payment->payment_proof = "default.png";
-            $log_payment->created_by = Auth::user()->id;
-
+            $log_payment->created_by = $key_ref ? $companyDetail->id_user : Auth::user()->id;
             $detail->subscribe_free = 1;
 
             $subscribe_status = "APPROVED";
@@ -565,14 +564,14 @@ class RegisManpowerController extends Controller
             $log_payment->save();
             $detail->save();
 
-            if (Auth::user()->id_level == '2') {
+            if (Auth::user()->id_level == '2' || $key_ref) {
                 $request = new Request;
                 $request->approval = "Approve";
                 $request->approval_note = "Payment bypass via Persatuan!";
 
                 $approval_payment = $this->approvalPayment($request, $log_payment->id_log_payment_manpower);
 
-                $company = DetailCompany::where('id_user', Auth::user()->id)->first();
+                $company = DetailCompany::where('id_user', $companyDetail->id_user)->first();
 
                 $join_company = new JoinCompany();
                 $join_company->id_detail_manpower = $detail->id_detail_manpower;
@@ -580,8 +579,8 @@ class RegisManpowerController extends Controller
                 $join_company->joining_fee = $company->joining_fee;
                 $join_company->status_approval = "APPROVED";
                 $join_company->status_approval_at = date("Y-m-d H:i:s");
-                $join_company->status_approval_by = Auth::user()->id;
-                $join_company->created_by = Auth::user()->id;
+                $join_company->status_approval_by = $companyDetail->id_user;
+                $join_company->created_by = $companyDetail->id_user;
 
                 $newDateTime = Carbon::now()->addYear(1);
 
@@ -601,11 +600,11 @@ class RegisManpowerController extends Controller
                 $log_payment_join_company->year = date('Y', strtotime(now()));
                 $log_payment_join_company->amount = $join_company->joining_fee;
                 $log_payment_join_company->payment_proof = "default.png";
-                $log_payment_join_company->created_by = Auth::user()->id;
+                $log_payment_join_company->created_by = $companyDetail->id_user;
 
                 $log_payment_join_company->approval = "Approved";
                 $log_payment_join_company->approval_date = now();
-                $log_payment_join_company->approval_by = Auth::user()->id;
+                $log_payment_join_company->approval_by = $companyDetail->id_user;
                 $log_payment_join_company->approval_note = "Payment bypass via Persatuan!";
 
                 $log_payment_join_company->save();

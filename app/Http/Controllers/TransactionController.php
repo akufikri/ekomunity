@@ -175,7 +175,7 @@ class TransactionController extends Controller
 
         try {
             $log_payment = LogPaymentManpower::where('id_log_payment_manpower', $payment->id_log_payment_manpower)->first();
-            
+
             if (!$log_payment) {
                 Log::error('LogPaymentManpower not found', [
                     'id_log_payment_manpower' => $payment->id_log_payment_manpower,
@@ -202,7 +202,7 @@ class TransactionController extends Controller
 
             // FIX: Convert valid_time to integer and add validation
             $validTime = (int) $certificate->valid_time;
-            
+
             // Validate that valid_time is a positive number
             if ($validTime <= 0) {
                 Log::error('Invalid certificate valid_time', [
@@ -248,13 +248,12 @@ class TransactionController extends Controller
             // FIX: Use the validated integer value
             try {
                 $newDateTime = Carbon::now()->addYear($validTime);
-                
+
                 Log::info('Certificate expiry date calculated', [
                     'valid_time_years' => $validTime,
                     'current_date' => Carbon::now()->toDateTimeString(),
                     'expiry_date' => $newDateTime->toDateTimeString()
                 ]);
-                
             } catch (\Exception $e) {
                 Log::error('Error calculating certificate expiry date', [
                     'valid_time' => $validTime,
@@ -270,7 +269,7 @@ class TransactionController extends Controller
 
             if (!$check_exists) {
                 $manpower->number_certificate = 'A' . $dateNow . '-' . $next_number;
-                
+
                 $publish = new PublishedCertificate();
                 $publish->number_certificate = $next_number;
                 $publish->id_user = $manpower->id_user;
@@ -309,14 +308,14 @@ class TransactionController extends Controller
                 $reqJoin->save();
             }
 
-            $this->createLogPaymentCawangan($manpower->id_user, $status, $log_payment->id_log_payment_manpower);
-            
+            // $this->createLogPaymentCawangan($manpower->id_user, $status, $log_payment->id_log_payment_manpower);
+
             Log::info('SUBSCRIBE_AHLI payment processing completed', [
                 'payment_id' => $payment->id,
                 'user_id' => $manpower->id_user
             ]);
 
-            $this->createLogPaymentKetuaBahagian($manpower->id_user, $status, $log_payment->id_log_payment_manpower);
+            // $this->createLogPaymentKetuaBahagian($manpower->id_user, $status, $log_payment->id_log_payment_manpower);
 
 
         } catch (\Exception $e) {
@@ -329,7 +328,7 @@ class TransactionController extends Controller
             ]);
             throw $e;
         }
-}
+    }
 
     protected function createLogPaymentCawangan($id_user, $status, $id_payment)
     {
@@ -611,21 +610,21 @@ class TransactionController extends Controller
             // Handle file upload jika ada file
             if ($request->hasFile('file')) {
                 $file = $request->file('file');
-                
+
                 // Generate nama file yang unik
                 $fileName = 'resit_' . $request->id_payment . '_' . time() . '.' . $file->getClientOriginalExtension();
-                
+
                 // Simpan file ke storage/app/public/receipts
                 $filePath = $file->storeAs('receipts', $fileName, 'public');
-                
+
                 // Generate URL untuk file
                 $fileUrl = url('storage/' . $filePath);
-                
+
                 // Hapus file lama jika ada
                 if ($log->resit && Storage::disk('public')->exists(str_replace('storage/', '', parse_url($log->resit, PHP_URL_PATH)))) {
                     Storage::disk('public')->delete(str_replace('storage/', '', parse_url($log->resit, PHP_URL_PATH)));
                 }
-                
+
                 // Update database dengan URL file
                 $log->resit = $fileUrl;
                 $log->status_approval = 'APPROVE';
@@ -636,7 +635,6 @@ class TransactionController extends Controller
             $log->save();
 
             return $this->success($log, "Successfully upload resit", 200);
-
         } catch (\Exception $e) {
             Log::error('File upload error: ' . $e->getMessage());
             return $this->error("Failed approval, please try again later", 500);

@@ -25,8 +25,6 @@ $(function () {
 
     $(document).on('click', '.btn-generate-payment', function(e){
         e.preventDefault();
-        // var e_modal_wait = $("#modalWait");
-        // showLoading(e_modal_wait);
 
         var id_user = $(this).data('id') 
 

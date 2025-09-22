@@ -153,9 +153,16 @@ class ToyyibPayController
     {
         $request = request();
 
+        // decrypt ID dulu
+        try {
+            $id = Crypt::decryptString($request->id);
+        } catch (\Exception $e) {
+            return $this->errorResponse('Invalid ID provided');
+        }
+
         // Validation
         $validation = $this->validateRequired([
-            [$request->id, 'id join company is required'],
+            [$id, 'id join company is required'],
         ]);
 
         if (!$validation['status']) {
@@ -163,7 +170,7 @@ class ToyyibPayController
         }
 
         // Get related data
-        $joinCompany = JoinCompany::find($request->id);
+        $joinCompany = JoinCompany::find($id);
         if (!$joinCompany) {
             return $this->errorResponse('Join Company record not found');
         }
@@ -204,7 +211,6 @@ class ToyyibPayController
         // Create bill via API
         $result = $this->processBillCreation($payment, $fields);
 
-        // Create log if successful
         if ($result['httpcode'] == 200) {
             $this->createJoinCompanyLog($joinCompany, $user, $payment);
             return redirect($result['payment_url']);
@@ -213,6 +219,7 @@ class ToyyibPayController
         $encrypt = Crypt::encryptString($joinCompany->id);
         return redirect("/errorPaymentGateway/$encrypt");
     }
+
 
     /**
      * Create Bill for Subscribe Ahli

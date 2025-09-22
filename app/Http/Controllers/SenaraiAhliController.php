@@ -124,269 +124,6 @@ class SenaraiAhliController extends Controller
         return response()->json($response);
     }
 
-    // public function getData(Request $request)
-    // {
-
-    //     if($request->filter){
-    //         $filter = $request->filter;
-    //     }
-
-    //     $user = Auth::user();
-
-    //     $id_user = $user->id;
-
-    //     if($request->id_user) {
-    //         $id_user = $request->id_user;
-    //     }
-
-    //     if ($user->id_level == "2" || $request->id_user) {
-    //         $detail = DetailCompany::where('id_user', $id_user)->first();
-    //     }
-
-
-    //     // $data = JoinCompany::with(['manpower' => function($query) {
-    //     //         $query->select('id_user', 'id_detail_manpower', 'id_detail_company', 'ic_number', 'step_registration', 'native_status', 'business_license_no', 'business_type', 'kad_digital', 'payment_kad_digital');
-    //     // }, 'company' => function($query) {
-    //     //         $query->select('id_detail_company', 'full_company_name');
-    //     // }, 'manpower.user' => function($query) {
-    //     //         $query->select('id','fullname','phone_number', 'email', 'is_verified', 'registered_by');
-    //     // }, 'manpower.status_native' => function($query) {
-    //     //         $query->select('id_status_native', 'status_native');
-    //     // }, 'manpower.business_type_text' => function($query) {
-    //     //         $query->select('id_business_type', 'business_type');
-    //     // }])->whereDate('expired_at', '>', date('Y-m-d'))->orderBy('created_at', 'DESC');
-
-    //     // return $data->get();
-
-    //     // whereDate('expired_at', '>', date('Y-m-d'))
-
-
-    //     $data = DetailManpower::select('id_user', 'id_detail_manpower', 'id_detail_company', 'ic_number', 'step_registration', 'native_status', 'business_license_no', 'business_type', 'business_activity', 'sub_business_activity', 'kad_digital', 'payment_kad_digital', 'subscribe_status', 'is_subscribe')->with([
-    //             'user' => function($query){
-    //                 $query->select('id','fullname','phone_number', 'email', 'is_verified', 'registered_by');
-    //             },
-    //             'company' => function($query){
-    //                 $query->select('id_detail_company', 'full_company_name');
-    //             },
-    //             'status_native' => function($query){
-    //                 $query->select('id_status_native', 'status_native');
-    //             },
-    //             'business_type_text' => function($query){
-    //                 $query->select('id_business_type', 'business_type');
-    //             },
-    //             'business_activity_text' => function($query){
-    //                 $query->select('id_business_activity', 'business_activity');
-    //             },
-    //         ])->orderBy('created_at', 'DESC');
-
-
-    //     $status = $request->status;
-    //     $license = $request->license;
-
-    //     // return compact('status', 'license');
-
-    //     if($status == "Overall") {
-    //         // $data = $data->whereHas('manpower', function($query) use($status) {
-    //         //     $query->where('step_registration', DetailManpower::$stepRegistration);
-    //         // });
-    //         $data = $data->where('step_registration', DetailManpower::$stepRegistration);
-    //     }
-
-    //     if($status == "Expired") {
-    //         // $data = $data->whereHas('manpower', function($query) use($status) {
-    //         //     $query->where('certificate_expired_date', '<', now());
-    //         // });
-    //         $data = $data->whereDate('certificate_expired_date', '<', now());
-    //     }
-
-    //     // return compact('status');
-
-
-    //     // return compact('cek');
-
-    //     if($status != "Overall" && $status != "Unfiltered" && $status != "Expired" && $status != "") {
-
-    //         // $data = $data->whereHas('manpower.user', function($query) use($status) {
-    //         //     $query->where('status', $status);
-    //         // })->whereHas('manpower', function($query) {
-    //         //     $query->where('step_registration', DetailManpower::$stepRegistration);
-    //         // })->whereDate('expired_at', '>', now());
-
-    //         $data = $data->whereHas('user', function($query) use($status) {
-    //             $query->where('status', $status);
-    //         })->whereDate('certificate_expired_date', '>', now())->where('step_registration', DetailManpower::$stepRegistration);
-
-    //     }
-
-    //     if($user->id_level == 4) {
-
-    //         if($user->id_city != null) {
-    //             // $data = $data->whereHas('manpower', function($query) use($user) {
-    //             //     $query->where('id_city', $user->id_city);
-    //             // });
-    //             $data = $data->where('id_city', $user->id_city);
-    //         } else {
-    //             // $data = $data->whereHas('manpower', function($query) use($user) {
-    //             //     $query->where('id_city', 0);
-    //             // });
-    //             $data = $data->where('id_city', 0);
-    //         }
-
-
-    //     }
-
-    //     if($user->id_level == 6) {
-    //         // $data = $data->whereHas('manpower', function($query) use($user) {
-    //         //     $query->where('id_state', $user->id_state);
-    //         // });
-    //         $data = $data->where('id_state', $user->id_state);
-    //     }
-
-    //     if($request->id_city) {
-    //         // $data = $data->whereHas('manpower', function($query) use($user) {
-    //         //     $query->where('id_city', $user->id_city);
-    //         // });
-    //         $data = $data->where('id_city', $request->id_city);
-    //     }
-
-    //     if($request->fullname == "true") {
-
-    //         $data = $data->whereHas('user', function($query) {
-    //             $query->whereIn('id', function($query) {
-    //                 $query->select('id')->from('users')->groupBy('fullname')->havingRaw('count(*) > 1');
-    //             });
-    //         })->get();
-
-    //         $temp_id = [];
-
-    //         foreach($data as $d) {
-
-    //             $check_user = User::where('fullname', $d->user->fullname)->get();
-
-    //             foreach($check_user as $d) {
-    //                 $temp_id[] = $d->id;
-    //             }
-
-    //         }
-
-    //         // return $temp_id;
-
-    //         $data = DetailManpower::select('id_user', 'id_detail_manpower', 'id_detail_company', 'ic_number', 'step_registration', 'native_status', 'is_subscribe', 'certificate_expired_date')->with([
-    //             'user' => function($query){
-    //                 $query->select('id','fullname','phone_number', 'email', 'is_verified', 'registered_by');
-    //             },
-    //             'company' => function($query){
-    //                 $query->select('id_detail_company', 'full_company_name');
-    //             },
-    //             'status_native' => function($query){
-    //                 $query->select('id_status_native', 'status_native');
-    //             }
-    //         ])->whereIn('id_user', $temp_id);
-
-    //     }
-
-    //     if($request->ic_number == "true") {
-    //         $ic_number = $request->ic_number;
-    //         // $data = $data->whereHas('manpower', function($query) use($ic_number) {
-    //         //     $query->where('ic_number', $ic_number);
-    //         // });
-    //         $data = $data->where('ic_number', $ic_number);
-    //     }
-
-    //     if($request->phone_number == "true") {
-    //         $phone_number = $request->phone_number;
-    //         $data = $data->whereHas('user', function($query) use($phone_number) {
-    //             $query->where('phone_number', $phone_number);
-    //         });
-    //     }
-
-    //     if($request->email == "true") {
-    //         $email = $request->email;
-    //         $data = $data->whereHas('user', function($query) use($email) {
-    //             $query->where('email', $email);
-    //         });
-    //     }
-
-    //     if($license == "No") {
-    //         // $data = $data->whereHas('manpower', function($query) {
-    //         //     $query->where('business_license_no', NULL);
-    //         // });
-    //         $data = $data->where('business_license_no', NULL);
-    //     }
-
-    //     // return compact('filter');
-
-    //     if($filter == "today"){
-    //         // $data = $data->whereHas('manpower', function($query) {
-    //         //     $query->whereDate('created_at', date('Ymd'));
-    //         // });
-    //         $data = $data->whereDate('created_at', date('Ymd'));
-    //     } else if($filter == "month"){
-    //         // $data = $data->whereHas('manpower', function($query) {
-    //         //     $query->whereMonth('created_at', Carbon::today()->month)->whereYear('created_at', Carbon::today()->year);
-    //         // });
-    //         $data = $data->whereMonth('created_at', Carbon::today()->month)->whereYear('created_at', Carbon::today()->year);
-    //     } else if($filter == "year"){
-    //         // $data = $data->whereHas('manpower', function($query) {
-    //         //     $query->whereYear('created_at', Carbon::today()->year);
-    //         // });
-    //         $data = $data->whereYear('created_at', Carbon::today()->year);
-    //     }
-
-    //     if($request->q){
-
-    //         $q = $request->q;
-
-    //         $data = $data->whereHas('user', function($query) use($q){
-    //             $query->where('fullname', 'LIKE', '%' . $q . '%');
-    //             $query->orWhere('email', 'LIKE', '%' . $q . '%');
-    //             $query->orWhere('phone_number', 'LIKE', '%' . $q . '%');
-    //         });
-    //     }
-
-    //     // return $request->id_user;
-
-    //     if ($user->id_level == 2 || $request->id_user) {
-    //         // $data = $data->where('id_detail_company', 'LIKE', '%'.$detail->id_detail_company.'%')->get();
-    //         $data = $data->where('id_detail_company', 'LIKE', '%'.$detail->id_detail_company.'%')->get();
-    //     } else {
-    //         $data = $data->get();
-    //     }
-
-    //     // return compact('data');
-
-    //     foreach($data as $d){
-
-    //         $d->ref = Crypt::encryptString($d->id_user);
-
-    //         if($status == "Expired") {
-    //             $d->subscribe_status = "EXPIRED";
-    //         }
-
-    //         $d->status_native_text = isset($d->status_native) ? $d->status_native->status_native : '';
-
-    //         if($d->payment_date == null){
-    //             $d->invoice = 'UNPAID';
-    //         } else if($d->expired_at > date('Y-m-d')) {
-    //             $d->invoice = 'PAID';
-    //         } else {
-    //             $d->invoice = 'EXPIRED';
-    //         }
-
-    //         $d->persatuan = isset($d->id_detail_company) ? isset($d->company->full_company_name) ? $d->company->full_company_name : '' : 'Tiada Persatuan';
-    //         if(isset($d->user->registered_by))
-    //             $d->registered_by_name = User::where('id', $d->user->registered_by)->first()->fullname;
-    //         else
-    //             $d->registered_by_name = '';
-
-    //     }
-
-    //     // return $data;
-
-    //     return Datatables::of($data)->addIndexColumn()->make(true);
-
-    // }
-
     public function getData(Request $request)
     {
         $filter = $request->filter ?? null;
@@ -564,7 +301,12 @@ class SenaraiAhliController extends Controller
 
         $user = Auth::user();
 
-        $id_user = $user->sub_company ?? $user->id;
+        if ($user->sub_company != null) {
+            $id_user = $user->sub_company;
+        } else {
+            $id_user = $user->id;
+        }
+
         if ($request->id_user) {
             $id_user = $request->id_user;
         }
@@ -573,53 +315,94 @@ class SenaraiAhliController extends Controller
             $detail = DetailCompany::where('id_user', $id_user)->first();
         }
 
-        // Query utama — tambahkan whereHas('manpower.user')!
-        $data = JoinCompany::with([
-            'manpower' => fn($q) => $q->select('id_user', 'id_detail_manpower', 'id_detail_company', 'ic_number', 'step_registration', 'native_status', 'business_license_no', 'business_type', 'kad_digital', 'payment_kad_digital'),
-            'company' => fn($q) => $q->select('id_detail_company', 'full_company_name'),
-            'manpower.user' => fn($q) => $q->select('id', 'fullname', 'phone_number', 'email', 'is_verified', 'registered_by'),
-            'manpower.status_native' => fn($q) => $q->select('id_status_native', 'status_native'),
-            'manpower.business_type_text' => fn($q) => $q->select('id_business_type', 'business_type'),
-        ])
-            ->where('id_detail_company', $detail->id_detail_company)
-            ->whereDate('expired_at', '>', now())
-            ->whereHas('manpower.user') // ✅ Filter hanya yang punya user
-            ->orderBy('created_at', 'DESC');
+        $data = JoinCompany::with(['manpower' => function ($query) {
+            $query->select('id_user', 'id_detail_manpower', 'id_detail_company', 'ic_number', 'step_registration', 'native_status', 'business_license_no', 'business_type', 'kad_digital', 'payment_kad_digital');
+        }, 'company' => function ($query) {
+            $query->select('id_detail_company', 'full_company_name');
+        }, 'manpower.user' => function ($query) {
+            $query->select('id', 'fullname', 'phone_number', 'email', 'is_verified', 'registered_by');
+        }, 'manpower.status_native' => function ($query) {
+            $query->select('id_status_native', 'status_native');
+        }, 'manpower.business_type_text' => function ($query) {
+            $query->select('id_business_type', 'business_type');
+        }])->where('id_detail_company', $detail->id_detail_company)->whereDate('expired_at', '>', date('Y-m-d'))->orderBy('created_at', 'DESC');
 
-        // ... semua filter kamu (status, license, city, filter, q) tetap sama ...
+        $status = $request->status;
+        $license = $request->license;
+
+        if ($status == "Overall") {
+            $data = $data->whereHas('manpower', function ($query) use ($status) {
+                $query->where('step_registration', DetailManpower::$stepRegistration);
+            });
+        }
+
+        if ($status != "Overall" && $status != "Unfiltered" && $status != "") {
+            $data = $data->whereHas('manpower.user', function ($query) use ($status) {
+                $query->where('status', $status);
+            })->where('step_registration', DetailManpower::$stepRegistration);
+        }
+
+        if ($request->id_city) {
+            $id_city = $request->id_city;
+            $data = $data->whereHas('manpower', function ($query) use ($id_city) {
+                $query->where('id_city', $id_city);
+            });
+            // $data = $data->where('id_city', $request->id_city);
+        }
+
+        if ($license == "No") {
+            $data = $data->whereHas('manpower', function ($query) use ($license) {
+                $query->where('business_license_no', NULL);
+            });
+
+            // $data = $data->where('business_license_no', NULL);
+        }
+
+        if ($request->filter) {
+            if ($filter == "today") {
+                $data = $data->whereHas('manpower', function ($query) {
+                    $query->whereDate('created_at', date('Ymd'));
+                });
+            } else if ($filter == "month") {
+                $data = $data->whereHas('manpower', function ($query) {
+                    $query->whereMonth('created_at', Carbon::today()->month)->whereYear('created_at', Carbon::today()->year);
+                });
+            } else if ($filter == "year") {
+                $data = $data->whereHas('manpower', function ($query) {
+                    $query->whereYear('created_at', Carbon::today()->year);
+                });
+            }
+        }
 
         if ($request->q) {
+
             $q = $request->q;
+
             $data = $data->whereHas('manpower.user', function ($query) use ($q) {
-                $query->where('fullname', 'LIKE', '%' . $q . '%')
-                    ->orWhere('email', 'LIKE', '%' . $q . '%')
-                    ->orWhere('phone_number', 'LIKE', '%' . $q . '%');
+                $query->where('fullname', 'LIKE', '%' . $q . '%');
+                $query->orWhere('email', 'LIKE', '%' . $q . '%');
+                $query->orWhere('phone_number', 'LIKE', '%' . $q . '%');
             });
         }
 
         $data = $data->get();
-
+        // dd($data->manpower);
         foreach ($data as $d) {
             $d->ref = Crypt::encryptString($d->id_user);
+            $d->manpower->status_native_text = isset($d->manpower->status_native) ? $d->manpower->status_native->status_native : '';
+            if ($d->payment_date == null) {
+                $d->invoice = 'UNPAID';
+            } else if ($d->expired_at > date('Y-m-d')) {
+                $d->invoice = 'PAID';
+            } else {
+                $d->invoice = 'EXPIRED';
+            }
 
-            // Pastikan struktur sesuai DataTables — meskipun whereHas sudah dipakai
-            $d->manpower = (object)[
-                'ic_number' => $d->manpower->ic_number ?? '',
-                'status_native_text' => $d->manpower->status_native_text ?? '',
-                'user' => (object)[
-                    'fullname' => $d->manpower->user->fullname ?? '-',
-                    'phone_number' => $d->manpower->user->phone_number ?? '-',
-                    'email' => $d->manpower->user->email ?? '-',
-                ]
-            ];
-
-            $d->invoice = match (true) {
-                is_null($d->payment_date) => 'UNPAID',
-                $d->expired_at > now() => 'PAID',
-                default => 'EXPIRED'
-            };
-
-            $d->persatuan = $d->company?->full_company_name ?? 'Tiada Persatuan';
+            $d->persatuan = isset($d->id_detail_company) ? isset($d->company->full_company_name) ? $d->company->full_company_name : '' : 'Tiada Persatuan';
+            if ($d->manpower->user->registered_by)
+                $d->registered_by_name = User::where('id', $d->manpower->user->registered_by)->first()->fullname;
+            else
+                $d->registered_by_name = '';
         }
 
         return Datatables::of($data)->addIndexColumn()->make(true);

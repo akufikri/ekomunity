@@ -49,10 +49,4 @@ Route::get('/getDataAhli/{email}', [App\Http\Controllers\ApiController::class, '
 
 Route::post('/create-transaction', [TransactionController::class, 'createTransaction']);
 
-// Updated callback route to use controller method
 Route::any('/callback-toyyibpay', [TransactionController::class, 'callback']);
-
-// Keep billplz callback as is (you can also move this to controller if needed)
-// Route::any('/callback-billplz',function (){
-//     return callbackBillplz(request());
-// });

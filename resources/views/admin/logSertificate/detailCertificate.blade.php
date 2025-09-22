@@ -4,7 +4,7 @@
 
 @section('breadcrumb')
 
-    @endsection
+@endsection
 
 @section('content')
 
@@ -416,7 +416,7 @@
                                 {{-- Options akan diisi oleh JavaScript --}}
                             </select>
                         </div>
-                       <div class="form-group">
+                        <div class="form-group">
                             <label>Tarikh Lantikan</label>
                             <input type="date" class="form-control" id="edit-date" name="date_appointment">
                         </div>
@@ -466,7 +466,8 @@
 
                 // Validasi dasar
                 if (!position_id || !date_appointment) {
-                    Swal.fire("Error", "Sila isi semua medan yang diperlukan.", "error"); // Changed to Swal.fire
+                    Swal.fire("Error", "Sila isi semua medan yang diperlukan.",
+                    "error"); // Changed to Swal.fire
                     return;
                 }
 
@@ -480,28 +481,34 @@
                     dataType: "JSON",
                     success: function(response) {
                         if (response.success) {
-                            Swal.fire("Berjaya!", response.message, "success"); // Changed to Swal.fire
+                            Swal.fire("Berjaya!", response.message,
+                            "success"); // Changed to Swal.fire
                             $('#editJawatanKuasaModal').modal('hide'); // Tutup modal
-                            loadDataJawatanKuasa(); // Muat ulang DataTable untuk menampilkan data yang diperbarui
+                            loadDataJawatanKuasa
+                        (); // Muat ulang DataTable untuk menampilkan data yang diperbarui
                         } else {
-                            Swal.fire("Ralat!", response.message, "error"); // Changed to Swal.fire
+                            Swal.fire("Ralat!", response.message,
+                            "error"); // Changed to Swal.fire
                             // Tampilkan error validasi jika ada
                             if (response.data) {
                                 let errorMessages = '';
                                 for (const field in response.data) {
                                     errorMessages += response.data[field].join('\n') + '\n';
                                 }
-                                Swal.fire("Ralat Validasi!", errorMessages, "error"); // Changed to Swal.fire
+                                Swal.fire("Ralat Validasi!", errorMessages,
+                                "error"); // Changed to Swal.fire
                             }
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        let errorMessage = "Gagal mengemaskini maklumat jawatan. Sila cuba lagi nanti.";
+                        let errorMessage =
+                            "Gagal mengemaskini maklumat jawatan. Sila cuba lagi nanti.";
                         if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
                             errorMessage = jqXHR.responseJSON.message;
                         }
                         Swal.fire("Ralat!", errorMessage, "error"); // Changed to Swal.fire
-                        console.error("AJAX Error: ", textStatus, errorThrown, jqXHR.responseJSON);
+                        console.error("AJAX Error: ", textStatus, errorThrown, jqXHR
+                            .responseJSON);
                     }
                 });
             });
@@ -518,7 +525,8 @@
                     if (res.success && res.data) {
                         let options = '<option value="">-- Pilih Jawatan --</option>'; // Opsi default
                         res.data.forEach(function(position) {
-                            options += `<option value="${position.id_position}">${position.position}</option>`;
+                            options +=
+                                `<option value="${position.id_position}">${position.position}</option>`;
                         });
                         $('#edit-position-select').html(options);
                     }
@@ -624,8 +632,7 @@
                     url: "/senaraiAhli/getDataAhliPersatuan?id_user=" + id_user + '&filter=all',
                     type: 'GET'
                 },
-                columns: [
-                    {
+                columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex'
                     },
@@ -642,13 +649,13 @@
                         data: 'manpower.user.email'
                     },
                     {
-                        data: 'manpower.status_native_text'
+                        data: 'manpower.status_native'
                     },
                     {
                         data: 'invoice'
                     },
                 ],
-                columnDefs: [ ],
+                columnDefs: [],
                 order: [
                     [0, 'asc']
                 ]

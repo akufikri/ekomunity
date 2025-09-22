@@ -832,17 +832,11 @@ Route::get('/verify_email', function () {
     $user->save();
 
     if ($auth) {
-
-        // return 'Email already verified!';
-
         return [
             'isSuccess' => true,
             'message' => 'Email already verified!'
         ];
     }
-
-    // \Session::flash('message', "Email verified successfully!");
-    // \Session::flash('status', 'success');
 
     $login = Auth::login($user);
 
