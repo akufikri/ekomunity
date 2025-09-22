@@ -411,23 +411,33 @@ class RegisManpowerController extends Controller
         return view('employee.register.registerStepSeven', compact('business_income_monthly', 'business_income_weekly', 'business_income_daily'));
     }
 
-    public function registerInvoice()
+    public function registerInvoice(Request $request)
     {
-
         $user = Auth::user();
         $detail = DetailManpower::with('business_type_text')->where('id_user', $user->id)->first();
-
-
-
         $setting_subscribe = SettingSubscribe::where('subscribe_for', 'REGISTER AHLI')->where('is_active', 'ENABLE')->first();
 
-        if ($detail->subscribe_free    == '0') {
+        if ($detail->subscribe_free == '0') {
             $setting_subscribe->price = $setting_subscribe->price;
         }
 
-        // return response()->json($detail);
+        // Retrieve query parameters
+        $daftar_persatuan = $request->query('daftar_persatuan');
+        $code = $request->query('code');
 
-        return view('employee.register.invoice', compact('user', 'detail', 'setting_subscribe'));
+        // Log for debugging
+        \Log::info('Invoice route parameters:', [
+            'daftar_persatuan' => $daftar_persatuan,
+            'code' => $code
+        ]);
+
+        return view('employee.register.invoice', compact(
+            'user',
+            'detail',
+            'setting_subscribe',
+            'daftar_persatuan',
+            'code'
+        ));
     }
 
     public function registerPayment()

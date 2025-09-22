@@ -11,6 +11,4 @@ $(function () {
         showLoading(e_modal_wait);
         window.location = "/register_ahli/payment"+queryString;
     });
-  
-w        
 });
