@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title-dashboard')</title>
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('landingpage/') }}/images/logo-usia.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('landingpage/images/logo/logo-ekomuniti.png') }}">
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset('template_dashboard/plugins/fontawesome-free/css/all.min.css') }}">
