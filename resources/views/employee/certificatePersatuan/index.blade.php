@@ -101,7 +101,7 @@
                                 <img src="{{ asset('landingpage/images/logo/logo-ekomuniti.png') }}" alt=""
                                     width="50" height="50">
                             @endif
-                            Anda belum didaftarkan ke mana-mana cawangan
+                            Anda belum didaftarkan ke mana-mana komuniti
                         </h3>
                     </div>
                 </div>

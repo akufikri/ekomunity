@@ -941,7 +941,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview offset-md-1">
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ URL::to('/setViewCertificate/1') }}" target="_blank"
                                 class="nav-link {{ request()->is('certificate/' . Auth::user()->id) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-certificate"></i>
@@ -949,7 +949,7 @@
                                     {{ __('menu.registration_certificate') }}
                                 </p>
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item">
                             <a href="{{ URL::to('/sijilCawangan') }}"
                                 class="nav-link {{ request()->is('sijilCawangan') ? 'active' : '' }}">
