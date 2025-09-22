@@ -1,15 +1,15 @@
-$(function () {
+$(function() {
+    $("#btnsubmitku").on("click", function() {
+        // <-- Perbaikan: tambahkan "click"
 
-    $("#btnsubmitku").on("click", function () { // <-- Perbaikan: tambahkan "click"
-
-        var negeri = $('select[name=negeri]').val();
+        var negeri = $("select[name=negeri]").val();
 
         if (negeri == null) {
             alert("Negeri wajib dipilih.");
             return false;
         }
 
-        var bandar = $('select[name=bandar]').val();
+        var bandar = $("select[name=bandar]").val();
 
         if (bandar == null) {
             alert("Bandar wajib dipilih.");
@@ -27,8 +27,10 @@ $(function () {
     triggerSelectParliament(tempState);
     triggerSelectDun(tempParliament);
 
-    $(document).on('change', '#negeri', function () {
-        var current_select = $('#negeri').find(":selected").val();
+    $(document).on("change", "#negeri", function() {
+        var current_select = $("#negeri")
+            .find(":selected")
+            .val();
         tempState.val(current_select);
 
         triggerSelectBandar(tempState);
@@ -37,15 +39,17 @@ $(function () {
         getParliamentByState(current_select);
     });
 
-    $(document).on('change', '#parliament', function () {
-        var current_select = $('#parliament').find(":selected").val();
+    $(document).on("change", "#parliament", function() {
+        var current_select = $("#parliament")
+            .find(":selected")
+            .val();
         tempParliament.val(current_select);
 
         triggerSelectDun(tempParliament);
         getDunByParliament(current_select);
     });
 
-    $(document).on('submit', '.form-register', function (e) {
+    $(document).on("submit", ".form-register", function(e) {
         e.preventDefault();
 
         var queryString = window.location.search;
@@ -55,35 +59,44 @@ $(function () {
         showLoading(e_modal_wait);
 
         var form = $(this);
-        var input_token = $('input[name=_token]');
-        var registered_by_persatuan = urlParams.get("daftar_persatuan") || urlParams('registered_by_persatuan');
-        var ref = urlParams.get("code") || urlParams('ref');
+        var input_token = $("input[name=_token]");
+
+        // ✅ Perbaikan di sini
+        var registered_by_persatuan =
+            urlParams.get("daftar_persatuan") ||
+            urlParams.get("registered_by_persatuan") ||
+            "";
+        var ref = urlParams.get("code") || urlParams.get("ref") || "";
 
         $.ajax({
             url: "/register_ahli/step_two_update",
             type: "POST",
             data: {
                 _token: input_token.val(),
-                address: form.find('textarea[name=alamat_perhubungan]').val(),
-                negeri: form.find('select[name=negeri]').val(),
-                bandar: form.find('select[name=bandar]').val(),
-                parliament: form.find('select[name=parliament]').val(),
-                dun: form.find('select[name=dun]').val(),
-                poskod: form.find('input[name=poskod]').val(),
+                address: form.find("textarea[name=alamat_perhubungan]").val(),
+                negeri: form.find("select[name=negeri]").val(),
+                bandar: form.find("select[name=bandar]").val(),
+                parliament: form.find("select[name=parliament]").val(),
+                dun: form.find("select[name=dun]").val(),
+                poskod: form.find("input[name=poskod]").val(),
                 registered_by_persatuan: registered_by_persatuan,
-                ref: ref,
-            },
-        }).done(function (result) {
+                ref: ref
+            }
+        })
+            .done(function(result) {
+                hideLoading(e_modal_wait);
+                input_token.val(result.newToken);
 
-            hideLoading(e_modal_wait);
-            input_token.val(result.newToken);
+                if (result.isSuccess) {
+                    swal("Success!", result.message, "success");
 
-            if (result.isSuccess) {
-
-                swal('Success!', result.message, 'success');
-
-                if (urlParams.get("daftar_persatuan")) {
-                    const paramsToKeep = ['daftar_persatuan', 'code', 'ref', 'registered_by_persatuan'];
+                    // ✅ Redirect dengan mengekalkan parameter
+                    const paramsToKeep = [
+                        "daftar_persatuan",
+                        "code",
+                        "ref",
+                        "registered_by_persatuan"
+                    ];
                     const newParams = new URLSearchParams();
 
                     paramsToKeep.forEach(param => {
@@ -94,143 +107,160 @@ $(function () {
                     });
 
                     const newQueryString = newParams.toString();
-                    window.location = "/register_ahli/invoice" + (newQueryString ? '?' + newQueryString : '');
-
-                } else if (urlParams.get("registered_by_persatuan")) {
-                    window.location = "/senaraiAhli";
-
+                    window.location =
+                        "/register_ahli/invoice" +
+                        (newQueryString ? "?" + newQueryString : "");
                 } else {
-                    window.location = "/home";
+                    swal("Warning!", result.message, "warning");
                 }
-
-            } else {
-                swal('Warning!', result.message, 'warning');
-            }
-
-        }).fail(function () {
-            hideLoading(e_modal_wait);
-            swal('Error!', 'Terjadi kesalahan sistem. Sila cuba lagi.', 'error');
-        });
-
+            })
+            .fail(function() {
+                hideLoading(e_modal_wait);
+                swal(
+                    "Error!",
+                    "Terjadi kesalahan sistem. Sila cuba lagi.",
+                    "error"
+                );
+            });
     });
-
 });
 
 // Fungsi-fungsi helper
 
 function triggerSelectBandar(param) {
     if (param.val() == "") {
-        $("select[name=bandar]").attr('disabled', 'true').css("background", "#d3d3d35c");
+        $("select[name=bandar]")
+            .attr("disabled", "true")
+            .css("background", "#d3d3d35c");
     } else {
-        $("select[name=bandar]").removeAttr("disabled").css("background", "#f9faff");
+        $("select[name=bandar]")
+            .removeAttr("disabled")
+            .css("background", "#f9faff");
     }
 }
 
 function triggerSelectParliament(param) {
     if (param.val() == "") {
-        $("select[name=parliament]").attr('disabled', 'true').css("background", "#d3d3d35c");
+        $("select[name=parliament]")
+            .attr("disabled", "true")
+            .css("background", "#d3d3d35c");
     } else {
-        $("select[name=parliament]").removeAttr("disabled").css("background", "#f9faff");
+        $("select[name=parliament]")
+            .removeAttr("disabled")
+            .css("background", "#f9faff");
     }
 }
 
 function triggerSelectDun(param) {
     if (param.val() == "") {
-        $("select[name=dun]").attr('disabled', 'true').css("background", "#d3d3d35c");
+        $("select[name=dun]")
+            .attr("disabled", "true")
+            .css("background", "#d3d3d35c");
     } else {
-        $("select[name=dun]").removeAttr("disabled").css("background", "#f9faff");
+        $("select[name=dun]")
+            .removeAttr("disabled")
+            .css("background", "#f9faff");
     }
 }
 
 function getCityByState(id) {
     $.ajax({
-        url: '/getCity',
+        url: "/getCity",
         type: "GET",
         data: {
-            id_state: id,
-        },
-    }).done(function (result) {
-        var selectbandar = $("#bandar");
-        selectbandar.empty();
+            id_state: id
+        }
+    })
+        .done(function(result) {
+            var selectbandar = $("#bandar");
+            selectbandar.empty();
 
-        var optionDefault = $("<option />")
-            .html("Pilih Bandar")
-            .attr("disabled", true)
-            .attr('selected', 'selected');
-        selectbandar.append(optionDefault);
+            var optionDefault = $("<option />")
+                .html("Pilih Bandar")
+                .attr("disabled", true)
+                .attr("selected", "selected");
+            selectbandar.append(optionDefault);
 
-        $(result).each(function () {
-            var option = $("<option />")
-                .html(this.city)
-                .val(this.id_city);
-            selectbandar.append(option);
+            $(result).each(function() {
+                var option = $("<option />")
+                    .html(this.city)
+                    .val(this.id_city);
+                selectbandar.append(option);
+            });
+        })
+        .fail(function() {
+            console.error("Gagal memuat bandar.");
         });
-    }).fail(function () {
-        console.error("Gagal memuat bandar.");
-    });
 }
 
 function getParliamentByState(id) {
     $.ajax({
-        url: '/getParliament',
+        url: "/getParliament",
         type: "GET",
         data: {
-            id_state: id,
-        },
-    }).done(function (result) {
-        var selectparliament = $("#parliament");
-        selectparliament.empty();
+            id_state: id
+        }
+    })
+        .done(function(result) {
+            var selectparliament = $("#parliament");
+            selectparliament.empty();
 
-        var optionDefault = $("<option />")
-            .html("Pilih Parlimen")
-            .attr("disabled", true)
-            .attr('selected', 'selected');
-        selectparliament.append(optionDefault);
+            var optionDefault = $("<option />")
+                .html("Pilih Parlimen")
+                .attr("disabled", true)
+                .attr("selected", "selected");
+            selectparliament.append(optionDefault);
 
-        $(result).each(function () {
-            var option = $("<option />")
-                .html(this.parliament)
-                .val(this.id);
-            selectparliament.append(option);
+            $(result).each(function() {
+                var option = $("<option />")
+                    .html(this.parliament)
+                    .val(this.id);
+                selectparliament.append(option);
+            });
+        })
+        .fail(function() {
+            console.error("Gagal memuat parlimen.");
         });
-    }).fail(function () {
-        console.error("Gagal memuat parlimen.");
-    });
 }
 
 function getDunByParliament(id) {
     $.ajax({
-        url: '/getDun',
+        url: "/getDun",
         type: "GET",
         data: {
-            id_parliament: id,
-        },
-    }).done(function (result) {
-        var selectdun = $("#dun");
-        selectdun.empty();
+            id_parliament: id
+        }
+    })
+        .done(function(result) {
+            var selectdun = $("#dun");
+            selectdun.empty();
 
-        var optionDefault = $("<option />")
-            .html("Pilih DUN")
-            .attr("disabled", true)
-            .attr('selected', 'selected');
-        selectdun.append(optionDefault);
+            var optionDefault = $("<option />")
+                .html("Pilih DUN")
+                .attr("disabled", true)
+                .attr("selected", "selected");
+            selectdun.append(optionDefault);
 
-        $(result).each(function () {
-            var option = $("<option />")
-                .html(this.dun)
-                .val(this.id);
-            selectdun.append(option);
+            $(result).each(function() {
+                var option = $("<option />")
+                    .html(this.dun)
+                    .val(this.id);
+                selectdun.append(option);
+            });
+        })
+        .fail(function() {
+            console.error("Gagal memuat DUN.");
         });
-    }).fail(function () {
-        console.error("Gagal memuat DUN.");
-    });
 }
 
 function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
-        reader.onload = function (e) {
-            $('#image').attr('src', e.target.result).width(100).height(74);
+        reader.onload = function(e) {
+            $("#image")
+                .attr("src", e.target.result)
+                .width(100)
+                .height(74);
         };
         reader.readAsDataURL(input.files[0]);
     }
