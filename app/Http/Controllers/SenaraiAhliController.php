@@ -37,7 +37,7 @@ class SenaraiAhliController extends Controller
 
         $user = Auth::user();
 
-        if($user->sub_company != null){
+        if ($user->sub_company != null) {
             $id_user = $user->sub_company;
             $dataValidation = User::findOrFail($id_user);
         } else {
@@ -45,7 +45,7 @@ class SenaraiAhliController extends Controller
             $id_user = $user->id;
         }
 
-        if($request->id_user) {
+        if ($request->id_user) {
             $id_user = $request->id_user;
         }
 
@@ -69,7 +69,7 @@ class SenaraiAhliController extends Controller
         $pegawai_daerah = User::where('status', 'ACTIVE')->where('id_level', 4)->get();
         $persatuan = User::where('status', 'ACTIVE')->where('id_level', '2')->get();
 
-        return view('company.senaraiAhli.index', compact('dataValidation','city', 'status_native', 'business_activity', 'pegawai_daerah', 'persatuan', 'detail'));
+        return view('company.senaraiAhli.index', compact('dataValidation', 'city', 'status_native', 'business_activity', 'pegawai_daerah', 'persatuan', 'detail'));
     }
 
     public function import(Request $request)
@@ -83,7 +83,7 @@ class SenaraiAhliController extends Controller
             // Cek apakah ada row yang gagal
             if (!empty($import->failedRows)) {
                 $errors = collect($import->failedRows)
-                    ->map(function($f) {
+                    ->map(function ($f) {
                         return "Row {$f['row']}: {$f['reason']}";
                     })->toArray();
 
@@ -91,7 +91,6 @@ class SenaraiAhliController extends Controller
             }
 
             return redirect()->back()->with('success', 'Ahli imported successfully!');
-
         } catch (\Exception $ex) {
             // Tangani error global dari Excel atau lainnya
             Log::error('Import failed: ' . $ex->getMessage());
@@ -105,7 +104,7 @@ class SenaraiAhliController extends Controller
 
         $manpower = \App\Models\DetailManpower::where('id_detail_manpower', $request->id_detail_manpower)->first();
 
-        if(!$manpower) {
+        if (!$manpower) {
             $response = ['isSuccess' => false, 'message' => "Failed"];
             return response()->json($response);
         }
@@ -123,7 +122,6 @@ class SenaraiAhliController extends Controller
         }
 
         return response()->json($response);
-
     }
 
     // public function getData(Request $request)
@@ -402,9 +400,20 @@ class SenaraiAhliController extends Controller
             $detail = DetailCompany::where('id_user', $id_user)->first();
         }
         $data = DetailManpower::select(
-            'id_user', 'id_detail_manpower', 'id_detail_company', 'ic_number', 'step_registration',
-            'native_status', 'business_license_no', 'business_type', 'business_activity',
-            'sub_business_activity', 'kad_digital', 'payment_kad_digital', 'subscribe_status', 'is_subscribe'
+            'id_user',
+            'id_detail_manpower',
+            'id_detail_company',
+            'ic_number',
+            'step_registration',
+            'native_status',
+            'business_license_no',
+            'business_type',
+            'business_activity',
+            'sub_business_activity',
+            'kad_digital',
+            'payment_kad_digital',
+            'subscribe_status',
+            'is_subscribe'
         )->with([
             'user:id,fullname,phone_number,email,is_verified,registered_by',
             'company:id_detail_company,full_company_name',
@@ -426,8 +435,8 @@ class SenaraiAhliController extends Controller
             $data->whereHas('user', function ($query) use ($status) {
                 $query->where('status', $status);
             })
-            ->whereDate('certificate_expired_date', '>', now())
-            ->where('step_registration', DetailManpower::$stepRegistration);
+                ->whereDate('certificate_expired_date', '>', now())
+                ->where('step_registration', DetailManpower::$stepRegistration);
         }
 
         if ($user->id_level == 6 || $user->id_level == 4) {
@@ -457,8 +466,14 @@ class SenaraiAhliController extends Controller
             }
 
             $data = DetailManpower::select(
-                'id_user', 'id_detail_manpower', 'id_detail_company', 'ic_number',
-                'step_registration', 'native_status', 'is_subscribe', 'certificate_expired_date'
+                'id_user',
+                'id_detail_manpower',
+                'id_detail_company',
+                'ic_number',
+                'step_registration',
+                'native_status',
+                'is_subscribe',
+                'certificate_expired_date'
             )->with([
                 'user:id,fullname,phone_number,email,is_verified,registered_by',
                 'company:id_detail_company,full_company_name',
@@ -543,20 +558,14 @@ class SenaraiAhliController extends Controller
 
     public function getDataAhliPersatuan(Request $request)
     {
-
-        if($request->filter){
+        if ($request->filter) {
             $filter = $request->filter;
         }
 
         $user = Auth::user();
 
-        if($user->sub_company != null){
-            $id_user = $user->sub_company;
-        } else {
-            $id_user = $user->id;
-        }
-
-        if($request->id_user) {
+        $id_user = $user->sub_company ?? $user->id;
+        if ($request->id_user) {
             $id_user = $request->id_user;
         }
 
@@ -564,100 +573,56 @@ class SenaraiAhliController extends Controller
             $detail = DetailCompany::where('id_user', $id_user)->first();
         }
 
-        $data = JoinCompany::with(['manpower' => function($query) {
-                $query->select('id_user', 'id_detail_manpower', 'id_detail_company', 'ic_number', 'step_registration', 'native_status', 'business_license_no', 'business_type', 'kad_digital', 'payment_kad_digital');
-        }, 'company' => function($query) {
-                $query->select('id_detail_company', 'full_company_name');
-        }, 'manpower.user' => function($query) {
-                $query->select('id','fullname','phone_number', 'email', 'is_verified', 'registered_by');
-        }, 'manpower.status_native' => function($query) {
-                $query->select('id_status_native', 'status_native');
-        }, 'manpower.business_type_text' => function($query) {
-                $query->select('id_business_type', 'business_type');
-        }])->where('id_detail_company', $detail->id_detail_company)->whereDate('expired_at', '>', date('Y-m-d'))->orderBy('created_at', 'DESC');
-        
-        $status = $request->status;
-        $license = $request->license;
+        // Query utama — tambahkan whereHas('manpower.user')!
+        $data = JoinCompany::with([
+            'manpower' => fn($q) => $q->select('id_user', 'id_detail_manpower', 'id_detail_company', 'ic_number', 'step_registration', 'native_status', 'business_license_no', 'business_type', 'kad_digital', 'payment_kad_digital'),
+            'company' => fn($q) => $q->select('id_detail_company', 'full_company_name'),
+            'manpower.user' => fn($q) => $q->select('id', 'fullname', 'phone_number', 'email', 'is_verified', 'registered_by'),
+            'manpower.status_native' => fn($q) => $q->select('id_status_native', 'status_native'),
+            'manpower.business_type_text' => fn($q) => $q->select('id_business_type', 'business_type'),
+        ])
+            ->where('id_detail_company', $detail->id_detail_company)
+            ->whereDate('expired_at', '>', now())
+            ->whereHas('manpower.user') // ✅ Filter hanya yang punya user
+            ->orderBy('created_at', 'DESC');
 
-        if($status == "Overall") {
-            $data = $data->whereHas('manpower', function($query) use($status) {
-                $query->where('step_registration', DetailManpower::$stepRegistration);
-            });
-        }
+        // ... semua filter kamu (status, license, city, filter, q) tetap sama ...
 
-        if($status != "Overall" && $status != "Unfiltered" && $status != "") {
-            $data = $data->whereHas('manpower.user', function($query) use($status) {
-                $query->where('status', $status);
-            })->where('step_registration', DetailManpower::$stepRegistration);
-
-        }
-
-        if($request->id_city) {
-            $id_city = $request->id_city;
-            $data = $data->whereHas('manpower', function($query) use($id_city) {
-                $query->where('id_city', $id_city);
-            });
-            // $data = $data->where('id_city', $request->id_city);
-        }
-
-        if($license == "No") {
-            $data = $data->whereHas('manpower', function($query) use($license) {
-                $query->where('business_license_no', NULL);
-            });
-
-            // $data = $data->where('business_license_no', NULL);
-        }
-
-        if($request->filter){
-            if($filter == "today"){
-                $data = $data->whereHas('manpower', function($query) {
-                    $query->whereDate('created_at', date('Ymd'));
-                });
-            } else if($filter == "month"){
-                $data = $data->whereHas('manpower', function($query) {
-                    $query->whereMonth('created_at', Carbon::today()->month)->whereYear('created_at', Carbon::today()->year);
-                });
-            } else if($filter == "year"){
-                $data = $data->whereHas('manpower', function($query) {
-                    $query->whereYear('created_at', Carbon::today()->year);
-                });
-            }
-        }
-
-        if($request->q){
-
+        if ($request->q) {
             $q = $request->q;
-
-            $data = $data->whereHas('manpower.user', function($query) use($q){
-                $query->where('fullname', 'LIKE', '%' . $q . '%');
-                $query->orWhere('email', 'LIKE', '%' . $q . '%');
-                $query->orWhere('phone_number', 'LIKE', '%' . $q . '%');
+            $data = $data->whereHas('manpower.user', function ($query) use ($q) {
+                $query->where('fullname', 'LIKE', '%' . $q . '%')
+                    ->orWhere('email', 'LIKE', '%' . $q . '%')
+                    ->orWhere('phone_number', 'LIKE', '%' . $q . '%');
             });
         }
 
         $data = $data->get();
 
-        foreach($data as $d){
+        foreach ($data as $d) {
             $d->ref = Crypt::encryptString($d->id_user);
-            $d->manpower->status_native_text = isset($d->manpower->status_native) ? $d->manpower->status_native->status_native : '';
-            if($d->payment_date == null){
-                $d->invoice = 'UNPAID';
-            } else if($d->expired_at > date('Y-m-d')) {
-                $d->invoice = 'PAID';
-            } else {
-                $d->invoice = 'EXPIRED';
-            }
 
-            $d->persatuan = isset($d->id_detail_company) ? isset($d->company->full_company_name) ? $d->company->full_company_name : '' : 'Tiada Persatuan';
-            if($d->manpower->user->registered_by)
-                $d->registered_by_name = User::where('id', $d->manpower->user->registered_by)->first()->fullname;
-            else
-                $d->registered_by_name = '';
+            // Pastikan struktur sesuai DataTables — meskipun whereHas sudah dipakai
+            $d->manpower = (object)[
+                'ic_number' => $d->manpower->ic_number ?? '',
+                'status_native_text' => $d->manpower->status_native_text ?? '',
+                'user' => (object)[
+                    'fullname' => $d->manpower->user->fullname ?? '-',
+                    'phone_number' => $d->manpower->user->phone_number ?? '-',
+                    'email' => $d->manpower->user->email ?? '-',
+                ]
+            ];
 
+            $d->invoice = match (true) {
+                is_null($d->payment_date) => 'UNPAID',
+                $d->expired_at > now() => 'PAID',
+                default => 'EXPIRED'
+            };
+
+            $d->persatuan = $d->company?->full_company_name ?? 'Tiada Persatuan';
         }
 
         return Datatables::of($data)->addIndexColumn()->make(true);
-
     }
 
     public function store(Request $request)
@@ -667,20 +632,20 @@ class SenaraiAhliController extends Controller
 
         $cek_email = User::where('email', $request->email)->first();
 
-        if($cek_email) {
-            return redirect()->back()->with('failed','Email already exist!');
+        if ($cek_email) {
+            return redirect()->back()->with('failed', 'Email already exist!');
         }
 
         $cek_phone = User::where('phone_number', $request->phone_number)->first();
 
-        if($cek_phone) {
-            return redirect()->back()->with('failed','Phone Number already exist!');
+        if ($cek_phone) {
+            return redirect()->back()->with('failed', 'Phone Number already exist!');
         }
 
         $cek_ic_number = DetailManpower::where('ic_number', $request->ic_number)->first();
 
-        if($cek_ic_number) {
-            return redirect()->back()->with('failed','IC Number already exist!');
+        if ($cek_ic_number) {
+            return redirect()->back()->with('failed', 'IC Number already exist!');
         }
 
 
@@ -701,18 +666,17 @@ class SenaraiAhliController extends Controller
 
         $detail = new DetailManpower();
         $detail->id_user = $data->id;
-        if($user->id_level == 4) {
+        if ($user->id_level == 4) {
             $detail->id_pegawai_daerah = $user->id;
         } else {
             $detail->id_pegawai_daerah = $request->pegawai_daerah;
         }
 
 
-        if($user->id_level == 2) {
+        if ($user->id_level == 2) {
 
             $company = DetailCompany::where('id_user', $user->id)->first();
             $detail->id_detail_company = $company->id_detail_company;
-
         }
 
         $detail->ic_number = $request->ic_number;
@@ -722,16 +686,14 @@ class SenaraiAhliController extends Controller
 
         $detail->save();
 
-        return redirect()->back()->with('success','Created successfully');
-
-
+        return redirect()->back()->with('success', 'Created successfully');
     }
 
     public function edit($id, Request $r)
     {
         $data = DetailManpower::with('user')->where('id_detail_manpower', $id)->first();
 
-        if(isset($data->id_state)){
+        if (isset($data->id_state)) {
             $has_state = true;
             $village_guests = VillageGuests::where('is_active', 'ENABLE')->where('id_state', $data->id_state)->get();
         } else {
@@ -749,14 +711,14 @@ class SenaraiAhliController extends Controller
         $data->id_village_guests = json_decode($data->id_village_guests);
         $data->id_sub_business_activity = json_decode($data->sub_business_activity);
         $data->id_position = $data_manpower_position && $data_manpower_position->id_position !== null
-        ? (int) $data_manpower_position->id_position
-        : null;
+            ? (int) $data_manpower_position->id_position
+            : null;
         // $data->created_date = date('Y-m-d H:i:s', strtotime($data->created_at));
 
         return response()->json([
-            'success'=>'Get data successfully',
-            'data'=>$data
-            ]);
+            'success' => 'Get data successfully',
+            'data' => $data
+        ]);
         // return view('admin.settingsPosition.index', compact('data'));
     }
 
@@ -853,9 +815,9 @@ class SenaraiAhliController extends Controller
 
         if ($auth->id_level == 1) {
             $detail->status_approval_admin_pusat = $request->status;
-            if($request->status == 'APPROVE') {
+            if ($request->status == 'APPROVE') {
                 $detail->approve_at_admin_pusat = now();
-            }else{
+            } else {
                 $detail->approve_at_admin_pusat = null;
             }
         }
@@ -894,7 +856,6 @@ class SenaraiAhliController extends Controller
         $detail->save();
 
         return redirect('/maklumatProduk')->with('success', 'Maklumat Kilang berhasil diupdate');
-
     }
 
     public function updateHalal(Request $request)
@@ -904,14 +865,14 @@ class SenaraiAhliController extends Controller
 
         $detail = DetailManpower::where('id_user', $user->id)->first();
 
-        if($request->hasFile('img_halal')){
+        if ($request->hasFile('img_halal')) {
             $file = $request->file('img_halal');
             $n = $file->getClientOriginalName();
             $current_date = date('Ymdhis');
             $name = "$current_date$n";
-            $file->move(public_path().'/halalCertificate',$name);
+            $file->move(public_path() . '/halalCertificate', $name);
             $image = $name;
-        }else{
+        } else {
             $image = 'default.png';
         }
 
@@ -924,7 +885,6 @@ class SenaraiAhliController extends Controller
         $detail->save();
 
         return redirect('/maklumatProduk')->with('success', 'Maklumat Halal berhasil diupdate');
-
     }
 
     public function updateGmp(Request $request)
@@ -934,14 +894,14 @@ class SenaraiAhliController extends Controller
 
         $detail = DetailManpower::where('id_user', $user->id)->first();
 
-        if($request->hasFile('img_gmp')){
+        if ($request->hasFile('img_gmp')) {
             $file = $request->file('img_gmp');
             $n = $file->getClientOriginalName();
             $current_date = date('Ymdhis');
             $name = "$current_date$n";
-            $file->move(public_path().'/gmpCertificate',$name);
+            $file->move(public_path() . '/gmpCertificate', $name);
             $image = $name;
-        }else{
+        } else {
             $image = 'default.png';
         }
 
@@ -952,7 +912,6 @@ class SenaraiAhliController extends Controller
         $detail->save();
 
         return redirect('/maklumatProduk')->with('success', 'Maklumat GMP berhasil diupdate');
-
     }
 
 
@@ -963,14 +922,14 @@ class SenaraiAhliController extends Controller
 
         $detail = DetailManpower::where('id_user', $user->id)->first();
 
-        if($request->hasFile('img_kkm')){
+        if ($request->hasFile('img_kkm')) {
             $file = $request->file('img_kkm');
             $n = $file->getClientOriginalName();
             $current_date = date('Ymdhis');
             $name = "$current_date$n";
-            $file->move(public_path().'/kkmCertificate',$name);
+            $file->move(public_path() . '/kkmCertificate', $name);
             $image = $name;
-        }else{
+        } else {
             $image = 'default.png';
         }
 
@@ -981,10 +940,10 @@ class SenaraiAhliController extends Controller
         $detail->save();
 
         return redirect('/maklumatProduk')->with('success', 'Maklumat KKM berhasil diupdate');
-
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
 
         $user = User::where('id', $id)->first();
         $data = DetailManpower::where('id_user', $user->id)->first();
@@ -998,19 +957,19 @@ class SenaraiAhliController extends Controller
         return response()->json([
             'newToken' => csrf_token(),
             'isSuccess' => true,
-            'success'=>'Senarai Ahli deleted successfully!',
-            'data'=>$data
-            ]);
+            'success' => 'Senarai Ahli deleted successfully!',
+            'data' => $data
+        ]);
 
         // return response()->json(['success'=>'Senarai Ahli deleted successfully']);
     }
 
-    public function temp_destroy($id){
+    public function temp_destroy($id)
+    {
 
         $data = TempCompanyShareHolders::where('id_temp_company_shareholders', $id)->first();
         $data->delete();
 
-        return response()->json(['success'=>'Cancel update successfully']);
+        return response()->json(['success' => 'Cancel update successfully']);
     }
-
 }

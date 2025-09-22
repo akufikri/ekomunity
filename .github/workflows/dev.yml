@@ -13,11 +13,11 @@ jobs:
       - name: 🚚 Get latest code
         uses: actions/checkout@v3
 
-      # - name: ♻️ Cache FTP state
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: .ftp-deploy-sync-state.json
-      #     key: ${{ runner.os }}-ftp-${{ github.ref }}
+      - name: ♻️ Cache FTP state
+        uses: actions/cache@v3
+        with:
+          path: .ftp-deploy-sync-state.json
+          key: ${{ runner.os }}-ftp-${{ github.ref }}
           
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
