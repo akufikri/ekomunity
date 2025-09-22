@@ -955,11 +955,11 @@
                                 class="nav-link {{ request()->is('sijilCawangan') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-certificate"></i>
                                 <p>
-                                    {{ __('menu.branch_certificate') }}
+                                    Membership Certificate
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ URL::to('/companyCard') }}"
                                 class="nav-link {{ request()->is('companyCard') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-id-card"></i>
@@ -967,7 +967,7 @@
                                     {{ __('menu.membership_card') }}
                                 </p>
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item">
                             <a href="{{ URL::to('/profilDigital') }}"
                                 class="nav-link {{ request()->is('profilDigital') ? 'active' : '' }}">
