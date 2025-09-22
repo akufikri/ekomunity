@@ -27,9 +27,6 @@ jobs:
           password: ${{ secrets.DEV_PASSWORD }}
           port: 21
           exclude: |
-            public/**
-            !public/index.php
-            !public/.htaccess
             **/.git*
             **/.git*/**
             **/node_modules/**
