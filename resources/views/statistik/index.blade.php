@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Statistik</title>
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('landingpage/') }}/images/logo-usia.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('landingpage/images/logo/logo-ekomuniti.png') }}">
 
     <link rel="stylesheet" href="{{ asset('template_dashboard/plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet"
@@ -28,13 +28,15 @@
             width: 100%;
             overflow: hidden;
             position: relative;
-            height: 35vh; /* Bisa disesuaikan sesuai kebutuhan */
+            height: 35vh;
+            /* Bisa disesuaikan sesuai kebutuhan */
         }
 
         .hero-section img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Memastikan gambar mengisi area tanpa terdistorsi */
+            object-fit: cover;
+            /* Memastikan gambar mengisi area tanpa terdistorsi */
             position: absolute;
             top: 0;
             left: 0;
@@ -43,24 +45,32 @@
         /* Mengatur ukuran chart agar responsif */
         .card-body canvas {
             width: 100% !important;
-            height: auto !important; /* Biarkan tinggi menyesuaikan proporsi */
+            height: auto !important;
+            /* Biarkan tinggi menyesuaikan proporsi */
         }
 
         /* Border untuk card */
         .card-border {
-            border: 1px solid #dee2e6; /* Contoh border, bisa disesuaikan */
-            border-radius: .25rem; /* Sudut membulat */
-            margin-bottom: 1rem; /* Jarak antar card */
+            border: 1px solid #dee2e6;
+            /* Contoh border, bisa disesuaikan */
+            border-radius: .25rem;
+            /* Sudut membulat */
+            margin-bottom: 1rem;
+            /* Jarak antar card */
         }
 
         /* Penyesuaian untuk tampilan mobile pada card TOTAL KEAHLIAN USIA */
         @media (max-width: 767.98px) {
             .card-body.total-keahlian {
-                flex-direction: column; /* Ubah tata letak menjadi kolom */
-                align-items: flex-start !important; /* Ratakan ke kiri */
+                flex-direction: column;
+                /* Ubah tata letak menjadi kolom */
+                align-items: flex-start !important;
+                /* Ratakan ke kiri */
             }
-            .card-body.total-keahlian > div {
-                margin-bottom: 10px; /* Jarak antar elemen */
+
+            .card-body.total-keahlian>div {
+                margin-bottom: 10px;
+                /* Jarak antar elemen */
             }
         }
     </style>
@@ -84,7 +94,8 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 mb-4"> <div class="card card-border">
+            <div class="col-md-6 mb-4">
+                <div class="card card-border">
                     <div class="card-header bg-white border-0">
                         <h5 class="">Jantina</h5>
                     </div>

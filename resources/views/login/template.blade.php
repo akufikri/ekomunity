@@ -16,15 +16,15 @@
     <meta name="format-detection" content="telephone=no">
 
     <!-- FAVICONS ICON -->
-    <link rel="icon" href="{{ asset('landingpage/') }}/images/logo2.png" type="image/x-icon/png" sizes="16x16" />
-    <link rel="shortcut icon" type="image/x-icon/png" href="{{ asset('landingpage/') }}/images/logo-usia.png" />
+    <link rel="icon" type="image/png" sizes="16x16"
+        href="{{ asset('landingpage/images/logo/logo-ekomuniti.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 
     <!-- PAGE TITLE HERE -->
     @if ($global_brand)
         <title>{{ $global_brand->name_brand }}</title>
-        @else
+    @else
         <title>Selamat Datang ke Coedev</title>
     @endif
 
@@ -79,7 +79,8 @@
                 </div>
             </div> --}}
             <div style="overflow:hidden; width: 100%; height:339px">
-                <img src="{{ asset('landingpage/') }}/images/main-slider/slide.jpeg" alt="" style="width: 100%; height: 100%; object-fit:cover">
+                <img src="{{ asset('landingpage/') }}/images/main-slider/slide.jpeg" alt=""
+                    style="width: 100%; height: 100%; object-fit:cover">
             </div>
             @yield('content')
         </div>
