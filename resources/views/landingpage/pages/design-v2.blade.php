@@ -30,7 +30,8 @@
                 </div>
             </div>
             <div>
-                <button class="btn btn-primary bg-[#1569a0] text-white border-none">Masuk</button>
+                <a href="/register_company/select_package"
+                    class="btn btn-primary bg-[#1569a0] text-white border-none">Masuk</a>
             </div>
         </div>
     </div>
@@ -48,10 +49,10 @@
                     Satu platform digital untuk persatuan & komuniti mengurus ahli, aktiviti, dan komunikasi dengan
                     lebih teratur.
                 </p>
-                <button
+                <a href="/register_company/select_package"
                     class="btn bg-yellow-500 text-white border-none shadow-lg hover:scale-105 transition-transform mx-auto md:mx-0">
                     Bina komuniti anda sekarang
-                </button>
+                </a>
             </div>
 
             <!-- Tempat untuk ilustrasi (opsional, bisa diaktifkan nanti) -->

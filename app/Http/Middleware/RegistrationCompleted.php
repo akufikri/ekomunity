@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\DetailCompany;
 use Closure;
 use Carbon\Carbon;
 
@@ -10,7 +11,7 @@ class RegistrationCompleted
     public function handle($request, Closure $next)
     {
         $user = $request->user();
-
+        // dd($user);
         // return response()->json($user);
 
         if ($user->id_level == '2') {
@@ -50,8 +51,16 @@ class RegistrationCompleted
                     ]
                 ], 401);
             }
-
+            // dd($user);
             if ($detail->step_registration == 1) {
+                if ($user->registered_by) {
+                    $dCompany = DetailCompany::where('id_user', $user->registered_by)->first();
+                    if ($dCompany) {
+                        return redirect()->to('/register_ahli/step_two?daftar_persatuan=true&code=' . $dCompany->key_reference);
+                    }
+                    return redirect()->to('/register_ahli/step_two');
+                }
+                // return redirect()->to('/register_company/step_two');
                 return redirect()->to('/register_ahli/step_two');
             }
             // else if($detail->step_registration == 2) {

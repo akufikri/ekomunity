@@ -72,6 +72,7 @@ use App\Models\JoinCompany;
 use App\Models\InboxRecipient;
 use App\Models\Inbox;
 use App\Models\ManpowerPosition;
+use Illuminate\Http\Request;
 
 // Route::get('/carta', function () {
 //     return view('testing.carta-organtisasi');
@@ -813,7 +814,7 @@ Route::get('/verify_email_all', function () {
     return compact('sum');
 });
 
-Route::get('/verify_email', function () {
+Route::get('/verify_email', function (Request $request) {
 
     $auth = Auth::user();
 
@@ -824,11 +825,16 @@ Route::get('/verify_email', function () {
     }
     $user->is_verified = true;
     $user->email_verified_at = date('d-m-Y h:i:s');
-    if ($auth) {
-        $user->verified_by = $auth->id;
-    } else {
-        $user->verified_by = $user->id;
-    }
+
+    // if ($request->input('code')) {
+
+    // }
+
+    // if ($auth) {
+    //     $user->verified_by = $auth->id;
+    // } else {
+    //     $user->verified_by = $user->id;
+    // }
     $user->save();
 
     if ($auth) {

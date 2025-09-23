@@ -1075,14 +1075,18 @@ class RegisManpowerController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $auth = Auth::user();
         $authCompany = false;
+        $code = $request->input('code');
 
         if (isset($auth)) {
             if ($auth->id_level != 2) {
                 return $this->commitResponse('Anda tidak bisa membuat akaun ahli, silahkan logout dahulu!');
             }
             $authCompany = true;
+        } elseif ($code) {
+            $dCompany = DetailCompany::where('key_reference', $code)->first();
         }
 
         $user = new User;
@@ -1114,6 +1118,11 @@ class RegisManpowerController extends Controller
         $user->phone_number = $this->adjustPhoneNumberMy("$dial_code$request->no_telefon");
         $user->email = $request->email;
         $user->id_level = 3;
+
+        if ($dCompany) {
+            $user->registered_by = $dCompany->id_user;
+            $user->verified_by = $dCompany->id_user;
+        }
 
         if ($authCompany) {
             $user->registered_by = $auth->id;
