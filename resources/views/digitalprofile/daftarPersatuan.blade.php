@@ -350,16 +350,16 @@
             </div>
 
             <div class="fr sub-card-noborder">
-                {{-- @if ($join_company == null)
+                @if ($join_company == null)
                     <a class="btn btn-md btn-danger" style="width: -webkit-fill-available; background: #b91c1c;"
                         data-target="#tncModal" data-toggle="modal" href="#">Daftar</a>
                     <a class="btn btn-md btn-danger" style="width: -webkit-fill-available; background: #b91c1c;" href="/request_join/{{$data->key_reference}}">Daftar</a>
                 @else
                     <a class="btn btn-md btn-info" style="width: -webkit-fill-available;" href="#">Anda sudah
                         terdaftar</a>
-                @endif --}}
-                <a class="btn btn-md btn-info" style="width: -webkit-fill-available;" href="#">Anda sudah
-                    terdaftar</a>
+                @endif
+                {{-- <a class="btn btn-md btn-info" style="width: -webkit-fill-available;" href="#">Anda sudah
+                    terdaftar</a> --}}
             </div>
 
         </div>
@@ -417,7 +417,7 @@
         </div>
 
         <div class="fr sub-card-noborder">
-            {{-- @if ($join_company == null)
+            @if ($join_company == null)
                 <div class="fl ml-10" style="float: right"><a data-target="#tncModal" data-toggle="modal" href="#"><img src="/images/digitalprofile/right.png" width="20px" alt="Arrow Right"></a></div>
                 <a class="btn btn-md btn-danger" style="width: -webkit-fill-available; background: #b91c1c;"
                     data-target="#tncModal" data-toggle="modal" href="#">Daftar</a>
@@ -425,9 +425,9 @@
             @else
                 <a class="btn btn-md btn-info" style="width: -webkit-fill-available;" href="#">Anda sudah
                     terdaftar</a>
-            @endif --}}
-            <a class="btn btn-md btn-info" style="width: -webkit-fill-available;" href="#">Anda sudah
-                terdaftar</a>
+            @endif
+            {{-- <a class="btn btn-md btn-info" style="width: -webkit-fill-available;" href="#">Anda sudah
+                terdaftar</a> --}}
         </div>
 
 

@@ -33,7 +33,7 @@
 
 
     <div class="container copyright text-center mt-4">
-        <p>© <span>Pertubuhan Islam Seluruh Sabah. Hasil kerjasama Coedev Technology Sdn Bhd</span></p>
+        <p>© <span>eKomuniti. Hasil kerjasama Coedev Technology Sdn Bhd</span></p>
     </div>
 
 </footer>

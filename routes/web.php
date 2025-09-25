@@ -454,7 +454,7 @@ Route::get('/daftar_persatuan/{code}', function ($code) {
         return redirect(env('APP_URL') . "/persatuan/$code");
     }
 
-    if ($auth->id_level != '2') {
+    if ($auth->id_level != '3') {
         return redirect(env('APP_URL') . "/persatuan/$code");
     }
 
