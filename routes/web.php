@@ -434,20 +434,29 @@ Route::get('/id/{code}', function ($code) {
 });
 
 Route::get('/daftar_persatuan/{code}', function ($code) {
-
     $data = DetailCompany::with('user')->where('key_reference', $code)->first();
     $auth = Auth::user();
+
     $manpower = DetailManpower::where('id_user', $auth->id)->first();
-    $join_company = JoinCompany::where('id_detail_company', $data->id_detail_company)->where('id_detail_manpower', $manpower->id_detail_manpower)->where('status_approval', 'APPROVED')->first();
+
+    // default null biar aman
+    $join_company = null;
+
+    // cek kalau $manpower tidak null
+    if ($manpower) {
+        $join_company = JoinCompany::where('id_detail_company', $data->id_detail_company)
+            ->where('id_detail_manpower', $manpower->id_detail_manpower)
+            ->where('status_approval', 'APPROVED')
+            ->first();
+    }
 
     if (!$auth) {
         return redirect(env('APP_URL') . "/persatuan/$code");
     }
 
-    if ($auth->id_level != '3') {
+    if ($auth->id_level != '2') {
         return redirect(env('APP_URL') . "/persatuan/$code");
     }
-
 
     $user_auth = User::select('id', 'fullname', 'email')->with(['manpower' => function ($query) {
         $query->select('id_user', 'ic_number', 'id_city')->with(['city' => function ($query) {
@@ -455,12 +464,9 @@ Route::get('/daftar_persatuan/{code}', function ($code) {
         }]);
     }])->where('id', $auth->id)->first();
 
-    // return $user_auth;
-
     if (!$data) {
         return "Data not found!";
     } else {
-
         $user = User::where('id', $data->id_user)->first();
 
         if (!$user) {
@@ -485,7 +491,6 @@ Route::get('/daftar_persatuan/{code}', function ($code) {
         return view('digitalprofile.daftarPersatuan', compact('data', 'user_auth', 'join_company'));
     }
 });
-
 
 Route::get('/daftar_persatuan_success', function () {
 

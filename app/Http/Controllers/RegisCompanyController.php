@@ -16,6 +16,8 @@ use App\Models\City;
 use App\Models\State;
 use App\Models\DetailCompany;
 use App\Models\CompanyShareHolders;
+use App\Models\DetailManpower;
+use App\Models\JoinCompany;
 use App\Models\LogCertificate;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -452,6 +454,31 @@ class RegisCompanyController extends Controller
         $log_certificate->note = "Your registration is under verification process. An email will be sent to you once approved or rejected.";
         $detail->save();
         $log_certificate->save();
+
+        $manpower = new DetailManpower();
+        $manpower->id_user = $user->id;
+        $manpower->id_city = $request->city;
+        $manpower->id_state = $request->state;
+        $manpower->id_country = '1';
+        $manpower->id_nation = '1';
+        $manpower->id_agama = '1';
+        $manpower->business_email = $user->email;
+        $manpower->created_at = now();
+        $manpower->save();
+
+        $reqJoinCompany = new JoinCompany();
+        $reqJoinCompany->index_detail_manpower = $manpower->id_detail_manpower;
+        $reqJoinCompany->id_detail_company = $detail->id_detail_company;
+        $reqJoinCompany->joining_fee = null;
+        $reqJoinCompany->status_approval = "APPROVED";
+        $reqJoinCompany->status_approval_at = now();
+        $reqJoinCompany->status_approval_by = $user->id;
+        $reqJoinCompany->payment_method = null;
+        $reqJoinCompany->payment_date = now();
+        $reqJoinCompany->expired_at = now()->addYears(1);
+        $reqJoinCompany->created_by = $user->id;
+        $reqJoinCompany->created_at = now();
+        $reqJoinCompany->save();
         // dd($detail->price_subscribe);
         // Create ToyyibPay bill for company registration
         if ($detail->price_subscribe > 0) {
@@ -489,6 +516,9 @@ class RegisCompanyController extends Controller
         $user->id_level = 2;
         $user->password = Hash::make($request->password);
         $user->save();
+
+        // $manpower = new DetailManpower();
+        // $manpower->id_user = $user->id;
 
         if ($user) {
             $company = new DetailCompany;

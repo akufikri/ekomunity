@@ -257,6 +257,10 @@
                                         <a href="{{ env('APP_URL') }}/{{ $data->company->custom_link }}">
                                             <i><u>{{ env('APP_URL') }}/{{ $data->company->custom_link }}</u></i>
                                         </a>
+                                    @else
+                                        <a href="{{ env('APP_URL') }}/persatuan/{{ $data->company->key_reference }}">
+                                            <i><u>{{ env('APP_URL') }}/persatuan/{{ $data->company->key_reference }}</u></i>
+                                        </a>
                                     @endif
                                 </div>
                             </div>

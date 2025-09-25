@@ -231,9 +231,16 @@
 
         <!-- Action Buttons -->
         <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin: 30px 0;">
-            <button type="button" class="btn btn-primary-custom" data-toggle="modal" data-target="#authModal">
-                Daftar Menjadi Ahli
-            </button>
+            @if (Auth::user())
+                <button type="button" class="btn btn-primary-custom"
+                    onclick="window.location.href='/daftar_persatuan/{{ $data->key_reference }}'">
+                    Daftar Menjadi Ahli
+                </button>
+            @else
+                <button type="button" class="btn btn-primary-custom" data-toggle="modal" data-target="#authModal">
+                    Daftar Menjadi Ahli
+                </button>
+            @endif
             <a href="/persatuan/structure/{{ $data->key_reference }}" class="btn btn-outline-custom">Carta
                 Organisasi</a>
         </div>
