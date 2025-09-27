@@ -67,7 +67,7 @@
                 </div>
                 <div class="form-group mt-0">
                     <p align="center" class="p-0" style="font-size: 18px;"><b>Sijil No. <span
-                                style="color: red">EKO-{{ $data->number_certificate }}</span></b></p>
+                                style="color: red">{{ $data->number_certificate }}</span></b></p>
                     <p align="center" class="p-0" style="font-size: 18px;">Tarikh Pendaftaran :
                         {{ date('d F Y', strtotime("$data->created_at")) }}</p>
                 </div><br>

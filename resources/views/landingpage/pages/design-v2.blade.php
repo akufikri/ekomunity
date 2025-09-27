@@ -166,62 +166,116 @@
                 <div class="lg:grid hidden grid-cols-3 gap-10">
                     <div class="grid grid-cols-1 gap-4 rotate-10 -translate-x-40 -translate-y-72">
                         <div class="card rounded-none bg-white opacity-40 border-0 h-[340px] w-[290px]">
-                            <div class="card-body"></div>
+                            <div class="card-body p-0 overflow-hidden">
+                                <img src="{{ asset('landingpage/images/cta/1.jpeg') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
                         </div>
                         <div class="card rounded-none bg-white opacity-40 border-0 h-[340px] w-[290px]">
-                            <div class="card-body"></div>
+                            <div class="card-body p-0 overflow-hidden">
+                                <img src="{{ asset('landingpage/images/cta/2.jpeg') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
                         </div>
                         <div class="card rounded-none bg-white opacity-40 border-0 h-[340px] w-[290px]">
-                            <div class="card-body"></div>
+                            <div class="card-body p-0 overflow-hidden">
+                                <img src="{{ asset('landingpage/images/cta/3.jpeg') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
                         </div>
                         <div class="card rounded-none bg-white opacity-40 border-0 h-[340px] w-[290px]">
-                            <div class="card-body"></div>
+                            <div class="card-body p-0 overflow-hidden">
+                                <img src="{{ asset('landingpage/images/cta/4.jpeg') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
                         </div>
                         <div class="card rounded-none bg-white opacity-40 border-0 h-[340px] w-[290px]">
-                            <div class="card-body"></div>
+                            <div class="card-body p-0 overflow-hidden">
+                                <img src="{{ asset('landingpage/images/cta/5.jpeg') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
                         </div>
                         <div class="card rounded-none bg-white opacity-40 border-0 h-[340px] w-[290px]">
-                            <div class="card-body"></div>
+                            <div class="card-body p-0 overflow-hidden">
+                                <img src="{{ asset('landingpage/images/cta/1.jpeg') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 gap-4 rotate-10 -translate-x-40 -translate-y-80">
                         <div class="card rounded-none bg-white opacity-40 border-0 h-[340px] w-[290px]">
-                            <div class="card-body"></div>
+                            <div class="card-body p-0 overflow-hidden">
+                                <img src="{{ asset('landingpage/images/cta/5.jpeg') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
                         </div>
                         <div class="card rounded-none bg-white opacity-40 border-0 h-[340px] w-[290px]">
-                            <div class="card-body"></div>
+                            <div class="card-body p-0 overflow-hidden">
+                                <img src="{{ asset('landingpage/images/cta/1.jpeg') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
                         </div>
                         <div class="card rounded-none bg-white opacity-40 border-0 h-[340px] w-[290px]">
-                            <div class="card-body"></div>
+                            <div class="card-body p-0 overflow-hidden">
+                                <img src="{{ asset('landingpage/images/cta/2.jpeg') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
                         </div>
                         <div class="card rounded-none bg-white opacity-40 border-0 h-[340px] w-[290px]">
-                            <div class="card-body"></div>
+                            <div class="card-body p-0 overflow-hidden">
+                                <img src="{{ asset('landingpage/images/cta/3.jpeg') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
                         </div>
                         <div class="card rounded-none bg-white opacity-40 border-0 h-[340px] w-[290px]">
-                            <div class="card-body"></div>
+                            <div class="card-body p-0 overflow-hidden">
+                                <img src="{{ asset('landingpage/images/cta/5.jpeg') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
                         </div>
                         <div class="card rounded-none bg-white opacity-40 border-0 h-[340px] w-[290px]">
-                            <div class="card-body"></div>
+                            <div class="card-body p-0 overflow-hidden">
+                                <img src="{{ asset('landingpage/images/cta/1.jpeg') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 gap-4 rotate-10 -translate-x-40 -translate-y-64">
                         <div class="card rounded-none bg-white opacity-40 border-0 h-[340px] w-[290px]">
-                            <div class="card-body"></div>
+                            <div class="card-body p-0 overflow-hidden">
+                                <img src="{{ asset('landingpage/images/cta/3.jpeg') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
                         </div>
                         <div class="card rounded-none bg-white opacity-40 border-0 h-[340px] w-[290px]">
-                            <div class="card-body"></div>
+                            <div class="card-body p-0 overflow-hidden">
+                                <img src="{{ asset('landingpage/images/cta/4.jpeg') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
                         </div>
                         <div class="card rounded-none bg-white opacity-40 border-0 h-[340px] w-[290px]">
-                            <div class="card-body"></div>
+                            <div class="card-body p-0 overflow-hidden">
+                                <img src="{{ asset('landingpage/images/cta/5.jpeg') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
                         </div>
                         <div class="card rounded-none bg-white opacity-40 border-0 h-[340px] w-[290px]">
-                            <div class="card-body"></div>
+                            <div class="card-body p-0 overflow-hidden">
+                                <img src="{{ asset('landingpage/images/cta/2.jpeg') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
                         </div>
                         <div class="card rounded-none bg-white opacity-40 border-0 h-[340px] w-[290px]">
-                            <div class="card-body"></div>
+                            <div class="card-body p-0 overflow-hidden">
+                                <img src="{{ asset('landingpage/images/cta/1.jpeg') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
                         </div>
                         <div class="card rounded-none bg-white opacity-40 border-0 h-[340px] w-[290px]">
-                            <div class="card-body"></div>
+                            <div class="card-body p-0 overflow-hidden">
+                                <img src="{{ asset('landingpage/images/cta/1.jpeg') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
                         </div>
                     </div>
                 </div>
