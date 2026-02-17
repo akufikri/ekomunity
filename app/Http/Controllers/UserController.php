@@ -13,6 +13,7 @@ use App\Models\DetailCompany;
 use App\Models\PublishedCertificate;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 
@@ -259,7 +260,6 @@ class UserController extends Controller
         $user->save();
 
         return $this->commitResponse('Update data successfuly', true, $user);
-
     }
 
     public function update_password(Request $request, $id)
@@ -325,7 +325,7 @@ class UserController extends Controller
                     $query->where('id', $detailCawangan->id_bahagian);
                 })
                 ->where('id_city', $detailCawangan->id_city)
-                ->first(); 
+                ->first();
 
             $result = [
                 'name_ketua_bahagian' => $ketuaBahagian->fullname ?? "N/A",
@@ -337,7 +337,6 @@ class UserController extends Controller
                 'message' => 'successfully get bahagian with ketua',
                 'data' => $result
             ], 200);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -352,7 +351,7 @@ class UserController extends Controller
     {
         try {
             $user = User::findOrFail($id);
-            
+
             // Check if the current user has permission to delete (must be id_level 2 or admin)
             $authUser = Auth::user();
             if ($authUser->id_level != 2 && $authUser->id_level != 1) {
@@ -377,7 +376,6 @@ class UserController extends Controller
                 'success' => true,
                 'message' => 'User deleted successfully.'
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -386,4 +384,40 @@ class UserController extends Controller
         }
     }
 
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        $validator = Validator::make($request->all(), [
+            'fullname' => 'string|max:255',
+            'phone_number' => 'string|max:20',
+            'email' => 'email|max:255|nullable',
+            'img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048|nullable',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        // === Update data user ===
+        $user->fullname = $request->fullname ?? $user->fullname;
+        $user->phone_number = $request->phone_number ?? $user->phone_number;
+        $user->email = $request->email ?? $user->email;
+
+        // === Handle photo upload ===
+        if ($request->hasFile('img')) {
+            $file = $request->file('img');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('Profil'), $filename);
+            $user->photo = $filename;
+        }
+
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Profile updated successfully.',
+            'data' => $user
+        ], 200);
+    }
 }

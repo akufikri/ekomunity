@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Http\Controllers\API;
+
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+
+class ApiRegisterController extends Controller
+{
+    /**
+     * Register a new user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id_level' => ['required', 'integer'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'phone_number' => ['required', 'numeric'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $user = new User;
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->phone_number = $request->phone_number;
+        $user->email = $request->email;
+        $user->id_level = $request->id_level;
+        $user->email_verified_at = now();
+        $user->is_verified = 1;
+        $user->password = Hash::make($request->password);
+
+        if ($request->id_level == 4) {
+            $user->id_city = $request->id_city;
+            $user->no_ros = $request->no_ros;
+            $user->kod_bahagian = $request->kod_bahagian;
+            $user->status_ros = $request->status_ros;
+        }
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'User registered successfully',
+            'user' => $user
+        ], 201);
+    }
+}

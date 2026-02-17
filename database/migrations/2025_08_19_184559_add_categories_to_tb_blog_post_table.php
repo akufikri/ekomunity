@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tb_blog_post', function (Blueprint $table) {
-            $table->text('categories')->nullable()->after('');
+            $table->text('categories')->nullable();
         });
     }
 

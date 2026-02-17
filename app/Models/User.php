@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     use SoftDeletes;
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -32,7 +33,8 @@ class User extends Authenticatable
         'kod_bahagian',
         'kod_cawangan',
         'status_ros',
-        'id_city'
+        'id_city',
+        'photo_profile'
     ];
 
     /**

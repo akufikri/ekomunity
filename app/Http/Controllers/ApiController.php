@@ -34,6 +34,8 @@ use App\Models\Gender;
 use App\Models\Nation;
 use App\Models\MaritalStatus;
 use App\Models\BusinessActivity;
+use App\Models\Religion;
+use App\Models\Cawangan;
 
 
 class ApiController extends Controller
@@ -453,8 +455,52 @@ class ApiController extends Controller
 	        $c = $c->where('status_native', 'LIKE', '%'. $r->q .'%');
 	    }
 	    $c = $c->get();
-	    
+
 	    return response()->json($c);
 	}
-	
+
+	public function getNation(Request $r)
+	{
+	    $s = Nation::where('id_nation','>','0')->where('is_active','ENABLE');
+	    if($r->q){
+	        $s = $s->where('nation', 'LIKE', '%'. $r->q .'%');
+	    }
+	    $s = $s->get();
+
+	    return response()->json($s);
+	}
+
+	public function getReligion(Request $r)
+	{
+	    $s = Religion::where('id_religion','>','0')->where('is_active','ENABLE');
+	    if($r->q){
+	        $s = $s->where('religion', 'LIKE', '%'. $r->q .'%');
+	    }
+	    $s = $s->get();
+
+	    return response()->json($s);
+	}
+
+	public function getCawangan(Request $r)
+	{
+	    $s = Cawangan::where('id_cawangan','>','0')->where('is_active','ENABLE');
+	    if($r->q){
+	        $s = $s->where('name', 'LIKE', '%'. $r->q .'%');
+	    }
+	    $s = $s->get();
+
+	    return response()->json($s);
+	}
+
+	public function getGender(Request $r)
+	{
+	    $s = Gender::where('id_gender','>','0')->where('is_active','ENABLE');
+	    if($r->q){
+	        $s = $s->where('gender', 'LIKE', '%'. $r->q .'%');
+	    }
+	    $s = $s->get();
+
+	    return response()->json($s);
+	}
+
 }

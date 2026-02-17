@@ -42,7 +42,7 @@ use App\Http\Controllers\JoinCompanyController;
 use App\Http\Controllers\PushNotificationController;
 use App\Http\Controllers\SettingsSubscribeController;
 use App\Http\Controllers\SettingsParliamentController;
-use App\Http\Controllers\SettingsDunController;
+use App\Http\Controllers\SettingsDUNController;
 use App\Http\Controllers\SettingsVillageGuestsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SenaraiAhliController;
@@ -1570,12 +1570,12 @@ Route::middleware(['auth', 'admin',])->group(function () {
     Route::any('/update_village_guests/{id}', [SettingsVillageGuestsController::class, 'update_village_guests']);
 
     //Settings DUN
-    Route::resource('/settings_dun', SettingsDunController::class);
-    Route::get('/list_setting_dun', [SettingsDunController::class, 'index']);
-    Route::any('/create_dun', [SettingsDunController::class, 'create']);
-    Route::any('/update_dun/{id}', [SettingsDunController::class, 'update_dun']);
-    Route::post('/settings_dun_import/', [SettingsDunController::class, 'import']);
-    Route::get('/settings_dun_export/', [SettingsDunController::class, 'export']);
+    Route::resource('/settings_dun', SettingsDUNController::class);
+    Route::get('/list_setting_dun', [SettingsDUNController::class, 'index']);
+    Route::any('/create_dun', [SettingsDUNController::class, 'create']);
+    Route::any('/update_dun/{id}', [SettingsDUNController::class, 'update_dun']);
+    Route::post('/settings_dun_import/', [SettingsDUNController::class, 'import']);
+    Route::get('/settings_dun_export/', [SettingsDUNController::class, 'export']);
 
 
     //Settings State
@@ -1714,4 +1714,4 @@ Route::get('/{code}', function ($code) {
     $data->share_link = env('APP_URL') . "/persatuan/" . ($data->custom_link ?? $data->key_reference);
 
     return view('digitalprofile.persatuan', compact('data', 'auth', 'total_company'));
-})->where('code', '.*');
+})->where('code', '[A-Za-z0-9_-]+');

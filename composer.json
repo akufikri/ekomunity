@@ -13,6 +13,7 @@
         "kreait/firebase-php": "^7.6",
         "kutia-software-company/larafirebase": "dev-master",
         "laravel/framework": "^11.0",
+        "laravel/sanctum": "^4.2",
         "laravel/socialite": "^5.11",
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.2",

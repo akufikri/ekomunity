@@ -109,7 +109,11 @@ class DetailManpower extends Model
     public function religion(){
         return $this->belongsTo('App\Models\Religion','id_agama','id_religion');
     }
-    
+
+    public function gender_relation(){
+        return $this->belongsTo('App\Models\Gender','gender','id_gender');
+    }
+
     public function company(){
         return $this->belongsTo('App\Models\DetailCompany','id_detail_company','id_detail_company');
     }
