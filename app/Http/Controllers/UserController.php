@@ -399,17 +399,15 @@ class UserController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        // === Update data user ===
         $user->fullname = $request->fullname ?? $user->fullname;
         $user->phone_number = $request->phone_number ?? $user->phone_number;
         $user->email = $request->email ?? $user->email;
 
-        // === Handle photo upload ===
         if ($request->hasFile('img')) {
             $file = $request->file('img');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('Profil'), $filename);
-            $user->photo = $filename;
+            $user->photo_profile = $filename;
         }
 
         $user->save();

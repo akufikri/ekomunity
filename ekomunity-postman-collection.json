@@ -1,0 +1,1039 @@
+{
+	"info": {
+		"_postman_id": "ekomunity-api-collection",
+		"name": "eKomuniti API",
+		"description": "eKomuniti.app API Reference - 30 endpoints across 7 modules: Auth, User/Profile, Communities, Announcements, Activities, Notifications, Payments.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "1. Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.token) {",
+									"    pm.collectionVariables.set('token', jsonData.token);",
+									"}",
+									"pm.test('Login successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"rizky@example.com\",\n    \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login"]
+						},
+						"description": "Login dengan email & password. Token akan auto-set ke collection variable."
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"token\": \"1|abc123...\",\n    \"user\": {\n        \"id\": 1,\n        \"name\": \"Rizky Ahmad\",\n        \"email\": \"rizky@example.com\",\n        \"phone\": \"+60123456789\",\n        \"avatar_url\": null\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.token) {",
+									"    pm.collectionVariables.set('token', jsonData.token);",
+									"}",
+									"pm.test('Register successful', function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Rizky Ahmad\",\n    \"email\": \"rizky@example.com\",\n    \"phone\": \"+60123456789\",\n    \"password\": \"password\",\n    \"password_confirmation\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "register"]
+						},
+						"description": "Daftar akaun baru"
+					},
+					"response": [
+						{
+							"name": "201 - Created",
+							"status": "Created",
+							"code": 201,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"token\": \"1|abc123...\",\n    \"user\": {\n        \"id\": 1,\n        \"name\": \"Rizky Ahmad\",\n        \"email\": \"rizky@example.com\",\n        \"phone\": \"+60123456789\",\n        \"avatar_url\": null\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/logout",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "logout"]
+						},
+						"description": "Logout user (requires Bearer token)"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"message\": \"Logged out successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"rizky@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/forgot-password",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "forgot-password"]
+						},
+						"description": "Request reset password"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"message\": \"Password reset link sent to your email\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Authentication endpoints - Login, Register, Logout, Forgot Password"
+		},
+		{
+			"name": "2. User / Profile",
+			"item": [
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/user/profile",
+							"host": ["{{base_url}}"],
+							"path": ["api", "user", "profile"]
+						},
+						"description": "Get current user profile"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"id\": 1,\n    \"name\": \"Rizky Ahmad\",\n    \"email\": \"rizky@example.com\",\n    \"phone\": \"+60123456789\",\n    \"avatar_url\": null,\n    \"initials\": \"RA\",\n    \"created_at\": \"2024-01-15T08:00:00Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Rizky Ahmad\",\n    \"email\": \"rizky@example.com\",\n    \"phone\": \"+60123456789\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/user/profile",
+							"host": ["{{base_url}}"],
+							"path": ["api", "user", "profile"]
+						},
+						"description": "Update user profile"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"id\": 1,\n    \"name\": \"Rizky Ahmad\",\n    \"email\": \"rizky@example.com\",\n    \"phone\": \"+60123456789\",\n    \"avatar_url\": null,\n    \"initials\": \"RA\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Settings",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"notification_enabled\": true,\n    \"language\": \"ms\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/user/settings",
+							"host": ["{{base_url}}"],
+							"path": ["api", "user", "settings"]
+						},
+						"description": "Update user settings (notification, language)"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"message\": \"Settings updated\",\n    \"settings\": {\n        \"notification_enabled\": true,\n        \"language\": \"ms\"\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "User profile and settings management"
+		},
+		{
+			"name": "3. Communities",
+			"item": [
+				{
+					"name": "List Communities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/communities?search=&page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "communities"],
+							"query": [
+								{
+									"key": "search",
+									"value": "",
+									"description": "(optional) Carian nama community"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "(optional) Pagination"
+								}
+							]
+						},
+						"description": "List semua communities"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Taman Melati Residents\",\n            \"type\": \"Housing Area\",\n            \"icon\": \"solar:city-linear\",\n            \"icon_bg\": \"bg-blue-50\",\n            \"icon_color\": \"text-blue-500\",\n            \"member_count\": 128,\n            \"status\": \"active\",\n            \"is_joined\": true\n        }\n    ],\n    \"meta\": {\n        \"current_page\": 1,\n        \"last_page\": 1,\n        \"total\": 3\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Community Detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/communities/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "communities", "1"]
+						},
+						"description": "Detail community by ID"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"id\": 1,\n    \"name\": \"Taman Melati Residents\",\n    \"type\": \"Housing Area\",\n    \"description\": \"Welcome to Taman Melati Residents...\",\n    \"icon\": \"solar:city-linear\",\n    \"icon_bg\": \"bg-blue-50\",\n    \"icon_color\": \"text-blue-500\",\n    \"member_count\": 128,\n    \"established_year\": 2018,\n    \"status\": \"active\",\n    \"is_joined\": true\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Community Members",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/communities/1/members?page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "communities", "1", "members"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "(optional) Pagination"
+								}
+							]
+						},
+						"description": "Senarai members of a community"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Rizky Ahmad\",\n            \"initials\": \"RA\",\n            \"avatar_url\": null,\n            \"role\": \"admin\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Siti Nurhaliza\",\n            \"initials\": \"SN\",\n            \"avatar_url\": null,\n            \"role\": \"member\"\n        }\n    ],\n    \"meta\": {\n        \"current_page\": 1,\n        \"last_page\": 5,\n        \"total\": 128\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Community Feed",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/communities/1/feed?page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "communities", "1", "feed"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "(optional) Pagination"
+								}
+							]
+						},
+						"description": "Community feed/posts"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"author\": {\n                \"id\": 1,\n                \"name\": \"Admin\",\n                \"initials\": \"AD\"\n            },\n            \"content\": \"Reminder: Community BBQ this Saturday!\",\n            \"created_at\": \"2024-10-22T10:00:00Z\"\n        }\n    ],\n    \"meta\": {\n        \"current_page\": 1,\n        \"last_page\": 1,\n        \"total\": 1\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get User Communities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/user/communities",
+							"host": ["{{base_url}}"],
+							"path": ["api", "user", "communities"]
+						},
+						"description": "Communities yang user join"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Taman Melati Residents\",\n            \"type\": \"Housing Area\",\n            \"icon\": \"solar:city-linear\",\n            \"icon_bg\": \"bg-blue-50\",\n            \"icon_color\": \"text-blue-500\",\n            \"member_count\": 128,\n            \"status\": \"active\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Join Community",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/communities/1/join",
+							"host": ["{{base_url}}"],
+							"path": ["api", "communities", "1", "join"]
+						},
+						"description": "Join a community"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"message\": \"Joined community successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Leave Community",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/communities/1/leave",
+							"host": ["{{base_url}}"],
+							"path": ["api", "communities", "1", "leave"]
+						},
+						"description": "Leave a community"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"message\": \"Left community successfully\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Community management - list, detail, members, feed, join, leave"
+		},
+		{
+			"name": "4. Announcements",
+			"item": [
+				{
+					"name": "List Announcements",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/announcements?community_id=&page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "announcements"],
+							"query": [
+								{
+									"key": "community_id",
+									"value": "",
+									"description": "(optional) Filter by community"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "(optional) Pagination"
+								}
+							]
+						},
+						"description": "List announcements"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"title\": \"Water Supply Disruption\",\n            \"description\": \"Scheduled maintenance for pipe repairs in Block A-C.\",\n            \"icon\": \"solar:danger-triangle-linear\",\n            \"icon_bg\": \"bg-amber-50\",\n            \"icon_color\": \"text-amber-500\",\n            \"community\": {\n                \"id\": 1,\n                \"name\": \"Taman Melati\"\n            },\n            \"author\": \"Admin\",\n            \"created_at\": \"2024-10-24T08:00:00Z\",\n            \"time_ago\": \"2 hours ago\"\n        }\n    ],\n    \"meta\": {\n        \"current_page\": 1,\n        \"last_page\": 1,\n        \"total\": 2\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Announcement Detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/announcements/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "announcements", "1"]
+						},
+						"description": "Detail announcement by ID"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"id\": 1,\n    \"title\": \"Water Supply Disruption\",\n    \"content\": \"Full announcement content here with all details...\",\n    \"icon\": \"solar:danger-triangle-linear\",\n    \"icon_bg\": \"bg-amber-50\",\n    \"icon_color\": \"text-amber-500\",\n    \"tags\": [\"Community\", \"Important\"],\n    \"community\": {\n        \"id\": 1,\n        \"name\": \"Taman Melati\"\n    },\n    \"author\": \"Admin\",\n    \"created_at\": \"2024-10-24T08:00:00Z\",\n    \"time_ago\": \"2 hours ago\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Announcements - list and detail"
+		},
+		{
+			"name": "5. Activities / Events",
+			"item": [
+				{
+					"name": "List Activities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/activities?community_id=&page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "activities"],
+							"query": [
+								{
+									"key": "community_id",
+									"value": "",
+									"description": "(optional) Filter by community"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "(optional) Pagination"
+								}
+							]
+						},
+						"description": "List upcoming activities"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"title\": \"Gotong-Royong Perdana\",\n            \"date\": \"2024-10-24\",\n            \"date_display\": {\n                \"month\": \"Oct\",\n                \"day\": \"24\"\n            },\n            \"start_time\": \"08:00\",\n            \"end_time\": \"12:00\",\n            \"time_display\": \"8:00 AM - 12:00 PM\",\n            \"location\": \"Community Hall\",\n            \"community\": {\n                \"id\": 1,\n                \"name\": \"Taman Melati\"\n            },\n            \"is_rsvp\": false\n        }\n    ],\n    \"meta\": {\n        \"current_page\": 1,\n        \"last_page\": 1,\n        \"total\": 1\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Activity Detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/activities/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "activities", "1"]
+						},
+						"description": "Detail activity by ID"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"id\": 1,\n    \"title\": \"Gotong-Royong Perdana\",\n    \"description\": \"Join us for a community cleanup event...\",\n    \"date\": \"2024-10-24\",\n    \"date_display\": {\n        \"month\": \"Oct\",\n        \"day\": \"24\"\n    },\n    \"start_time\": \"08:00\",\n    \"end_time\": \"12:00\",\n    \"time_display\": \"8:00 AM - 12:00 PM\",\n    \"location\": \"Community Hall\",\n    \"community\": {\n        \"id\": 1,\n        \"name\": \"Taman Melati\"\n    },\n    \"author\": \"Admin\",\n    \"is_rsvp\": false,\n    \"rsvp_count\": 24,\n    \"created_at\": \"2024-10-20T08:00:00Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "RSVP to Activity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/activities/1/rsvp",
+							"host": ["{{base_url}}"],
+							"path": ["api", "activities", "1", "rsvp"]
+						},
+						"description": "RSVP ke activity"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"message\": \"RSVP confirmed\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Cancel RSVP",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/activities/1/rsvp",
+							"host": ["{{base_url}}"],
+							"path": ["api", "activities", "1", "rsvp"]
+						},
+						"description": "Cancel RSVP from activity"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"message\": \"RSVP cancelled\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Activities/Events - list, detail, RSVP, cancel RSVP"
+		},
+		{
+			"name": "6. Notifications",
+			"item": [
+				{
+					"name": "List Notifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications?page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "(optional) Pagination"
+								}
+							]
+						},
+						"description": "List semua notifications"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"title\": \"Payment Reminder\",\n            \"preview\": \"Your security fee for September is overdue.\",\n            \"type\": \"Payment\",\n            \"is_read\": false,\n            \"created_at\": \"2024-10-24T09:58:00Z\",\n            \"time_ago\": \"2m ago\"\n        }\n    ],\n    \"unread_count\": 1,\n    \"meta\": {\n        \"current_page\": 1,\n        \"last_page\": 1,\n        \"total\": 3\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Notification Detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "1"]
+						},
+						"description": "Detail notification by ID"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"id\": 1,\n    \"title\": \"Payment Reminder\",\n    \"type\": \"Payment\",\n    \"icon\": \"solar:bill-list-linear\",\n    \"icon_bg\": \"bg-red-50\",\n    \"icon_color\": \"text-red-500\",\n    \"badge_bg\": \"bg-red-50\",\n    \"badge_color\": \"text-red-600\",\n    \"content\": [\n        \"Your security fee for September 2024 is currently overdue.\",\n        \"Please make your payment as soon as possible.\",\n        \"You can make payment through the Payments section.\"\n    ],\n    \"action\": {\n        \"label\": \"Pay Now\",\n        \"url\": \"/payments\"\n    },\n    \"is_read\": false,\n    \"created_at\": \"2024-10-24T09:58:00Z\",\n    \"time_ago\": \"2 minutes ago\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Mark Notification as Read",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/1/read",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "1", "read"]
+						},
+						"description": "Mark a notification as read"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"message\": \"Notification marked as read\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Mark All Notifications as Read",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/read-all",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "read-all"]
+						},
+						"description": "Mark all notifications as read"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"message\": \"All notifications marked as read\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Notifications - list, detail, mark read, mark all read"
+		},
+		{
+			"name": "7. Payments",
+			"item": [
+				{
+					"name": "List Payments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/payments",
+							"host": ["{{base_url}}"],
+							"path": ["api", "payments"]
+						},
+						"description": "List payment items"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"title\": \"Security Fee (Sept)\",\n            \"amount\": 50.00,\n            \"currency\": \"MYR\",\n            \"status\": \"overdue\",\n            \"due_date\": \"2024-10-20\",\n            \"due_label\": \"Due 3 days ago\",\n            \"icon\": \"solar:bill-list-linear\",\n            \"icon_bg\": \"bg-red-50\",\n            \"icon_color\": \"text-red-500\"\n        }\n    ],\n    \"meta\": {\n        \"current_page\": 1,\n        \"last_page\": 1,\n        \"total\": 3\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Outstanding Balance",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/payments/outstanding",
+							"host": ["{{base_url}}"],
+							"path": ["api", "payments", "outstanding"]
+						},
+						"description": "Total outstanding balance"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"total\": 85.00,\n    \"currency\": \"MYR\",\n    \"count\": 2\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Payment Detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/payments/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "payments", "1"]
+						},
+						"description": "Detail payment by ID"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"id\": 1,\n    \"title\": \"Security Fee (Sept)\",\n    \"amount\": 50.00,\n    \"currency\": \"MYR\",\n    \"status\": \"overdue\",\n    \"invoice_id\": \"#INV-2024-009\",\n    \"due_date\": \"2024-10-20\",\n    \"billing_to\": \"Rizky Ahmad\",\n    \"community\": {\n        \"id\": 1,\n        \"name\": \"Taman Melati Residents\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Process Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"payment_method_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/payments/1/pay",
+							"host": ["{{base_url}}"],
+							"path": ["api", "payments", "1", "pay"]
+						},
+						"description": "Process payment for a payment item"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"message\": \"Payment successful\",\n    \"transaction_id\": \"TXN-2024-001\",\n    \"paid_at\": \"2024-10-24T10:00:00Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Payment History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/payments/history?page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "payments", "history"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "(optional) Pagination"
+								}
+							]
+						},
+						"description": "Payment history"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 3,\n            \"title\": \"Security Fee (Aug)\",\n            \"amount\": 50.00,\n            \"currency\": \"MYR\",\n            \"status\": \"paid\",\n            \"paid_date\": \"2024-08-28\",\n            \"transaction_id\": \"TXN-2024-000\"\n        }\n    ],\n    \"meta\": {\n        \"current_page\": 1,\n        \"last_page\": 1,\n        \"total\": 1\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Payment Methods",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/user/payment-methods",
+							"host": ["{{base_url}}"],
+							"path": ["api", "user", "payment-methods"]
+						},
+						"description": "Saved payment methods"
+					},
+					"response": [
+						{
+							"name": "200 - Success",
+							"status": "OK",
+							"code": 200,
+							"header": [{"key": "Content-Type", "value": "application/json"}],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"type\": \"credit_card\",\n            \"label\": \"Credit Card\",\n            \"last_four\": \"4242\",\n            \"is_default\": true\n        },\n        {\n            \"id\": 2,\n            \"type\": \"fpx\",\n            \"label\": \"FPX / Online Banking\",\n            \"is_default\": false\n        }\n    ]\n}"
+						}
+					]
+				}
+			],
+			"description": "Payments - list, outstanding, detail, pay, history, payment methods"
+		}
+	]
+}

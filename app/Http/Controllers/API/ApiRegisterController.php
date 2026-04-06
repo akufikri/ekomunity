@@ -20,8 +20,7 @@ class ApiRegisterController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id_level' => ['required', 'integer'],
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
+            'fullname' => ['required', 'string', 'max:255'],
             'phone_number' => ['required', 'numeric'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -32,8 +31,7 @@ class ApiRegisterController extends Controller
         }
 
         $user = new User;
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
+        $user->fullname = $request->fullname;
         $user->phone_number = $request->phone_number;
         $user->email = $request->email;
         $user->id_level = $request->id_level;

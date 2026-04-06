@@ -6,8 +6,10 @@ use App\Models\DetailCompany;
 use App\Models\User;
 use App\Models\DetailManpower;
 use App\Models\JoinCompany;
+use App\Notifications\NewMemberJoined;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -211,6 +213,14 @@ class MemberController extends Controller
                     $join->payment_date = now();
                     $join->expired_at = now()->addYear();
                     $join->save();
+
+                    // Notify super admins (level 1) about new member
+                    try {
+                        $admins = User::where('id_level', 1)->get();
+                        Notification::send($admins, new NewMemberJoined($user, $company));
+                    } catch (\Exception $e) {
+                        Log::error('Failed to send NewMemberJoined notification', ['error' => $e->getMessage()]);
+                    }
                 }
             }
 

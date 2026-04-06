@@ -10,6 +10,8 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginUserController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\API\CommunityController;
+use App\Http\Controllers\API\NotificationController;
 use App\Models\DetailCompany;
 use App\Models\Inbox;
 use App\Models\User;
@@ -78,6 +80,26 @@ Route::any('/callback-toyyibpay', [TransactionController::class, 'callback']);
 
 // Registration Route
 Route::post('/register', [App\Http\Controllers\API\ApiRegisterController::class, 'register']);
+
+// Communities Routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/communities/{id}', [CommunityController::class, 'show']);
+    Route::put('/communities/{id}', [CommunityController::class, 'update']);
+    Route::get('/communities/{id}/members', [CommunityController::class, 'members']);
+    Route::put('/communities/{id}/members/{member_id}', [CommunityController::class, 'updateMember']);
+    Route::post('/communities/{id}/invite', [CommunityController::class, 'invite']);
+});
+
+// Notification Routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount']);
+    Route::put('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+    Route::get('/notifications/{id}', [NotificationController::class, 'show']);
+    Route::put('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+});
+
+Route::get('/communities/{id}/qr', [CommunityController::class, 'qrCode']);
 
 
 Route::any('/getCountry', [ApiController::class, 'getCountry']);
