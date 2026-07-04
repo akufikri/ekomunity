@@ -57,7 +57,7 @@
     <div class="container">
         <div class="row">
 			<div class="col-md-12 text-center">
-				<h3 class="font-weight-700 m-t0 m-b20 titleku">Invois Pendaftaran Portal USIA </h3>
+				<h3 class="font-weight-700 m-t0 m-b20 titleku">Invois Pendaftaran Portal Ekomuniti </h3>
 				@if ($message = Session::get('success'))
                     <div class="alert alert-danger">
                         <p>

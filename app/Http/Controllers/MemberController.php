@@ -30,7 +30,6 @@ class MemberController extends Controller
                 'manpower.state',
                 'manpower.city',
                 'manpower.parliament',
-                'manpower.dun',
                 'manpower.nation',
                 'manpower.religion',
                 'manpower.gender_relation'
@@ -95,7 +94,6 @@ class MemberController extends Controller
                 'manpower.state',
                 'manpower.city',
                 'manpower.parliament',
-                'manpower.dun',
                 'manpower.nation',
                 'manpower.religion',
                 'manpower.gender_relation'
@@ -158,7 +156,6 @@ class MemberController extends Controller
                 'id_state' => 'required|integer',
                 'id_city' => 'nullable|integer',
                 'id_parliament' => 'nullable|integer',
-                'id_dun' => 'nullable|integer',
                 'postcode' => 'nullable|string|max:10',
             ]);
 
@@ -193,7 +190,6 @@ class MemberController extends Controller
             $manpower->id_state = $request->id_state;
             $manpower->id_city = $request->id_city;
             $manpower->id_parliament = $request->id_parliament;
-            $manpower->id_dun = $request->id_dun;
             $manpower->postcode = $request->postcode;
             $manpower->business_phone = $request->phone_number;
             $manpower->business_email = $request->email;
@@ -229,7 +225,6 @@ class MemberController extends Controller
                 'manpower.state',
                 'manpower.city',
                 'manpower.parliament',
-                'manpower.dun',
                 'manpower.nation',
                 'manpower.religion',
                 'manpower.gender_relation'
@@ -297,7 +292,6 @@ class MemberController extends Controller
                 'id_state' => 'integer',
                 'id_city' => 'nullable|integer',
                 'id_parliament' => 'nullable|integer',
-                'id_dun' => 'nullable|integer',
                 'postcode' => 'nullable|string|max:10',
                 'status' => 'nullable|in:ACTIVE,INACTIVE',
             ]);
@@ -331,7 +325,6 @@ class MemberController extends Controller
                 if ($request->has('id_state')) $manpower->id_state = $request->id_state;
                 if ($request->has('id_city')) $manpower->id_city = $request->id_city;
                 if ($request->has('id_parliament')) $manpower->id_parliament = $request->id_parliament;
-                if ($request->has('id_dun')) $manpower->id_dun = $request->id_dun;
                 if ($request->has('postcode')) $manpower->postcode = $request->postcode;
 
                 $manpower->save();
@@ -342,7 +335,6 @@ class MemberController extends Controller
                 'manpower.state',
                 'manpower.city',
                 'manpower.parliament',
-                'manpower.dun',
                 'manpower.nation',
                 'manpower.religion',
                 'manpower.gender_relation'

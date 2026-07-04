@@ -90,7 +90,7 @@ class Controller extends BaseController
         );
         $mail = \Mail::send('email.user_verify', $data, function ($message) use ($user_name, $user_email, $from, $subject) {
             $message->to($user_email, $user_email)->subject($subject);
-            $message->from($from, "USIA");
+            $message->from($from, env("MAIL_FROM_NAME", "Ekomuniti"));
         });
 
         return true;
@@ -117,7 +117,7 @@ class Controller extends BaseController
         );
         $mail = \Mail::send('email.invoice', $data, function ($message) use ($user_name, $user_email, $from, $subject) {
             $message->to($user_email, $user_email)->subject($subject);
-            $message->from($from, "DATAPPK");
+            $message->from($from, env("MAIL_FROM_NAME", "Ekomuniti"));
         });
 
         return true;

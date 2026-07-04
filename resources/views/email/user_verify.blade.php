@@ -7,7 +7,7 @@
         <!--</div>-->
 
         <div style="padding:1%;text-align:center;background: #4190f2;">
-            <div style="color:#fff;font-size:20px;font-weight:500;">USIA</div>
+            <div style="color:#fff;font-size:20px;font-weight:500;">Ekomuniti</div>
         </div>
 
         <div style="max-width:560px;margin:auto;padding: 0 3%;">
