@@ -12,6 +12,11 @@ use App\Http\Controllers\LoginUserController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\API\CommunityController;
 use App\Http\Controllers\API\NotificationController;
+use App\Http\Controllers\API\AnnouncementController;
+use App\Http\Controllers\API\PaymentController;
+use App\Http\Controllers\API\ActivityController;
+use App\Http\Controllers\API\HistoryController;
+use App\Http\Controllers\API\UserSettingsController;
 use App\Models\DetailCompany;
 use App\Models\Inbox;
 use App\Models\User;
@@ -78,25 +83,80 @@ Route::post('/create-transaction', [TransactionController::class, 'createTransac
 
 Route::any('/callback-toyyibpay', [TransactionController::class, 'callback']);
 
-// Registration Route
+// Registration & Auth (no auth required)
 Route::post('/register', [App\Http\Controllers\API\ApiRegisterController::class, 'register']);
+Route::post('/forgot-password', [LoginUserController::class, 'forgotPassword']);
 
-// Communities Routes
+// Email verification resend (authenticated)
+Route::middleware('auth:sanctum')->post('/email/resend', function (\Illuminate\Http\Request $request) {
+    if ($request->user()->hasVerifiedEmail()) {
+        return response()->json(['message' => 'Email already verified.'], 200);
+    }
+    $request->user()->sendEmailVerificationNotification();
+    return response()->json(['message' => 'Verification email sent.'], 200);
+})->middleware('throttle:6,1');
+
+// Public email verification resend (no auth required — uses email param)
+Route::post('/email/resend/public', function (\Illuminate\Http\Request $request) {
+    $request->validate(['email' => 'required|email']);
+    $user = User::where('email', $request->email)->first();
+    if (!$user) {
+        return response()->json(['success' => false, 'message' => 'Emel tidak dijumpai.'], 404);
+    }
+    if ($user->hasVerifiedEmail() || $user->is_verified == "1") {
+        return response()->json(['success' => false, 'message' => 'Emel sudah disahkan.'], 200);
+    }
+    $user->sendEmailVerificationNotification();
+    return response()->json(['success' => true, 'message' => 'Emel verifikasi telah dihantar. Sila semak peti masuk emel anda.'], 200);
+})->middleware('throttle:6,1');
+
+// All authenticated mobile API routes
 Route::middleware('auth:sanctum')->group(function () {
+
+    // Communities
+    Route::get('/communities', [CommunityController::class, 'index']);
     Route::get('/communities/{id}', [CommunityController::class, 'show']);
     Route::put('/communities/{id}', [CommunityController::class, 'update']);
     Route::get('/communities/{id}/members', [CommunityController::class, 'members']);
     Route::put('/communities/{id}/members/{member_id}', [CommunityController::class, 'updateMember']);
     Route::post('/communities/{id}/invite', [CommunityController::class, 'invite']);
-});
+    Route::post('/communities/{id}/join', [CommunityController::class, 'join']);
+    Route::delete('/communities/{id}/leave', [CommunityController::class, 'leave']);
+    Route::get('/communities/{id}/feed', [CommunityController::class, 'feed']);
 
-// Notification Routes
-Route::middleware('auth:sanctum')->group(function () {
+    // User Communities
+    Route::get('/user/communities', [CommunityController::class, 'userCommunities']);
+    Route::get('/user/community-members', [CommunityController::class, 'myMembers']);
+
+    // User Settings
+    Route::put('/user/settings', [UserSettingsController::class, 'update']);
+    Route::get('/member/qr', [UserSettingsController::class, 'memberQr']);
+
+    // Announcements
+    Route::get('/announcements', [AnnouncementController::class, 'index']);
+    Route::get('/announcements/{id}', [AnnouncementController::class, 'show']);
+
+    // Notifications
     Route::get('/notifications', [NotificationController::class, 'index']);
     Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount']);
     Route::put('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
     Route::get('/notifications/{id}', [NotificationController::class, 'show']);
     Route::put('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+
+    // Payments
+    Route::get('/payments', [PaymentController::class, 'index']);
+    Route::get('/payments/outstanding', [PaymentController::class, 'outstanding']);
+    Route::get('/payments/{id}', [PaymentController::class, 'show']);
+
+    // Activities
+    Route::get('/activities', [ActivityController::class, 'index']);
+    Route::get('/activities/{id}', [ActivityController::class, 'show']);
+    Route::post('/activities/{id}/rsvp', [ActivityController::class, 'rsvp']);
+    Route::delete('/activities/{id}/rsvp', [ActivityController::class, 'cancelRsvp']);
+
+    // Transaction History
+    Route::get('/transactions', [HistoryController::class, 'index']);
+    Route::get('/transactions/{id}', [HistoryController::class, 'show']);
 });
 
 Route::get('/communities/{id}/qr', [CommunityController::class, 'qrCode']);

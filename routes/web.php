@@ -383,13 +383,27 @@ Route::get('/semak_pendaftaran', [RegisManpowerController::class, 'semakPendafta
 
 Route::get('/semak_pendaftaran_result', [RegisManpowerController::class, 'semakPendaftaranResult']);
 
+Route::get('/ahli/{code}', function ($code) {
+    return redirect('/id/' . $code);
+})->where('code', '[A-Za-z0-9_-]+');
+
 Route::get('/id/{code}', function ($code) {
 
-    $data = DetailManpower::with('user')->where('key_reference', $code)->first();
-
-    // return $data;
+    $data = DetailManpower::with('user')
+        ->where('key_reference', $code)
+        ->orWhere('id_user', $code)
+        ->first();
 
     if (!$data) {
+        // Fallback: cari dalam DetailCompany by key_reference atau id_user
+        $company = DetailCompany::where('key_reference', $code)
+            ->orWhere('id_user', $code)
+            ->first();
+
+        if ($company && $company->key_reference) {
+            return redirect('/persatuan/' . $company->key_reference);
+        }
+
         return "Data not found!";
     } else {
 

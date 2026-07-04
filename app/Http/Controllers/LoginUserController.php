@@ -299,6 +299,12 @@ class LoginUserController extends Controller
 
             Log::info('Returning user data', ['id_level' => $user->id_level, 'user_id' => $user->id]);
 
+            if ($user->id_level == "3") {
+                $user->load('manpower');
+            } elseif ($user->id_level == "2") {
+                $user->load('company');
+            }
+
             return response()->json([
                 'success' => true,
                 'data' => $user,
@@ -377,6 +383,34 @@ class LoginUserController extends Controller
                 'token' => $newToken,
             ],
         ], 200);
+    }
+
+    /**
+     * POST /api/forgot-password
+     * Hantar pautan reset kata laluan ke emel pengguna
+     */
+    public function forgotPassword(\Illuminate\Http\Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            // Return generic message to avoid email enumeration
+            return response()->json([
+                'success' => true,
+                'message' => 'Jika emel anda berdaftar, pautan reset kata laluan akan dihantar.',
+            ]);
+        }
+
+        $status = \Illuminate\Support\Facades\Password::sendResetLink(['email' => $request->email]);
+
+        return response()->json([
+            'success' => $status === \Illuminate\Support\Facades\Password::RESET_LINK_SENT,
+            'message' => $status === \Illuminate\Support\Facades\Password::RESET_LINK_SENT
+                ? 'Pautan reset kata laluan telah dihantar ke emel anda.'
+                : 'Gagal menghantar pautan reset. Cuba sebentar lagi.',
+        ]);
     }
 
     /**

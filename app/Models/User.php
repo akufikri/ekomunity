@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use SoftDeletes;
     use HasFactory, Notifiable, HasApiTokens;
@@ -86,6 +86,11 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\TempDetailCompany', 'id', 'id_user');
     }
 
+    public function detailCompany()
+    {
+        return $this->hasOne('App\Models\DetailCompany', 'id_user', 'id');
+    }
+
     public function userLevel()
     {
         return $this->id_level;
@@ -112,7 +117,7 @@ class User extends Authenticatable
     }
     public function sendEmailVerificationNotification()
     {
-        $this->notify(new \App\Notifications\CustomVerifyEmail);
+        $this->notify(new \Illuminate\Auth\Notifications\VerifyEmail);
     }
     
 }

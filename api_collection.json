@@ -1,0 +1,1222 @@
+[
+    {
+        "module": "1. Authentication",
+        "name": "Login",
+        "method": "POST",
+        "url": "{{base_url}}/api/login",
+        "auth": false,
+        "headers": {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        "body": {
+            "email": "ahli@example.com",
+            "password": "password123"
+        },
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "success": true,
+                    "message": "Login successful!",
+                    "data": {
+                        "token": "1|abc123tokenhere",
+                        "user": {
+                            "id": 5,
+                            "id_level": "3",
+                            "fullname": "Ahmad bin Ali",
+                            "email": "ahli@example.com",
+                            "phone_number": "0123456789",
+                            "status": "ACTIVE",
+                            "photo_profile": null
+                        }
+                    }
+                }
+            },
+            {
+                "name": "401 - Gagal",
+                "status": 401,
+                "body": {
+                    "success": false,
+                    "message": "Login Failed! Incorrect Email or Password"
+                }
+            }
+        ]
+    },
+    {
+        "module": "1. Authentication",
+        "name": "Register",
+        "method": "POST",
+        "url": "{{base_url}}/api/register",
+        "auth": false,
+        "headers": {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        "body": {
+            "id_level": 3,
+            "fullname": "Ahmad bin Ali",
+            "phone_number": "0123456789",
+            "email": "ahli@example.com",
+            "password": "password123",
+            "password_confirmation": "password123"
+        },
+        "responses": [
+            {
+                "name": "201 - Berjaya",
+                "status": 201,
+                "body": {
+                    "message": "User registered successfully",
+                    "user": {
+                        "id": 5,
+                        "fullname": "Ahmad bin Ali",
+                        "email": "ahli@example.com",
+                        "phone_number": "0123456789",
+                        "id_level": 3
+                    }
+                }
+            },
+            {
+                "name": "422 - Validasi Gagal",
+                "status": 422,
+                "body": {
+                    "errors": {
+                        "email": ["The email has already been taken."],
+                        "password": ["The password must be at least 8 characters."]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "module": "1. Authentication",
+        "name": "Get Current User (Me)",
+        "method": "GET",
+        "url": "{{base_url}}/api/me",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "id": 5,
+                    "id_level": "3",
+                    "fullname": "Ahmad bin Ali",
+                    "email": "ahli@example.com",
+                    "phone_number": "0123456789",
+                    "status": "ACTIVE",
+                    "photo_profile": null,
+                    "manpower": {
+                        "id_detail_manpower": 3,
+                        "ic_number": "900101-14-5678",
+                        "subscribe_status": "APPROVED"
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "module": "1. Authentication",
+        "name": "Logout",
+        "method": "POST",
+        "url": "{{base_url}}/api/logout",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "success": true,
+                    "message": "Logout successful!"
+                }
+            }
+        ]
+    },
+    {
+        "module": "1. Authentication",
+        "name": "Refresh Token",
+        "method": "POST",
+        "url": "{{base_url}}/api/refresh-token",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "success": true,
+                    "message": "Token refreshed successfully!",
+                    "data": {
+                        "token": "2|newtoken456here",
+                        "user": {
+                            "id": 5,
+                            "fullname": "Ahmad bin Ali",
+                            "email": "ahli@example.com"
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "module": "1. Authentication",
+        "name": "Forgot Password",
+        "method": "POST",
+        "url": "{{base_url}}/api/forgot-password",
+        "auth": false,
+        "headers": {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        "body": {
+            "email": "ahli@example.com"
+        },
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "success": true,
+                    "message": "Pautan reset kata laluan telah dihantar ke emel anda."
+                }
+            },
+            {
+                "name": "200 - Emel Tidak Wujud (Generic Response)",
+                "status": 200,
+                "body": {
+                    "success": true,
+                    "message": "Jika emel anda berdaftar, pautan reset kata laluan akan dihantar."
+                }
+            }
+        ]
+    },
+    {
+        "module": "2. User / Profile",
+        "name": "Kemaskini Profil",
+        "method": "POST",
+        "url": "{{base_url}}/api/profile",
+        "auth": true,
+        "headers": {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": {
+            "fullname": "Ahmad bin Ali",
+            "email": "ahli@example.com",
+            "phone_number": "0123456789",
+            "ic": "900101-14-5678",
+            "address": "No 1, Jalan Maju, 50000 Kuala Lumpur"
+        },
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "message": "Profil berjaya dikemaskini"
+                }
+            }
+        ]
+    },
+    {
+        "module": "2. User / Profile",
+        "name": "Kemaskini Tetapan",
+        "method": "PUT",
+        "url": "{{base_url}}/api/user/settings",
+        "auth": true,
+        "headers": {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": {
+            "fcm_token": "fcm_device_token_here",
+            "current_password": "password123",
+            "new_password": "newpassword456",
+            "new_password_confirmation": "newpassword456"
+        },
+        "notes": "Semua field adalah optional. fcm_token untuk push notification. current_password wajib jika nak tukar new_password.",
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "success": true,
+                    "message": "Tetapan berjaya dikemaskini"
+                }
+            },
+            {
+                "name": "422 - Kata Laluan Semasa Salah",
+                "status": 422,
+                "body": {
+                    "message": "Kata laluan semasa tidak betul"
+                }
+            }
+        ]
+    },
+    {
+        "module": "3. Komuniti",
+        "name": "Senarai Semua Komuniti",
+        "method": "GET",
+        "url": "{{base_url}}/api/communities?search=&per_page=15&page=1",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "query_params": {
+            "search": "nama komuniti (optional)",
+            "per_page": "15 (default)",
+            "page": "1 (default)"
+        },
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "success": true,
+                    "data": [
+                        {
+                            "id": 2,
+                            "name": "Persatuan Belia Malaysia Cawangan KL",
+                            "registration": "PPM-001-12-23012025",
+                            "description": "Persatuan belia yang menaungi ahli-ahli muda di Kuala Lumpur.",
+                            "slogan": "Bersatu Maju",
+                            "logo": "https://ekomuniti.my/CompanyLogo/logo_abc.jpg",
+                            "banner": "https://ekomuniti.my/CompanyBanner/banner_abc.jpg",
+                            "state": "Wilayah Persekutuan",
+                            "city": "Kuala Lumpur",
+                            "joining_fee": "50.00",
+                            "member_count": 128,
+                            "is_joined": false
+                        }
+                    ],
+                    "meta": {
+                        "current_page": 1,
+                        "last_page": 3,
+                        "total": 42
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "module": "3. Komuniti",
+        "name": "Detail Komuniti",
+        "method": "GET",
+        "url": "{{base_url}}/api/communities/2",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "id": 2,
+                    "nama_pertubuhan": "Persatuan Belia Malaysia Cawangan KL",
+                    "email": "komuniti@example.com",
+                    "no_pendaftaran": "PPM-001-12-23012025",
+                    "poskod": "50000",
+                    "nama_wakil": "Encik Admin",
+                    "email_wakil": "komuniti@example.com",
+                    "no_telefon_wakil": "0123456789",
+                    "no_telefon_pejabat": "0312345678",
+                    "daerah": "Kuala Lumpur",
+                    "negeri": "Wilayah Persekutuan",
+                    "no_fax": null,
+                    "laman_web": "https://persatuan.my",
+                    "yuran": "50.00",
+                    "alamat": "No 1, Jalan Maju, 50000 Kuala Lumpur",
+                    "slogan": "Bersatu Maju",
+                    "mengenai": "Persatuan belia yang aktif...",
+                    "pautan": "https://ekomuniti.my/persatuan/pbmkl",
+                    "gambar_persatuan": "https://ekomuniti.my/CompanyLogo/logo_abc.jpg",
+                    "banner": "https://ekomuniti.my/CompanyBanner/banner_abc.jpg"
+                }
+            },
+            {
+                "name": "404 - Tidak Dijumpai",
+                "status": 404,
+                "body": {
+                    "message": "Komuniti tidak ditemukan"
+                }
+            }
+        ]
+    },
+    {
+        "module": "3. Komuniti",
+        "name": "Senarai Ahli Komuniti",
+        "method": "GET",
+        "url": "{{base_url}}/api/communities/2/members?search=&page=1",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "query_params": {
+            "search": "nama / emel / IC (optional)",
+            "page": "1 (default)"
+        },
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "data": [
+                        {
+                            "id": 5,
+                            "name": "Ahmad bin Ali",
+                            "initials": "AA",
+                            "email": "ahli@example.com",
+                            "phone": "0123456789",
+                            "ic": "900101-14-5678",
+                            "role": "member",
+                            "bumiputera": "Bumiputera",
+                            "invoice": "PAID",
+                            "jawatan": "Setiausaha",
+                            "status": "Aktif"
+                        }
+                    ],
+                    "meta": {
+                        "current_page": 1,
+                        "last_page": 5,
+                        "total": 128
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "module": "3. Komuniti",
+        "name": "Feed Komuniti (Aktiviti + Pengumuman Terkini)",
+        "method": "GET",
+        "url": "{{base_url}}/api/communities/2/feed",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "success": true,
+                    "data": [
+                        {
+                            "type": "activity",
+                            "id": 1,
+                            "title": "Mesyuarat Agong Tahunan 2026",
+                            "date": "2026-06-25",
+                            "date_display": {
+                                "month": "Jun",
+                                "day": "25"
+                            },
+                            "location": "Dewan Serbaguna KL",
+                            "is_rsvp": false,
+                            "created_at": "2026-05-21T08:00:00.000000Z"
+                        },
+                        {
+                            "type": "announcement",
+                            "id": 2,
+                            "title": "Notis Pembayaran Yuran Jun 2026",
+                            "slug": "notis-pembayaran-yuran-jun-2026",
+                            "image": null,
+                            "tags": "yuran,penting",
+                            "created_at": "2026-05-20T10:00:00.000000Z"
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "module": "3. Komuniti",
+        "name": "Komuniti User (Yang Disertai)",
+        "method": "GET",
+        "url": "{{base_url}}/api/user/communities?per_page=15&page=1",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "success": true,
+                    "data": [
+                        {
+                            "id": 2,
+                            "name": "Persatuan Belia Malaysia Cawangan KL",
+                            "logo": "https://ekomuniti.my/CompanyLogo/logo_abc.jpg",
+                            "banner": null,
+                            "state": "Wilayah Persekutuan",
+                            "city": "Kuala Lumpur",
+                            "joining_fee": "50.00",
+                            "status": "APPROVED",
+                            "payment_status": "PAID",
+                            "expired_at": "2027-01-01",
+                            "joined_at": "2026-01-15T08:00:00.000000Z"
+                        }
+                    ],
+                    "meta": {
+                        "current_page": 1,
+                        "last_page": 1,
+                        "total": 1
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "module": "3. Komuniti",
+        "name": "Mohon Sertai Komuniti",
+        "method": "POST",
+        "url": "{{base_url}}/api/communities/2/join",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "responses": [
+            {
+                "name": "201 - Permohonan Dihantar",
+                "status": 201,
+                "body": {
+                    "message": "Permohonan untuk menyertai komuniti telah dihantar"
+                }
+            },
+            {
+                "name": "422 - Sudah Mohon / Sudah Sertai",
+                "status": 422,
+                "body": {
+                    "message": "Permohonan anda sedang menunggu kelulusan"
+                }
+            },
+            {
+                "name": "422 - Profil Tidak Lengkap",
+                "status": 422,
+                "body": {
+                    "message": "Profil ahli tidak ditemukan. Sila lengkapkan profil terlebih dahulu."
+                }
+            }
+        ]
+    },
+    {
+        "module": "3. Komuniti",
+        "name": "Keluar Komuniti",
+        "method": "DELETE",
+        "url": "{{base_url}}/api/communities/2/leave",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "message": "Anda telah berjaya keluar dari komuniti"
+                }
+            },
+            {
+                "name": "404 - Bukan Ahli",
+                "status": 404,
+                "body": {
+                    "message": "Anda bukan ahli komuniti ini"
+                }
+            }
+        ]
+    },
+    {
+        "module": "3. Komuniti",
+        "name": "Jemput Ahli ke Komuniti (Admin)",
+        "method": "POST",
+        "url": "{{base_url}}/api/communities/2/invite",
+        "auth": true,
+        "headers": {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": {
+            "email": "ahli@example.com"
+        },
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "message": "Jemputan berjaya dihantar"
+                }
+            },
+            {
+                "name": "422 - Sudah Sertai",
+                "status": 422,
+                "body": {
+                    "message": "Ahli sudah menyertai komuniti ini"
+                }
+            },
+            {
+                "name": "403 - Tidak Dibenarkan",
+                "status": 403,
+                "body": {
+                    "message": "Tidak dibenarkan"
+                }
+            }
+        ]
+    },
+    {
+        "module": "3. Komuniti",
+        "name": "QR Code Komuniti",
+        "method": "GET",
+        "url": "{{base_url}}/api/communities/2/qr",
+        "auth": false,
+        "headers": {
+            "Accept": "application/json"
+        },
+        "body": null,
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "share_link": "https://ekomuniti.my/persatuan/ABC123",
+                    "key_reference": "ABC123"
+                }
+            }
+        ]
+    },
+    {
+        "module": "4. Pengumuman",
+        "name": "Senarai Pengumuman",
+        "method": "GET",
+        "url": "{{base_url}}/api/announcements?community_id=2&search=&per_page=15&page=1",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "query_params": {
+            "community_id": "ID komuniti (optional, tanpa filter = semua komuniti)",
+            "search": "cari tajuk (optional)",
+            "per_page": "15 (default)",
+            "page": "1 (default)"
+        },
+        "notes": "Hanya post dengan status='PUBLISHED' yang dikembalikan.",
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "success": true,
+                    "data": [
+                        {
+                            "id": 1,
+                            "title": "Notis Pembayaran Yuran Jun 2026",
+                            "slug": "notis-pembayaran-yuran-jun-2026",
+                            "image": null,
+                            "tags": "yuran,penting",
+                            "community_id": 2,
+                            "category": {
+                                "id": 1,
+                                "name": "Kewangan"
+                            },
+                            "excerpt": "Ahli-ahli yang dihormati, sila lakukan pembayaran yuran Jun 2026 sebelum 30 Jun...",
+                            "created_at": "2026-05-20T10:00:00.000000Z",
+                            "updated_at": "2026-05-20T10:00:00.000000Z"
+                        }
+                    ],
+                    "meta": {
+                        "current_page": 1,
+                        "last_page": 2,
+                        "total": 18
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "module": "4. Pengumuman",
+        "name": "Detail Pengumuman",
+        "method": "GET",
+        "url": "{{base_url}}/api/announcements/1",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "success": true,
+                    "data": {
+                        "id": 1,
+                        "title": "Notis Pembayaran Yuran Jun 2026",
+                        "slug": "notis-pembayaran-yuran-jun-2026",
+                        "image": null,
+                        "tags": "yuran,penting",
+                        "community_id": 2,
+                        "category": {
+                            "id": 1,
+                            "name": "Kewangan"
+                        },
+                        "content": "<p>Ahli-ahli yang dihormati,</p><p>Sila lakukan pembayaran yuran Jun 2026...</p>",
+                        "created_at": "2026-05-20T10:00:00.000000Z",
+                        "updated_at": "2026-05-20T10:00:00.000000Z"
+                    }
+                }
+            },
+            {
+                "name": "404 - Tidak Dijumpai",
+                "status": 404,
+                "body": {
+                    "success": false,
+                    "message": "Pengumuman tidak dijumpai"
+                }
+            }
+        ]
+    },
+    {
+        "module": "5. Aktiviti",
+        "name": "Senarai Aktiviti",
+        "method": "GET",
+        "url": "{{base_url}}/api/activities?community_id=2&per_page=10&page=1",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "query_params": {
+            "community_id": "ID komuniti (optional, tanpa filter = semua aktiviti)",
+            "per_page": "10 (default)",
+            "page": "1 (default)"
+        },
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "success": true,
+                    "data": [
+                        {
+                            "id": 1,
+                            "title": "Mesyuarat Agong Tahunan 2026",
+                            "description": "MAT 2026 untuk semua ahli...",
+                            "date": "2026-06-25",
+                            "date_display": {
+                                "month": "Jun",
+                                "day": "25"
+                            },
+                            "start_time": "09:00",
+                            "end_time": "13:00",
+                            "time_display": "9:00 AM - 1:00 PM",
+                            "location": "Dewan Serbaguna Kota Kinabalu",
+                            "community": {
+                                "id": 2,
+                                "name": "Persatuan Belia Malaysia Cawangan KL"
+                            },
+                            "is_rsvp": false,
+                            "rsvp_count": 45
+                        }
+                    ],
+                    "meta": {
+                        "current_page": 1,
+                        "last_page": 1,
+                        "total": 3
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "module": "5. Aktiviti",
+        "name": "Detail Aktiviti",
+        "method": "GET",
+        "url": "{{base_url}}/api/activities/1",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "id": 1,
+                    "title": "Mesyuarat Agong Tahunan 2026",
+                    "description": "MAT 2026 untuk semua ahli...",
+                    "date": "2026-06-25",
+                    "date_display": {
+                        "month": "Jun",
+                        "day": "25"
+                    },
+                    "start_time": "09:00",
+                    "end_time": "13:00",
+                    "time_display": "9:00 AM - 1:00 PM",
+                    "location": "Dewan Serbaguna Kota Kinabalu",
+                    "address": "Jalan Dewan, Kota Kinabalu, 88000 Sabah",
+                    "organizer": "Jawatankuasa Persatuan",
+                    "type": "mesyuarat",
+                    "status": "upcoming",
+                    "attendees": 45,
+                    "max_attendees": 100,
+                    "agenda": [
+                        "Ucapan Perasmian Pengerusi",
+                        "Pembentangan Laporan Tahunan 2025",
+                        "Pengesahan Laporan Kewangan"
+                    ],
+                    "community": {
+                        "id": 2,
+                        "name": "Persatuan Belia Malaysia Cawangan KL"
+                    },
+                    "is_rsvp": false,
+                    "rsvp_count": 45
+                }
+            },
+            {
+                "name": "404 - Tidak Dijumpai",
+                "status": 404,
+                "body": {
+                    "success": false,
+                    "message": "Activity not found"
+                }
+            }
+        ]
+    },
+    {
+        "module": "5. Aktiviti",
+        "name": "RSVP Aktiviti",
+        "method": "POST",
+        "url": "{{base_url}}/api/activities/1/rsvp",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "success": true,
+                    "message": "RSVP confirmed"
+                }
+            },
+            {
+                "name": "400 - Kuota Penuh",
+                "status": 400,
+                "body": {
+                    "success": false,
+                    "message": "Had kuota penyertaan bagi aktiviti ini telah penuh."
+                }
+            }
+        ]
+    },
+    {
+        "module": "5. Aktiviti",
+        "name": "Batal RSVP",
+        "method": "DELETE",
+        "url": "{{base_url}}/api/activities/1/rsvp",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "success": true,
+                    "message": "RSVP cancelled"
+                }
+            }
+        ]
+    },
+    {
+        "module": "6. Notifikasi",
+        "name": "Senarai Notifikasi",
+        "method": "GET",
+        "url": "{{base_url}}/api/notifications?unread=&per_page=15&page=1",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "query_params": {
+            "unread": "true = tapis hanya belum baca (optional)",
+            "per_page": "15 (default)",
+            "page": "1 (default)"
+        },
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "data": [
+                        {
+                            "id": "uuid-abc-123",
+                            "type": "App\\Notifications\\MemberInvited",
+                            "title": "Jemputan Komuniti",
+                            "message": "Anda telah dijemput untuk menyertai Persatuan Belia Malaysia.",
+                            "is_read": false,
+                            "created_at": "2026-05-21T08:00:00.000000Z"
+                        }
+                    ],
+                    "meta": {
+                        "current_page": 1,
+                        "last_page": 1,
+                        "total": 3,
+                        "unread_count": 2
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "module": "6. Notifikasi",
+        "name": "Kiraan Notifikasi Belum Baca",
+        "method": "GET",
+        "url": "{{base_url}}/api/notifications/unread-count",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "unread_count": 2
+                }
+            }
+        ]
+    },
+    {
+        "module": "6. Notifikasi",
+        "name": "Detail Notifikasi",
+        "method": "GET",
+        "url": "{{base_url}}/api/notifications/uuid-abc-123",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "notes": "Auto-mark sebagai baca apabila diakses.",
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "id": "uuid-abc-123",
+                    "type": "App\\Notifications\\MemberInvited",
+                    "title": "Jemputan Komuniti",
+                    "message": "Anda telah dijemput untuk menyertai Persatuan Belia Malaysia.",
+                    "is_read": true,
+                    "created_at": "2026-05-21T08:00:00.000000Z"
+                }
+            }
+        ]
+    },
+    {
+        "module": "6. Notifikasi",
+        "name": "Tandakan Dibaca",
+        "method": "PUT",
+        "url": "{{base_url}}/api/notifications/uuid-abc-123/read",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "message": "Notifikasi ditandakan sebagai dibaca"
+                }
+            }
+        ]
+    },
+    {
+        "module": "6. Notifikasi",
+        "name": "Tandakan Semua Dibaca",
+        "method": "PUT",
+        "url": "{{base_url}}/api/notifications/read-all",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "message": "Semua notifikasi telah ditandakan sebagai dibaca"
+                }
+            }
+        ]
+    },
+    {
+        "module": "7. Pembayaran (Invois Komuniti)",
+        "name": "Senarai Invois",
+        "method": "GET",
+        "url": "{{base_url}}/api/payments?status=&per_page=15&page=1",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "query_params": {
+            "status": "pending | paid | expired | (kosong = semua)",
+            "per_page": "15 (default)",
+            "page": "1 (default)"
+        },
+        "notes": "Invois = rekod JoinCompany (yuran masuk komuniti). Berbeza dari /transactions (sejarah LogPaymentManpower).",
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "success": true,
+                    "data": [
+                        {
+                            "id": 3,
+                            "title": "Yuran Keahlian - Persatuan Belia Malaysia Cawangan KL",
+                            "amount": "50.00",
+                            "currency": "RM",
+                            "status": "UNPAID",
+                            "approval_status": "WAITING",
+                            "payment_date": null,
+                            "expired_at": "2027-01-15",
+                            "community": {
+                                "id": 2,
+                                "name": "Persatuan Belia Malaysia Cawangan KL",
+                                "logo": "https://ekomuniti.my/CompanyLogo/logo_abc.jpg"
+                            },
+                            "created_at": "2026-01-15T08:00:00.000000Z"
+                        }
+                    ],
+                    "meta": {
+                        "current_page": 1,
+                        "last_page": 1,
+                        "total": 1
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "module": "7. Pembayaran (Invois Komuniti)",
+        "name": "Baki Tertunggak",
+        "method": "GET",
+        "url": "{{base_url}}/api/payments/outstanding",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "notes": "Jumlah = sum joining_fee semua invois belum bayar (status WAITING atau payment_date null).",
+        "responses": [
+            {
+                "name": "200 - Ada Tunggakan",
+                "status": 200,
+                "body": {
+                    "total": 100.0,
+                    "currency": "RM",
+                    "count": 2
+                }
+            },
+            {
+                "name": "200 - Tiada Tunggakan",
+                "status": 200,
+                "body": {
+                    "total": 0.0,
+                    "currency": "RM",
+                    "count": 0
+                }
+            }
+        ]
+    },
+    {
+        "module": "7. Pembayaran (Invois Komuniti)",
+        "name": "Detail Invois",
+        "method": "GET",
+        "url": "{{base_url}}/api/payments/3",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "success": true,
+                    "data": {
+                        "id": 3,
+                        "title": "Yuran Keahlian - Persatuan Belia Malaysia Cawangan KL",
+                        "amount": "50.00",
+                        "currency": "RM",
+                        "status": "UNPAID",
+                        "approval_status": "WAITING",
+                        "payment_date": null,
+                        "expired_at": "2027-01-15",
+                        "community": {
+                            "id": 2,
+                            "name": "Persatuan Belia Malaysia Cawangan KL",
+                            "logo": "https://ekomuniti.my/CompanyLogo/logo_abc.jpg"
+                        },
+                        "created_at": "2026-01-15T08:00:00.000000Z"
+                    }
+                }
+            },
+            {
+                "name": "404 - Tidak Dijumpai",
+                "status": 404,
+                "body": {
+                    "success": false,
+                    "message": "Rekod pembayaran tidak dijumpai"
+                }
+            }
+        ]
+    },
+    {
+        "module": "8. Transaksi (Sejarah Yuran)",
+        "name": "Senarai Transaksi",
+        "method": "GET",
+        "url": "{{base_url}}/api/transactions?per_page=10&page=1",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "notes": "Data dari tb_log_payment_manpower — rekod yuran keahlian yang telah diproses.",
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "success": true,
+                    "data": [
+                        {
+                            "id": 1,
+                            "ref_no": "TXN-00000001",
+                            "title": "Yuran Keahlian",
+                            "period": "2026-05",
+                            "date": "01 May 2026",
+                            "amount": "50.00",
+                            "currency": "RM",
+                            "type": "yuran",
+                            "status": "berjaya",
+                            "method": "Toyyibpay",
+                            "note": "Pembayaran yuran keahlian bulanan",
+                            "category": null,
+                            "created_at": "2026-05-01T08:00:00.000000Z"
+                        }
+                    ],
+                    "meta": {
+                        "current_page": 1,
+                        "last_page": 3,
+                        "total": 25
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "module": "8. Transaksi (Sejarah Yuran)",
+        "name": "Detail Transaksi",
+        "method": "GET",
+        "url": "{{base_url}}/api/transactions/1",
+        "auth": true,
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": "Bearer {{token}}"
+        },
+        "body": null,
+        "responses": [
+            {
+                "name": "200 - Berjaya",
+                "status": 200,
+                "body": {
+                    "success": true,
+                    "data": {
+                        "id": 1,
+                        "ref_no": "TXN-00000001",
+                        "title": "Yuran Keahlian",
+                        "period": "May 2026",
+                        "date": "01 May 2026",
+                        "amount": "50.00",
+                        "currency": "RM",
+                        "type": "yuran",
+                        "status": "berjaya",
+                        "method": "Toyyibpay",
+                        "note": "Pembayaran yuran keahlian bulanan",
+                        "approval_note": null,
+                        "category": null,
+                        "created_at": "2026-05-01T08:00:00.000000Z"
+                    }
+                }
+            },
+            {
+                "name": "404 - Tidak Dijumpai",
+                "status": 404,
+                "body": {
+                    "success": false,
+                    "message": "Transaksi tidak dijumpai"
+                }
+            }
+        ]
+    }
+]

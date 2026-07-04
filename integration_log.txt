@@ -1,0 +1,498 @@
+LOG INTEGRASI BACKEND - EKOMUNITY
+================================
+Tanggal: 2026-05-21
+Tujuan: Migrasi data mock API (Event/Aktivitas, RSVP, & Outstanding Payments) ke Database.
+
+Karena server hosting tidak memiliki akses SSH/terminal, Anda harus mengunggah file yang ditambahkan/diubah secara manual dan mengeksekusi script SQL di bawah ini melalui phpMyAdmin atau database manager hosting Anda.
+
+---------------------------------------------------------
+1. DAFTAR FILE YANG DITAMBAHKAN / DIUBAH
+---------------------------------------------------------
+
+A. File Baru (Silakan buat atau upload ke direktori masing-masing):
+   1. Model Activity:
+      Path: app/Models/Activity.php
+   2. Model RSVP:
+      Path: app/Models/Rsvp.php
+   3. Controller Activity:
+      Path: app/Http/Controllers/API/ActivityController.php
+   4. Controller Payment:
+      Path: app/Http/Controllers/API/PaymentController.php
+   5. Migration files (Opsional, untuk pencatatan di codebase):
+      Path: database/migrations/2026_05_21_154500_create_activities_table.php
+      Path: database/migrations/2026_05_21_154501_create_rsvps_table.php
+
+B. File yang Diubah (Silakan ganti konten file yang ada dengan perubahan baru):
+   1. API Routes:
+      Path: routes/api.php
+      Perubahan: Mengganti endpoint mock `/payments/outstanding`, `/activities`, `/activities/{id}`, dan RSVP dengan binding controller riil.
+
+---------------------------------------------------------
+2. SCRIPT SQL MANUAL (EKSEKUSI DI PHPMYADMIN)
+---------------------------------------------------------
+
+Silakan pilih database Anda di phpMyAdmin, buka tab "SQL", salin script di bawah ini, lalu klik "Go/Kirim".
+
+--
+-- Tabel `tb_activities`
+--
+CREATE TABLE IF NOT EXISTS `tb_activities` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `date` date NOT NULL,
+  `start_time` time NOT NULL,
+  `end_time` time NOT NULL,
+  `location` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `organizer` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'upcoming',
+  `max_attendees` int(11) NOT NULL DEFAULT 100,
+  `agenda` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Tabel `tb_rsvps`
+--
+CREATE TABLE IF NOT EXISTS `tb_rsvps` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `activity_id` bigint(20) unsigned NOT NULL,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `tb_rsvps_activity_id_user_id_unique` (`activity_id`, `user_id`),
+  CONSTRAINT `tb_rsvps_activity_id_foreign` FOREIGN KEY (`activity_id`) REFERENCES `tb_activities` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `tb_rsvps_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Data Seed / Dummy untuk `tb_activities`
+--
+INSERT INTO `tb_activities` (`id`, `title`, `description`, `date`, `start_time`, `end_time`, `location`, `address`, `organizer`, `type`, `status`, `max_attendees`, `agenda`, `created_at`, `updated_at`) VALUES
+(1, 'Mesyuarat Agong Tahunan 2026', 'Mesyuarat Agong Tahunan (MAT) 2026 adalah platform utama bagi semua ahli untuk bersama-sama membincangkan dan memutuskan hal-hal penting berkaitan persatuan. Sila hadir bagi memastikan kelancaran pengurusan persatuan kita bersama.', '2026-06-25', '09:00:00', '13:00:00', 'Dewan Serbaguna Kota Kinabalu', 'Jalan Dewan, Kota Kinabalu, 88000 Sabah', 'Jawatankuasa Persatuan Belia Malaysia', 'mesyuarat', 'upcoming', 100, '["Ucapan Perasmian Pengerusi","Pembentangan Laporan Tahunan 2025","Pengesahan Laporan Kewangan","Perancangan Aktiviti 2026","Pemilihan Jawatankuasa Baru","Hal-hal lain"]', NOW(), NOW()),
+(2, 'Program Gotong-Royong Komuniti', 'Program gotong-royong ini bertujuan membersihkan kawasan persekitaran Taman Sri Muda bagi meningkatkan kebersihan dan keindahan komuniti. Semua ahli dan keluarga dijemput menyertai.', '2026-06-18', '08:00:00', '12:00:00', 'Taman Sri Muda', 'Taman Sri Muda, Shah Alam, 40150 Selangor', 'Biro Kebajikan & Kemasyarakatan', 'aktiviti', 'upcoming', 60, '["Taklimat dan pembahagian kumpulan","Aktiviti pembersihan kawasan awam","Penanaman pokok bunga","Sarapan pagi bersama komuniti","Majlis penutup dan cabutan bertuah"]', NOW(), NOW()),
+(3, 'Bengkel Pengurusan Kewangan', 'Bengkel ini memberi pendedahan kepada ahli mengenai pengurusan kewangan peribadi yang bijak, perancangan simpanan, dan pelaburan asas. Fasilitator berpengalaman daripada industri kewangan dijemput khas.', '2026-04-10', '14:00:00', '17:00:00', 'Dewan Komuniti Blok A', 'Blok A, Kompleks Komuniti, Kuala Lumpur', 'Biro Kewangan & Pembangunan', 'bengkel', 'completed', 50, '["Asas pengurusan kewangan peribadi","Teknik belanjawan berkesan","Pengenalan kepada pelaburan asas","Sesi soal jawab dengan pakar","Pemberian sijil penyertaan"]', NOW(), NOW());
+
+
+=========================================================
+SESI INTEGRASI 2 - 2026-05-21 (SEJARAH TRANSAKSI)
+=========================================================
+Tujuan: Tambah endpoint sejarah transaksi yuran keahlian untuk mobile apps.
+        Endpoint ini membaca data dari tabel `tb_log_payment_manpower` yang sedia ada.
+        TIADA tabel baru perlu dibuat — cukup upload file controller sahaja.
+
+---------------------------------------------------------
+FILE BARU (Session 2)
+---------------------------------------------------------
+
+1. HistoryController (BARU):
+   Path: app/Http/Controllers/API/HistoryController.php
+   Keterangan: Mengambil senarai dan detail sejarah pembayaran yuran dari
+               tabel tb_log_payment_manpower milik user yang sedang login.
+   Endpoints:
+     - GET /api/transactions          -> index()  (list semua transaksi)
+     - GET /api/transactions/{id}     -> show()   (detail satu transaksi)
+
+---------------------------------------------------------
+FILE YANG DIUBAH (Session 2)
+---------------------------------------------------------
+
+1. API Routes:
+   Path: routes/api.php
+   Perubahan: Tambah 2 baris route baru di dalam blok middleware auth:sanctum:
+     Route::get('/transactions', [App\Http\Controllers\API\HistoryController::class, 'index']);
+     Route::get('/transactions/{id}', [App\Http\Controllers\API\HistoryController::class, 'show']);
+
+---------------------------------------------------------
+CATATAN PENTING (Session 2)
+---------------------------------------------------------
+- TIADA migrasi / SQL diperlukan untuk sesi ini.
+- Tabel `tb_log_payment_manpower` sudah wujud di database.
+- Response endpoint /api/transactions memetakan kolom:
+    id_log_payment_manpower -> id
+    amount                  -> amount (formatted 2 decimal)
+    approval (APPROVED/REJECTED/PENDING) -> status (berjaya/gagal/tertunggak)
+    payment_type            -> method
+    month, year, day        -> period & date (formatted)
+- Response endpoint /api/transactions/{id} mengembalikan detail satu rekod.
+
+
+=========================================================
+SESI INTEGRASI 3 - 2026-05-21 (MOBILE APP API COMPLETE)
+=========================================================
+Tujuan: Bina semua API yang diperlukan oleh mobile app ekomuniti berdasarkan
+        business logic sedia ada di backend. Mobile app mengikuti flow backend.
+
+---------------------------------------------------------
+1. MIGRASI DATABASE BARU (Wajib dijalankan)
+---------------------------------------------------------
+
+Jalankan: php artisan migrate
+ATAU eksekusi SQL berikut di phpMyAdmin:
+
+-- Tambah community_id ke tb_activities
+ALTER TABLE `tb_activities`
+  ADD COLUMN `community_id` bigint(20) unsigned NULL AFTER `id`,
+  ADD CONSTRAINT `tb_activities_community_id_foreign`
+    FOREIGN KEY (`community_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+-- Tambah community_id ke tb_blog_post
+ALTER TABLE `tb_blog_post`
+  ADD COLUMN `community_id` bigint(20) unsigned NULL AFTER `id`,
+  ADD CONSTRAINT `tb_blog_post_community_id_foreign`
+    FOREIGN KEY (`community_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+File migrasi:
+  database/migrations/2026_05_21_200000_add_community_id_to_tb_activities_table.php
+  database/migrations/2026_05_21_200001_add_community_id_to_tb_blog_post_table.php
+
+---------------------------------------------------------
+2. FILE BARU
+---------------------------------------------------------
+
+1. AnnouncementController (BARU):
+   Path: app/Http/Controllers/API/AnnouncementController.php
+   Keterangan: API untuk pengumuman/berita komuniti dari tabel tb_blog_post.
+   Endpoints:
+     - GET /api/announcements?community_id={id}&search={q}&page={p}  -> index()
+     - GET /api/announcements/{id}                                    -> show()
+
+2. UserSettingsController (BARU):
+   Path: app/Http/Controllers/API/UserSettingsController.php
+   Keterangan: Kemaskini tetapan pengguna (kata laluan, FCM token).
+   Endpoints:
+     - PUT /api/user/settings  -> update()
+       Body: { fcm_token?, current_password?, new_password?, new_password_confirmation? }
+
+---------------------------------------------------------
+3. FILE YANG DIUBAH
+---------------------------------------------------------
+
+1. CommunityController:
+   Path: app/Http/Controllers/API/CommunityController.php
+   Kaedah baru ditambah:
+     - index()         -> GET /api/communities
+                          List semua komuniti (DetailCompany level 2) + is_joined flag
+                          Query params: search, per_page
+     - join()          -> POST /api/communities/{id}/join
+                          Ahli (level 3) mohon sertai komuniti
+                          Buat JoinCompany dengan status_approval = WAITING
+                          Cegah duplikasi (cek WAITING / APPROVED sedia ada)
+     - leave()         -> DELETE /api/communities/{id}/leave
+                          Ahli keluar komuniti (soft delete JoinCompany)
+     - userCommunities()-> GET /api/user/communities
+                          Senarai komuniti yang user telah sertai
+     - feed()          -> GET /api/communities/{id}/feed
+                          5 aktiviti terkini + 5 pengumuman terkini bagi komuniti
+
+2. ActivityController:
+   Path: app/Http/Controllers/API/ActivityController.php
+   Perubahan:
+     - Buang data komuniti hardcoded ('id' => 1, 'name' => 'Persatuan Belia Malaysia')
+     - Resolve nama komuniti dari community_id -> DetailCompany.full_company_name
+     - Tambah filter ?community_id= pada GET /api/activities
+     - Refactor format ke kaedah formatActivity() untuk elak duplikasi kod
+
+3. PaymentController:
+   Path: app/Http/Controllers/API/PaymentController.php
+   Kaedah baru ditambah:
+     - index()  -> GET /api/payments?status=pending|paid|expired&per_page={n}
+                   List invois JoinCompany bagi user yang login
+     - show()   -> GET /api/payments/{id}
+                   Detail satu invois pembayaran komuniti
+   Kaedah dikemaskini:
+     - outstanding() -> Kini kira dari DB sebenar (sum joining_fee + count)
+                        DULU: hardcode RM 50 jika subscribe_status != APPROVED
+                        KINI: sum semua JoinCompany belum bayar milik user
+
+4. User Model:
+   Path: app/Models/User.php
+   Tambah relationship:
+     - detailCompany() -> hasOne(DetailCompany, 'id_user', 'id')
+
+5. Activity Model:
+   Path: app/Models/Activity.php
+   Perubahan:
+     - Tambah 'community_id' ke $fillable
+     - Tambah relationship communityUser() -> belongsTo(User, 'community_id')
+
+6. Blogpost Model:
+   Path: app/Models/Blogpost.php
+   Perubahan:
+     - Tambah 'community_id' ke $fillable
+
+7. LoginUserController:
+   Path: app/Http/Controllers/LoginUserController.php
+   Kaedah baru ditambah:
+     - forgotPassword() -> POST /api/forgot-password
+                          Hantar pautan reset kata laluan via Laravel Password facade
+                          Body: { email }
+                          Return generic message (elak email enumeration)
+
+8. API Routes:
+   Path: routes/api.php
+   Route baru:
+     POST   /api/forgot-password                  (tanpa auth)
+     GET    /api/communities                       (auth:sanctum)
+     POST   /api/communities/{id}/join             (auth:sanctum)
+     DELETE /api/communities/{id}/leave            (auth:sanctum)
+     GET    /api/communities/{id}/feed             (auth:sanctum)
+     GET    /api/user/communities                  (auth:sanctum)
+     PUT    /api/user/settings                     (auth:sanctum)
+     GET    /api/payments                          (auth:sanctum)
+     GET    /api/payments/{id}                     (auth:sanctum)
+     GET    /api/announcements                     (auth:sanctum)
+     GET    /api/announcements/{id}                (auth:sanctum)
+   Route dikemaskini:
+     GET /api/payments/outstanding -> Improved real DB calculation
+
+---------------------------------------------------------
+4. RINGKASAN ENDPOINT LENGKAP (SESI 3)
+---------------------------------------------------------
+
+Auth:
+  POST   /api/login
+  POST   /api/register
+  POST   /api/forgot-password
+  GET    /api/me                           (auth)
+  POST   /api/logout                       (auth)
+  POST   /api/refresh-token                (auth)
+  POST   /api/profile                      (auth)
+
+User:
+  GET    /api/user/communities             (auth)
+  PUT    /api/user/settings                (auth)
+
+Communities:
+  GET    /api/communities                  (auth)
+  GET    /api/communities/{id}             (auth)
+  PUT    /api/communities/{id}             (auth, owner only)
+  POST   /api/communities/{id}/join        (auth)
+  DELETE /api/communities/{id}/leave       (auth)
+  GET    /api/communities/{id}/members     (auth)
+  PUT    /api/communities/{id}/members/{member_id} (auth, owner only)
+  POST   /api/communities/{id}/invite      (auth, owner only)
+  GET    /api/communities/{id}/feed        (auth)
+  GET    /api/communities/{id}/qr          (public)
+
+Activities:
+  GET    /api/activities?community_id={id} (auth)
+  GET    /api/activities/{id}              (auth)
+  POST   /api/activities/{id}/rsvp         (auth)
+  DELETE /api/activities/{id}/rsvp         (auth)
+
+Announcements:
+  GET    /api/announcements?community_id={id}&search={q} (auth)
+  GET    /api/announcements/{id}           (auth)
+
+Payments (JoinCompany invoices):
+  GET    /api/payments?status=pending|paid|expired (auth)
+  GET    /api/payments/outstanding         (auth)
+  GET    /api/payments/{id}               (auth)
+
+Transactions (LogPaymentManpower):
+  GET    /api/transactions                 (auth)
+  GET    /api/transactions/{id}            (auth)
+
+Notifications:
+  GET    /api/notifications                (auth)
+  GET    /api/notifications/unread-count   (auth)
+  GET    /api/notifications/{id}           (auth)
+  PUT    /api/notifications/{id}/read      (auth)
+  PUT    /api/notifications/read-all       (auth)
+
+---------------------------------------------------------
+5. CATATAN TEKNIKAL
+---------------------------------------------------------
+
+- Community = User dengan id_level=2 + rekod DetailCompany
+- Membership = rekod JoinCompany (tb_request_join_company)
+  - status_approval: WAITING (tunggu kelulusan) | APPROVED (aktif)
+  - payment_date null = UNPAID, expired_at > today = PAID, lain = EXPIRED
+- Announcements = Blogpost (tb_blog_post) dengan status='PUBLISHED'
+  - community_id FK baru ditambah via migrasi sesi ini
+- Activities community link via community_id FK baru ditambah via migrasi sesi ini
+- Payments outstanding kini dikira dari sum(joining_fee) JoinCompany belum bayar
+- forgotPassword guna Laravel built-in Password::sendResetLink()
+  - Memerlukan konfigurasi MAIL_* dalam .env
+
+=========================================================
+SESI INTEGRASI 4 - 2026-05-23 (KAD AHLI & PROFILE FIX)
+=========================================================
+Tujuan: Betulkan data yang dipaparkan pada Kad Ahli (membership.tsx) dan
+        Profile screen (profile.tsx) dalam mobile app ekomuniti.
+        Tiada tabel baru diperlukan — cukup pastikan response API betul.
+
+---------------------------------------------------------
+1. TIADA FILE BARU / TIADA MIGRASI
+---------------------------------------------------------
+Semua fix adalah pada response endpoint sedia ada sahaja.
+
+---------------------------------------------------------
+2. FILE YANG PERLU DIKEMASKINI
+---------------------------------------------------------
+
+1. LoginUserController / MeController:
+   Path: app/Http/Controllers/LoginUserController.php
+         (atau mana-mana controller yang handle GET /api/me)
+   Perubahan:
+     - Pastikan eager load relation `manpower` pada response /api/me
+     - $user->load('manpower') sebelum return response
+   Field wajib dalam objek manpower:
+     number_certificate       -> No. Ahli pada Kad Ahli
+     key_reference            -> String pendek untuk QR code
+     subscribe_status         -> Status keahlian (active/pending/expired)
+     certificate_expired_date -> Tarikh luput keahlian
+     id_detail_manpower       -> ID link ke komuniti
+
+2. UserSettingsController / CommunityController:
+   Path: app/Http/Controllers/API/UserSettingsController.php
+         (atau controller yang handle GET /api/user/communities)
+   Pastikan response tiap item ada:
+     id         -> ID komuniti
+     status     -> "active" / "pending" / "expired"
+     expired_at -> Tarikh luput (ISO date string)
+   Digunakan untuk badge "Disahkan / Menunggu Kelulusan / Tidak Aktif" di profile screen.
+
+3. UserSettingsController (endpoint /api/member/qr):
+   Path: app/Http/Controllers/API/UserSettingsController.php
+   WAJIB semak response format:
+   - key_reference MESTI string pendek (bukan base64) — ini value yang di-encode jadi QR
+   - qr_data JANGAN return base64 PNG ("data:image/png;base64,...")
+     kerana QR component react-native-qrcode-svg akan cuba encode 50k+ chars dan fail
+   Contoh BETUL:
+     { "success": true, "key_reference": "abc123xyz", "qr_data": "abc123xyz" }
+   Contoh SALAH:
+     { "success": true, "qr_data": "data:image/png;base64,iVBORw0KGgo..." }
+
+---------------------------------------------------------
+3. RINGKASAN KESAN PADA MOBILE APP
+---------------------------------------------------------
+
+  Endpoint              | Kesan jika salah
+  ----------------------|----------------------------------------------
+  GET /api/me           | Kad Ahli: nama, no. ahli, tarikh luput kosong
+  GET /api/me           | Profile: badge status salah
+  GET /api/user/communities | Profile: badge "Disahkan" tak muncul
+  GET /api/member/qr    | Kad Ahli: QR tidak muncul (icon kosong)
+
+---------------------------------------------------------
+4. CATATAN TEKNIKAL
+---------------------------------------------------------
+- Mobile app sudah handle fallback: jika manpower null, pakai MEM-{id} sebagai no. ahli
+- QR fallback: jika /api/member/qr gagal, pakai https://ekomuniti.my/ahli/{user_id}
+- subscribe_status nilai yang diiktiraf oleh mobile: "active"/"approved" = hijau,
+  "pending"/"waiting" = kuning, lain-lain = merah
+
+=========================================================
+SESI INTEGRASI 5 - 2026-05-23 (REGISTER + EMAIL VERIFIKASI)
+=========================================================
+Tujuan: Betulkan flow pendaftaran akaun (register) yang gagal.
+        Mobile app sudah difix — button sekarang call API dengan fields betul.
+        Backend perlu diubah untuk email verifikasi.
+
+---------------------------------------------------------
+1. MASALAH YANG DITEMUI
+---------------------------------------------------------
+
+Mobile (register.tsx):
+  - Button "Daftar Sekarang" hanya redirect ke login, TIADA API call
+  - Missing fields: phone_number, password_confirmation, id_level
+  - SUDAH DIFIX dalam mobile app
+
+Backend (ApiRegisterController.php):
+  - email_verified_at = now() → auto-verify tanpa hantar email
+  - is_verified = 1 → tandakan verified terus
+  - PERLU DIFIX manual
+
+---------------------------------------------------------
+2. FILE YANG PERLU DIUBAH DI BACKEND
+---------------------------------------------------------
+
+1. ApiRegisterController.php
+   Path: app/Http/Controllers/API/ApiRegisterController.php
+   Ubah bahagian selepas validator passes:
+
+   GANTI:
+     $user->email_verified_at = now();
+     $user->is_verified = 1;
+
+   DENGAN:
+     $user->email_verified_at = null;
+     $user->is_verified = 0;
+
+   Tambah selepas $user->save():
+     event(new \Illuminate\Auth\Events\Registered($user));
+
+   Response tambah:
+     'message' => 'Pendaftaran berjaya. Sila semak emel untuk verifikasi.'
+
+2. User Model
+   Path: app/Models/User.php
+   Tambah interface MustVerifyEmail:
+
+   GANTI:
+     class User extends Authenticatable
+   DENGAN:
+     class User extends Authenticatable implements \Illuminate\Contracts\Auth\MustVerifyEmail
+
+   Pastikan ada dalam use statements:
+     use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+3. routes/api.php
+   Tambah route email verification (selepas blok auth):
+     Route::get('/email/verify/{id}/{hash}',
+       [App\Http\Controllers\Auth\VerificationController::class, 'verify'])
+       ->middleware(['auth:sanctum', 'signed'])
+       ->name('verification.verify');
+
+     Route::post('/email/resend',
+       [App\Http\Controllers\Auth\VerificationController::class, 'resend'])
+       ->middleware(['auth:sanctum', 'throttle:6,1'])
+       ->name('verification.resend');
+
+4. .env — Pastikan konfigurasi mail betul:
+   MAIL_MAILER=smtp
+   MAIL_HOST=your-smtp-host
+   MAIL_PORT=587
+   MAIL_USERNAME=your-email
+   MAIL_PASSWORD=your-password
+   MAIL_ENCRYPTION=tls
+   MAIL_FROM_ADDRESS=noreply@ekomuniti.my
+   MAIL_FROM_NAME="Ekomuniti"
+
+---------------------------------------------------------
+3. FIELDS YANG MOBILE HANTAR KE /api/register
+---------------------------------------------------------
+
+POST /api/register
+Body:
+  fullname              string, required
+  email                 string, required, unique
+  phone_number          numeric, required
+  password              string, min:8, required
+  password_confirmation string, required (sama dengan password)
+  id_level              integer, required (mobile hantar: 3 = AHLI_KOMUNITI)
+
+Response dijangka:
+  { "message": "Pendaftaran berjaya...", "user": { id, fullname, email, ... } }
+
+---------------------------------------------------------
+4. FLOW SELEPAS FIX
+---------------------------------------------------------
+
+1. User isi form → mobile hantar POST /api/register
+2. Backend buat user, hantar email verifikasi
+3. Mobile tunjuk: "Pendaftaran berjaya! Sila semak emel anda untuk verifikasi."
+4. User klik link dalam emel → email_verified_at diisi
+5. User boleh login
+
+=========================================================
+END OF INTEGRATION LOG
+=========================================================
+
