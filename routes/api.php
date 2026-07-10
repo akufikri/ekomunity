@@ -146,6 +146,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Payments
     Route::get('/payments', [PaymentController::class, 'index']);
     Route::get('/payments/outstanding', [PaymentController::class, 'outstanding']);
+    Route::get('/payments/members-outstanding', [PaymentController::class, 'membersOutstanding']);
     Route::get('/payments/{id}', [PaymentController::class, 'show']);
 
     // Activities

@@ -440,22 +440,63 @@ class RegisManpowerController extends Controller
         ));
     }
 
-    public function registerPayment()
+    public function registerPayment(Request $request)
     {
 
         $user = Auth::user();
         $detail = DetailManpower::where('id_user', $user->id)->first();
         $setting_subscribe = SettingSubscribe::where('subscribe_for', 'REGISTER AHLI')->where('is_active', 'ENABLE')->first();
 
-        if ($detail->subscribe_free    == '0') {
+        $company = null;
+        $code = $request->query('code');
+        $daftar_persatuan = $request->query('daftar_persatuan');
+
+        if ($code) {
+            $company = DetailCompany::where('key_reference', $code)->first();
+            if ($company && $company->joining_fee !== null) {
+                $setting_subscribe->price = $company->joining_fee;
+            }
+        }
+
+        if ($detail->subscribe_free == '0') {
             $setting_subscribe->price = $setting_subscribe->price;
         }
 
-        // return response()->json($detail);
-
         $encrypt = Crypt::encryptString($user->id);
 
-        return view('employee.register.payment', compact('user', 'detail', 'setting_subscribe', 'encrypt'));
+        return view('employee.register.payment', compact('user', 'detail', 'setting_subscribe', 'encrypt', 'code', 'daftar_persatuan', 'company'));
+    }
+
+    public function freePaymentSuccess(Request $request)
+    {
+        $user = Auth::user();
+        $detail = DetailManpower::where('id_user', $user->id)->first();
+
+        if (!$detail) {
+            return redirect('/home');
+        }
+
+        $code = $request->query('code');
+        $company = $code ? DetailCompany::where('key_reference', $code)->first() : null;
+
+        if ($company && (float) $company->joining_fee === 0.0) {
+            $log_payment = new LogPaymentManpower();
+            $log_payment->id_user = $user->id;
+            $log_payment->id_detail_manpower = $detail->id_detail_manpower;
+            $log_payment->day = date('d');
+            $log_payment->month = date('m');
+            $log_payment->year = date('Y');
+            $log_payment->amount = '0';
+            $log_payment->payment_proof = 'default.png';
+            $log_payment->created_by = $user->id;
+            $log_payment->save();
+
+            $detail->subscribe_free = 1;
+            $detail->subscribe_status = 'APPROVED';
+            $detail->save();
+        }
+
+        return view('paymentSuccess');
     }
 
     public function registerPaymentCash(Request $r)

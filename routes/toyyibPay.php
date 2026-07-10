@@ -255,11 +255,20 @@ class ToyyibPayController
             return redirect("/errorPaymentGateway");
         }
 
+        // Use persatuan joining_fee if code provided, else fallback to global subscribe price
+        $amount = $this->config['subscribePrice'];
+        if ($request->code) {
+            $company = DetailCompany::where('key_reference', $request->code)->first();
+            if ($company && $company->joining_fee !== null) {
+                $amount = $company->joining_fee;
+            }
+        }
+
         // Create payment record
         $payment = $this->createPaymentRecord([
             'type_item' => 'SUBSCRIBE_AHLI',
             'user' => $user,
-            'amount' => $this->config['subscribePrice'],
+            'amount' => $amount,
             'collection_id' => $this->config['categoryCode'],
             'description' => "Subscribe Ahli {$user->fullname}",
         ]);

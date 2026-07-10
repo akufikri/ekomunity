@@ -67,6 +67,82 @@ class PaymentController extends Controller
     }
 
     /**
+     * GET /api/payments/members-outstanding
+     * Ringkasan status pembayaran ahli untuk komuniti pengguna semasa
+     */
+    public function membersOutstanding()
+    {
+        $user = Auth::user();
+
+        $communityId = null;
+        if ($user->id_level == 2) {
+            $company = DetailCompany::where('id_user', $user->id)->first();
+            $communityId = optional($company)->id_detail_company;
+        } else {
+            $manpower = DetailManpower::where('id_user', $user->id)->first();
+            if ($manpower) {
+                $join = JoinCompany::where('id_detail_manpower', $manpower->id_detail_manpower)
+                    ->whereNull('deleted_at')
+                    ->latest()
+                    ->first();
+                $communityId = optional($join)->id_detail_company;
+            }
+        }
+
+        if (!$communityId) {
+            return response()->json([
+                'total_members' => 0,
+                'unpaid_count' => 0,
+                'paid_count' => 0,
+                'expired_count' => 0,
+                'unpaid_amount' => 0,
+                'currency' => 'RM',
+            ]);
+        }
+
+        $totalMembers = JoinCompany::where('id_detail_company', $communityId)
+            ->whereNull('deleted_at')
+            ->count();
+
+        $unpaidMembers = JoinCompany::where('id_detail_company', $communityId)
+            ->whereNull('deleted_at')
+            ->where(function ($q) {
+                $q->whereNull('payment_date')
+                  ->orWhere('status_approval', 'WAITING');
+            })
+            ->count();
+
+        $paidMembers = JoinCompany::where('id_detail_company', $communityId)
+            ->whereNull('deleted_at')
+            ->whereNotNull('payment_date')
+            ->where('status_approval', 'APPROVED')
+            ->whereDate('expired_at', '>', date('Y-m-d'))
+            ->count();
+
+        $expiredMembers = JoinCompany::where('id_detail_company', $communityId)
+            ->whereNull('deleted_at')
+            ->whereDate('expired_at', '<=', date('Y-m-d'))
+            ->count();
+
+        $unpaidAmount = JoinCompany::where('id_detail_company', $communityId)
+            ->whereNull('deleted_at')
+            ->where(function ($q) {
+                $q->whereNull('payment_date')
+                  ->orWhere('status_approval', 'WAITING');
+            })
+            ->sum('joining_fee');
+
+        return response()->json([
+            'total_members' => $totalMembers,
+            'unpaid_count'  => $unpaidMembers,
+            'paid_count'    => $paidMembers,
+            'expired_count' => $expiredMembers,
+            'unpaid_amount' => (float) $unpaidAmount,
+            'currency'      => 'RM',
+        ]);
+    }
+
+    /**
      * GET /api/payments/{id}
      * Detail satu invois pembayaran komuniti
      */

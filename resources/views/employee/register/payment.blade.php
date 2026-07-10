@@ -142,15 +142,21 @@
                             </form>
                             @if ($setting_subscribe->price != '0')
                                 <div class="text-right">
-                                      <button style="width:100%" onclick="window.location.href='/create_bill_subscribe_ahli?id={{ $encrypt }}'"
-                                            class="site-button button-md outline outline-2 btnku btn btn-xl d-block">Bayar via Payment Gateway</button>
-                                    {{-- @if (!Request::input('code'))
-                                    <button style="width:100%" onclick="window.location.href='/create_bill_subscribe_ahli?id={{ $encrypt }}'"
-                                            class="site-button button-md outline outline-2 btnku btn btn-xl d-block">Bayar via Payment Gateway</button>
-                                    @else
-                                        <button style="width:100%" onclick="window.location.href='/create_bill_join_company?id={{ $encrypt }}'"
-                                            class="site-button button-md outline outline-2 btnku btn btn-xl d-block">Bayar via Payment Gateway</button>
-                                    @endif --}}
+                                    @php
+                                        $billUrl = '/create_bill_subscribe_ahli?id=' . $encrypt;
+                                        if (!empty($code)) {
+                                            $billUrl .= '&code=' . $code;
+                                        }
+                                    @endphp
+                                    <button style="width:100%" onclick="window.location.href='{{ $billUrl }}'"
+                                        class="site-button button-md outline outline-2 btnku btn btn-xl d-block">Bayar via Payment Gateway</button>
+                                </div>
+                            @else
+                                <div class="text-right">
+                                    <a href="/register_ahli/free_payment_success{{ !empty($code) ? '?code=' . $code : '' }}"
+                                        style="width:100%" class="site-button button-md outline outline-2 btnku btn btn-xl d-block">
+                                        Teruskan (Percuma)
+                                    </a>
                                 </div>
                             @endif
                             <br>

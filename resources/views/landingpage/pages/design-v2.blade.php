@@ -434,7 +434,7 @@
                 <span class="text-2xl font-bold">Ekomuniti</span>
             </div>
             <ul class="flex items-center gap-2 mt-5 font-bold text-[#1569a0] w-full justify-center">
-                <li><a href="">Polisi Privasi</a></li>
+                <li><a href="/privacy">Polisi Privasi</a></li>
                 <li><a href="">Terma & Syarat</a></li>
                 <li><a href="">Penghapusan Akaun</a></li>
             </ul>

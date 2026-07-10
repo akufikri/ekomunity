@@ -90,6 +90,12 @@ Route::get('/', function () {
     return view('landingpage.pages.design-v2');
     // return redirect('/login');
 });
+Route::get('/privacy', function () {
+    return view('landingpage.pages.privacy');
+});
+Route::get('/csae', function () {
+    return view('landingpage.pages.csae');
+});
 Route::get('/direktori', [LandingPageController::class, 'direktori']);
 Route::get('/buletin', [LandingPageController::class, 'blogPost']);
 Route::get('/buletin/{slug}', [LandingPageController::class, 'detailPost']);
@@ -102,6 +108,10 @@ Route::get('checkExpired', function () {
     return compact('data');
 });
 
+
+Route::get('/delete-account', function () {
+    return view('delete-account');
+});
 
 Route::get('/statistik', function () {
     return view('statistik.index');
@@ -1013,6 +1023,7 @@ Route::group(['middleware' => ['auth'],], function () {
         Route::get('/pembayaran_success', function () {
             return view('paymentSuccess');
         });
+        Route::get('/free_payment_success', [RegisManpowerController::class, 'freePaymentSuccess']);
         Route::get('/verification_payment', function () {
 
             return view('verificationPayment');

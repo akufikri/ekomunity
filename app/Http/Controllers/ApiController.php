@@ -397,11 +397,7 @@ class ApiController extends Controller
 
 		$cities = $query->get();
 
-		return response()->json([
-			'success' => true,
-			'is_pagination' => false,
-			'data' => $cities
-		]);
+		return response()->json($cities);
 	}
 
 
